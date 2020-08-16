@@ -1,7 +1,9 @@
 	class CellShell extends React.Component {
+
 		constructor(props){
 			super(props)
 		}
+
 		render(){ 
 			return this.getHTML()
 		}
@@ -27,6 +29,7 @@
 	}
 
       class SudokuSolver extends React.Component {
+
 	 	constructor(props){
 	 		super(props)
 	 		this.greeting = "Aloha"
@@ -37,7 +40,6 @@
 	 	setInitialState = () => { 
 	 		this.state = {}
 	 		this.state.puzzleArray = this.buildEmptyPuzzleArray()
-			this.state.listItems = this.getListItems()
 	 		this.state.sudokuService = new SudokuBridgeService()
 	 	}
 
@@ -63,6 +65,18 @@
 	 		return str;
 	 	}
 
+	 	puzzleStringToArray = (s) => {
+	 		let a = String(s).split("")
+	 		let len = a.length
+	 		for(let i = 0; i < len; i++){
+	 			let val = a[i]
+	 			if(val == "0"){
+	 				a[i] = ""
+	 			}
+	 		}
+	 		return [...a]
+	 	}
+
 	 	getColumnClass = (index) => {
 	 		let classes = ""
 	 		let colIndex = index % 9
@@ -82,8 +96,20 @@
 	 		this.setState({puzzleArray: this.state.puzzleArray})
 	 	}
 
-	 	newGame = () => {
-	 		console.log("newGame!!!!")
+	 	setNewPuzzle = (result) => {
+	 		let s = String(result.puzzle.start)
+	 		let a = this.puzzleStringToArray(s)
+	 		this.setState({puzzleArray:a})
+	 	}
+
+	 	onNewPuzzle = (result) =>{
+	 		console.log("onNewPuzzle!!!!" + result)
+	 		this.setNewPuzzle(result)
+	 	}
+
+	 	newPuzzle = () => {
+	 		console.log("newPuzzle!!!!")
+	 		let serviceCall = this.state.sudokuService.getNewPuzzle(this.onNewPuzzle)
 	 	}
 
 	 	reset = () => {
@@ -118,7 +144,7 @@
 							{this.getListItems()}
 						</div>
 						<div id="new_game_shell">
-							<button id="new_game_btn" onClick={this.newGame}>New Game</button>
+							<button id="new_game_btn" onClick={this.newPuzzle}>New Puzzle</button>
 						</div>
 						<div id="reset"><button id="reset_btn" onClick={this.reset}>Reset</button></div>
 						<div id="validate"><button id="validate_btn" onClick={this.validate}>Validate</button></div>
