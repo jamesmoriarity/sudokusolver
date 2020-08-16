@@ -99,17 +99,16 @@
 	 	setNewPuzzle = (result) => {
 	 		let s = String(result.puzzle.start)
 	 		let a = this.puzzleStringToArray(s)
+	 		this.originalPuzzleArray = [...a]
 	 		this.setState({puzzleArray:a})
 	 	}
 
 	 	onNewPuzzle = (result) =>{
-	 		console.log("onNewPuzzle!!!!" + result)
 	 		this.setNewPuzzle(result)
 	 	}
 
 	 	newPuzzle = () => {
-	 		console.log("newPuzzle!!!!")
-	 		let serviceCall = this.state.sudokuService.getNewPuzzle(this.onNewPuzzle)
+	 		this.state.sudokuService.getNewPuzzle(this.onNewPuzzle)
 	 	}
 
 	 	reset = () => {
@@ -118,9 +117,7 @@
 
 	 	validate = () => {
 	 		let p = this.toString()
-	 		// create a sudokuService class and use the validator method
 	 		let sbsResponse = this.state.sudokuService.validate(p)
-	 		// this.setState({listItems: this.getListItems()})
 	 		console.log("validate hit!!!! valid:" + sbsResponse.isValid + " toString:" + p)
 	 	}
 
