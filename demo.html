@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <script src="src/SudokuBridgeService.js"></script>
+  <style type="text/css">
+
+    div {
+      box-sizing:border-box;
+    }
+    input {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      margin: 0;
+      margin-top: 3px;
+      text-align:center;
+      font-size: 27px;
+    }
+
+    #sudoku_solver_shell  {}
+    #grid {
+      width: 396px;
+      margin-bottom: 30px;
+      border: 3px solid grey;
+      display: inline-block
+    }
+
+    .cell_shell{
+      margin: 0px;
+      margin-left: -1px;
+      width: 44.3px;
+      height: 40px;
+      overflow: hidden;
+      border: 1px solid grey;
+      margin-top: 0px;
+      margin-bottom: -5px;
+      display:inline-block;
+      text-align:center;
+    }
+
+    .column-right{
+      border-right:3px solid grey;
+    }
+
+    .row-bottom{
+      border-bottom:3px solid grey;
+    }
+
+  </style>
+  <body>
+    <div id="sudoku_solver_shell"></div>
+    <script src="src/demo.jsx" type="text/babel"></script>
+  </body>
+</html>

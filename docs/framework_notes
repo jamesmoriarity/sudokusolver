@@ -1,0 +1,5 @@
+
+start a watcher for the babel converter - jsx to js
+	outputs to the same src directory as the jsx files
+
+npx babel --watch src --out-dir ./src --presets react-app/prod
