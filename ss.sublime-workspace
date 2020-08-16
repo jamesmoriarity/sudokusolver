@@ -1,0 +1,683 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"puzzle",
+				"puzzleArray"
+			],
+			[
+				"upda",
+				"updateFromHashChange"
+			],
+			[
+				"fish",
+				"fish-hilite"
+			],
+			[
+				"rainbo",
+				"rainbow-tree-hilite"
+			],
+			[
+				"panel-",
+				"panel-subcontent"
+			],
+			[
+				"get",
+				"getBreakpoint"
+			],
+			[
+				"no",
+				"no-repeat"
+			],
+			[
+				"un",
+				"uncheckAllSectionOptions"
+			],
+			[
+				"tablet",
+				"tablet-down"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"_cel",
+				"_cellHeight"
+			],
+			[
+				"or",
+				"originalTopFiveHeight"
+			],
+			[
+				"_pre",
+				"_prevTitle"
+			],
+			[
+				"bl",
+				"blockCount"
+			],
+			[
+				"activ",
+				"activeIndex"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 1,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/james/Documents/projects/proto/proto/public/index.html",
+			"settings":
+			{
+				"buffer_size": 1722,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"Snippet:l",
+				"Snippet: Lorem ipsum"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 146.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/james/Documents/projects/sudokusolver/demo.html",
+		"/Users/james/Documents/projects/sudokusolver/index.html",
+		"/Users/james/Documents/projects/sudokusolver/src/index.js",
+		"/Users/james/Documents/projects/sudokusolver/importer.html",
+		"/Users/james/Documents/projects/sudokusolver/src/importer.js",
+		"/Users/james/Documents/projects/sudokusolver/src/importer.jsx",
+		"/Users/james/Documents/projects/sudokusolver/src/App.css",
+		"/Users/james/Documents/projects/sudokusolver/src/App.js",
+		"/Users/james/Documents/projects/sudokusolver/docs/framework_notes",
+		"/Users/james/Documents/projects/sudokusolver/src/SudokuBridgeService.js",
+		"/Users/james/Documents/projects/sudokusolver/src/demo.jsx",
+		"/Users/james/Documents/projects/sudokusolver/src/App.jsx",
+		"/Users/james/Documents/projects/sudokusolver/src/demo.js",
+		"/Users/james/Documents/projects/sudokusolver/src/index.jsx",
+		"/Users/james/Documents/sudoku/solverOOP.html",
+		"/Users/james/second-app/src/app/squares/squares.component.ts",
+		"/Users/james/second-app/src/app/app.component.css",
+		"/Users/james/second-app/src/app/mock-squares.ts",
+		"/Users/james/second-app/src/app/app.module.ts",
+		"/Users/james/second-app/src/app/squares/squares.component.html",
+		"/Users/james/second-app/src/app/app.component.ts",
+		"/Users/james/second-app/src/app/app.component.html",
+		"/Users/james/second-app/src/app/squares/squares.component.css",
+		"/Users/james/second-app/src/app/square.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/mock-heroes.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/heroes/heroes.component.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/hero.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/heroes/heroes.component.html",
+		"/Users/james/angular-tour-of-heroes/src/app/app.component.css",
+		"/Users/james/angular-tour-of-heroes/src/app/heroes/heroes.component.css",
+		"/Users/james/angular-tour-of-heroes/src/app/hero-detail/hero-detail.component.html",
+		"/Users/james/angular-tour-of-heroes/src/app/hero-detail/hero-detail.component.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/hero.service.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/message.service.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/app.component.html",
+		"/Users/james/angular-tour-of-heroes/src/app/messages/messages.component.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/messages/messages.component.html",
+		"/Users/james/angular-tour-of-heroes/src/app/messages/messages.component.css",
+		"/Users/james/angular-tour-of-heroes/src/app/app.module.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/app-routing.module.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/dashboard/dashboard.component.html",
+		"/Users/james/angular-tour-of-heroes/src/app/dashboard/dashboard.component.ts",
+		"/Users/james/angular-tour-of-heroes/src/app/dashboard/dashboard.component.css",
+		"/Users/james/angular-tour-of-heroes/src/app/hero-detail/hero-detail.component.css",
+		"/Users/james/angular-tour-of-heroes/src/app/app.component.ts",
+		"/Users/james/second-app/src/index.html",
+		"/Users/james/Documents/sudoku/solver3.html",
+		"/Users/james/Documents/sudoku/js/sudokusolver.js",
+		"/Users/james/Documents/__AgeOfAloha/bio.html",
+		"/Users/james/Documents/__AgeOfAloha/index.html",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/footer.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/header.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/page-templates/full-width.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/js/libs/chosen/chosen.jquery.js",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/js/scripts/form.js",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/partials/get-listings-search-form.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/js/scripts/filters.js",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/js/scripts/listings.js",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/js/scripts.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/templates/footer.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/js/libs/chosen/chosen.jquery.min.js",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/partials/get-listings-ajax.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/js/magnific.js",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/extensions/maps/maps-util.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/extensions/image-util.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/content.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/functions/widgets/recent-posts.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/templates/sample-listing.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/partials/custom-property-details.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/style.css",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/functions.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/functions/partials.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/partials/get-listings.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/blueprint/functions/widgets/listings.php",
+		"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/index.php",
+		"/Users/james/Documents/ff/rankings.html",
+		"/Users/james/Documents/kokua/vacation rental/index.html",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/email/catalog/product/new.phtml",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/js/lib/instafeed.min.js",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/layout/page.xml",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/fate-style.scss",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/_var.scss",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/coffee/siteframe.coffee",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/page/1column.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/page/html/footer.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/page/html/cover_menu.phtml",
+		"/Users/james/Downloads/magento/app/code/core/Mage/Adminhtml/Block/Dashboard/Graph.php",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/js/siteframe.js",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/page/html/header.phtml",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/js/google/analytics.js",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/page/2columns-left.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/page/2columns-right.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/page/3columns.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/catalog/product/view.phtml",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/layout/_header.scss",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/core/_common.scss",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/catalog/product/view/media.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/page/popup.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/layout/checkout.xml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/downloadable/customer/products/list.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/catalog/product/price.phtml",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/coffee/pdp_gallery.coffee",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/layout/catalog.xml",
+		"/Users/james/Documents/magento/skin/frontend/rwd/default/js/app.js",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/js/minicart.js",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/js/app.js",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/catalog/product/view/description.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/catalog/product/list.phtml",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/module/_product-list.scss",
+		"/Users/james/Documents/fate/html/supplements.html",
+		"/Users/james/Documents/magento/app/design/frontend/base/default/template/catalog/product/list.phtml",
+		"/Users/james/Documents/magento/app/design/frontend/fate/default/template/page/html/breadcrumbs.phtml",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/_framework.scss",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/madisonisland.scss",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/layout/_header-cart.scss",
+		"/Users/james/Documents/magento/js/siteframe.js",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/layout/_global.scss",
+		"/Users/james/Documents/fate/html/css/style.css",
+		"/Users/james/Documents/magento/skin/frontend/fate/default/css/madisonisland.css",
+		"/Users/james/Documents/magento/app/design/frontend/rwd/default/template/page/1column.phtml",
+		"/Users/james/Documents/js/spine.js",
+		"/Users/james/Documents/workspace/adidas/code/cartridges/adidasoutdoors_core/precompile/coffee/gallery.coffee",
+		"/Users/james/Documents/workspace/adidas/code/cartridges/adidasoutdoors_core/precompile/scss/ao/layouts/_adventure.scss",
+		"/Users/james/Documents/workspace/adidas/code/adidasoutdoors_core/precompile/coffee/gallery.coffee",
+		"/Users/james/Documents/workspace/adidas/code/adidasoutdoors_core/precompile/scss/ao/layouts/_adventure.scss",
+		"/Users/james/Documents/adidas/jeet/precompiled/sass/styles.sass",
+		"/Users/james/Documents/workspace/adidas/code/adidasoutdoors_core/precompile/scss/ao/_ao-base.scss",
+		"/Applications/adidasprototype/Shell proto/precompiled_old/Sass/adidas/_variables.scss"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/",
+			"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/precompile/sass",
+			"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen",
+			"/Users/james/Documents/wordpress/wp-content/themes/",
+			"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen,*.js",
+			"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen",
+			"/Users/james/Documents/wordpress/",
+			"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen",
+			"/Users/james/Documents/magento/",
+			"/Users/james/Documents/magento/app/design/frontend/fate/default/template",
+			"/Users/james/Documents/magento/,/Users/james/Documents/magento/app/design/frontend/fate/default/template",
+			"/Users/james/Documents/magento/",
+			"/Users/james/Documents/magento/skin/frontend/fate/default/scss",
+			"/Users/james/Documents/magento/app/design/frontend/fate/default/template",
+			"/Users/james/Documents/magento/skin/fate/default,/Users/james/Documents/magento/skin/frontend/fate/default",
+			"/Users/james/Documents/magento/skin/fate/default",
+			"/Users/james/Documents/magento/skin/",
+			"/Users/james/Documents/magento/skin/fate",
+			"/Users/james/Documents/magento/",
+			"/Users/james/Documents/magento/app/design/frontend/",
+			"/Users/james/Documents/magento/app/design/frontend/fate/default/template/",
+			"/Users/james/Documents/magento/app/design/frontend/fate/default/template/checkout",
+			"/Users/james/Documents/magento/skin/frontend/fate/default/scss",
+			"/Users/james/Documents/magento/",
+			"/Users/james/Documents/magento/skin/frontend/fate, *.phtml",
+			"/Users/james/Documents/magento/skin/frontend/fate, *.scss",
+			"/Users/james/Documents/magento/skin/frontend, *.js",
+			"/Users/james/Documents/magento/skin/frontend/fate, *.js",
+			"/Users/james/Documents/magento/skin/frontend/fate, *.scss",
+			"/Users/james/Documents/magento/app/design/frontend/, *.scss",
+			"/Users/james/Documents/magento/app/design/frontend/, *.xml",
+			"/Users/james/Documents/magento/app/design/frontend/, *.phtml",
+			"/Users/james/Documents/magento/app/design/frontend/",
+			"/Users/james/Documents/magento/app/design/frontend/fate/",
+			"/Users/james/Documents/magento/app/design/frontend/fate/default/template",
+			"/Users/james/Documents/magento/skin/frontend/fate/default/scss",
+			"*.scss",
+			"",
+			"*.scss",
+			"<open folders>",
+			"/Users/james/Documents/projects/wonder/panomira-ui/",
+			"/Users/james/Documents/projects/wonder/panomira-ui/app/",
+			"/Users/james/Documents/projects/wonder/panomira-ui/app/views",
+			"/Users/james/Documents/projects/wonder/panomira-ui/app",
+			"/Users/james/Documents/projects/panomira-ui/app",
+			"/Users/james/Documents/projects/panomira-ui/",
+			"/Users/james/Documents/projects/panomira-ui/app",
+			"/Users/james/Documents/projects/panomira-ui/test",
+			"/Users/james/Documents/projects/panomira-ui/app",
+			"/Users/james/Documents/projects/panomira-ui/test/helpers",
+			"/Users/james/Documents/projects/panomira-ui/",
+			"/Users/james/Documents/projects/panomira-ui/test/helpers/mocks/ajax",
+			"/Users/james/Documents/projects/panomira-ui/app/",
+			"/Users/james/Documents/projects/panomira-ui/app/test",
+			"/Users/james/Documents/projects/panomira-ui/app/",
+			"/Users/james/Documents/projects/panomira-ui/app/controllers",
+			"/Users/james/Documents/projects/panomira-ui/app/templates",
+			"/Users/james/Documents/projects/panomira-ui/app",
+			"/Users/james/Documents/projects/panomira-ui/test",
+			"/Users/james/Documents/panomira-ui/test",
+			"/Users/james/Documents/panomira-ui/app",
+			"/Users/james/Documents/panomira-ui/",
+			"/Users/james/Documents/panomira-ui/app",
+			"/Users/james/Documents/panomira-ui/test",
+			"/Users/james/Documents/panomira-ui/app",
+			"/Users/james/Documents/panomira-ui/",
+			"/Users/james/Documents/panomira-ui/app",
+			"/Users/james/Documents/panomira-ui"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"setPuzzleArray",
+			"getColumnClass",
+			"getListItems",
+			"console",
+			"update",
+			"build",
+			"col",
+			"setSquareValue",
+			"setSquareValueup",
+			"buildSq",
+			"return",
+			"cubeValues",
+			"columnValues",
+			"rowValues",
+			"update",
+			"colIndex",
+			"hasUni",
+			"console",
+			"val(",
+			",",
+			"'",
+			"ell_values",
+			"cell_values",
+			"console",
+			"columns",
+			"rows",
+			"row",
+			"auto",
+			"always_populate_raw_post_data",
+			"WP_Query",
+			"placester_properties",
+			"px",
+			"$form-border-radius",
+			"px",
+			"$text",
+			"px",
+			"40px",
+			"50px",
+			"30px",
+			"25px",
+			"10px",
+			"20px",
+			"breakpoint",
+			"max-width-scroll",
+			"max-width",
+			"max",
+			"breakpoint",
+			"footer",
+			"foo",
+			"footer",
+			"contact-header-social",
+			"pls_num_results_found",
+			"pls_search_count_spinner",
+			"#pls_search_count_spinner",
+			"pls_search_form_listings",
+			"pls-listings-search-form-pls_search_form__3",
+			"chose",
+			"width",
+			"chosen.jquery.min",
+			"width",
+			"any",
+			"data-placeholder",
+			"width",
+			"data-placeholder",
+			"chzn",
+			"get_posts",
+			"site-con",
+			"$width",
+			"width",
+			"listing",
+			"PLS_Map",
+			"color",
+			"PLS_Image",
+			"property-details-slideshow",
+			"listing_type",
+			"entry-content",
+			"entry-header",
+			"property-image-gallery",
+			"7FB9",
+			"7FB91E",
+			"box",
+			"$mobile$mobile-max$mobile-max",
+			"$mobile",
+			"960",
+			"<tr",
+			"tr",
+			"tbody",
+			"head",
+			"wp_nav_menu",
+			"navmenu",
+			"wp_nav_menu",
+			"menu-item",
+			"twentyfifteen_nav_description",
+			"menu-item",
+			"main-menu-container",
+			"wp_nav_menu",
+			"custom_property_details_html_filter",
+			"PLS_Partials_Property_Details",
+			"addressLocality",
+			"address-locality",
+			"type-property",
+			"view property details",
+			"pls-listings",
+			"line-he",
+			"radius",
+			"18",
+			"font-size",
+			"Q. ",
+			"caption=",
+			"state=\"open\"",
+			"learn_more",
+			"sm_testimonial",
+			"client=",
+			"location=",
+			"console",
+			"logo",
+			"getChartUrl",
+			"terms2",
+			"return policy",
+			"terms\">",
+			"terms",
+			"@include column",
+			"cover-panel-menu",
+			"button",
+			"22px",
+			"product-name",
+			".product-image",
+			"inherit"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"cube",
+			"updateSquare",
+			"this.cubeValues",
+			"this.columnValues",
+			"this.rowValues",
+			"columnIndex",
+			"// console",
+			",     ",
+			",\\t",
+			"",
+			"$space-xl",
+			"$space-l",
+			"$space-s",
+			"$space-m",
+			"",
+			"title=",
+			"icon=\"question-circle\"",
+			"vc_accordion_tab",
+			"vc_testimonial",
+			"author=",
+			"company=",
+			"outline",
+			"$c-fate-red",
+			"50",
+			"100",
+			"content",
+			"'",
+			"768px",
+			"315",
+			"270",
+			"inviteButton",
+			", ",
+			": ",
+			"_min - _under",
+			": ",
+			"_min - _under",
+			"_min",
+			"_over",
+			"_under",
+			"_over"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 1,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/james/Documents/projects/proto/proto/public/index.html",
+					"settings":
+					{
+						"buffer_size": 1722,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1171,
+								1171
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.88922611992,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/james/Documents/wordpress/wp-content/themes/twentyfifteen/style.css"
+			],
+			[
+				"targetholder",
+				"app/models/TargetHolder.coffee"
+			],
+			[
+				"usernotification",
+				"app/models/UserNotification.coffee"
+			],
+			[
+				"usernotificationmodalshow",
+				"app/controllers/UserNotificationModalShow.coffee"
+			],
+			[
+				"scroller",
+				"vendor/scripts/zynga-scroller/Scroller.js"
+			],
+			[
+				"invitebyapprequestcontroller",
+				"app/mixins/InviteByAppRequestController.coffee"
+			],
+			[
+				"mycomposite",
+				"test/helpers/mocks/ajax/my_composite_stats.js"
+			],
+			[
+				"abstractstat",
+				"app/models/AbstractStatModel.coffee"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 302.0,
+	"status_bar_visible": true
+}

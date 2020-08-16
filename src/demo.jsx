@@ -29,7 +29,6 @@
       class SudokuSolver extends React.Component {
 	 	constructor(props){
 	 		super(props)
-	 		this.sudokuService = new SudokuBridgeService()
 	 		this.greeting = "Aloha"
 	 		this.setInitialState()
 	 		this.originalPuzzleArray = this.state.puzzleArray.slice()
@@ -39,6 +38,7 @@
 	 		this.state = {}
 	 		this.state.puzzleArray = this.buildEmptyPuzzleArray()
 			this.state.listItems = this.getListItems()
+	 		this.state.sudokuService = new SudokuBridgeService()
 	 	}
 
 	 	buildEmptyPuzzleArray = () => {
@@ -93,7 +93,7 @@
 	 	validate = () => {
 	 		let p = this.toString()
 	 		// create a sudokuService class and use the validator method
-	 		let valState = this.sudokuService.validate(p)
+	 		let valState = this.state.sudokuService.validate(p)
 	 		// this.setState({listItems: this.getListItems()})
 	 		console.log("validate hit!!!! valid:" + valState + " toString:" + p)
 	 	}
