@@ -93,9 +93,9 @@
 	 	validate = () => {
 	 		let p = this.toString()
 	 		// create a sudokuService class and use the validator method
-	 		let valState = this.state.sudokuService.validate(p)
+	 		let sbsResponse = this.state.sudokuService.validate(p)
 	 		// this.setState({listItems: this.getListItems()})
-	 		console.log("validate hit!!!! valid:" + valState + " toString:" + p)
+	 		console.log("validate hit!!!! valid:" + sbsResponse.isValid + " toString:" + p)
 	 	}
 
 	 	getHint = () => {
