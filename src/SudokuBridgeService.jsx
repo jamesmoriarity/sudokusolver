@@ -13,6 +13,7 @@ class SudokuBridgeService {
 	onValidate = (validationResponse) =>{
 		let isval = validationResponse.isValid
 		let sbs = new SBSResponse(isval)
+		sbs.error = validationResponse.error
 		this.clientCallback(sbs)
 	}
 
@@ -26,16 +27,17 @@ class SudokuBridgeService {
 	}
 
 	getSBSResponse = (serviceResponse) =>{
-		let sbsr = null
 		if (serviceResponse.isValid){
-			sbsr = new SBSResponse(true)
+			let sbsr = new SBSResponse(true)
 			sbsr.setPuzzle(serviceResponse.puzzle.puzzle)
+			return(sbsr)
 		}
 		else{
-			sbsr = new SBSResponse(false)
+			let sbsr = new SBSResponse(false)
 			sbsr.setError(serviceResponse.error)
+			return(sbsr)
 		}
-		return(sbsr)
+		
 	}
 }
 
@@ -58,15 +60,24 @@ class SBSResponse{
 class SudokuService{
 	constructor(){
 		this.puzzleArray = []
+		this.callback = null
 	}
 
-	validate(puzzleString, callback){
+	validate = (puzzleString, callback) => {
+		this.callback = callback
 		let validator = new SudokuValidator()
-		let result = validator.validate(puzzleString)
-		callback(new SudokuServiceResponse(true))
+		validator.validate(puzzleString, this.onValidate)
 	}
 
-	getNewPuzzle(callback){
+	onValidate = (result) => {
+		if(result.isValid){
+			this.callback(new SudokuServiceResponse(true))
+		}else{
+			this.callback(this.getFailedServiceResponse(result.errors))
+		}
+	}
+
+	getNewPuzzle = (callback) => {
 		fetch("./json/puzzle.json")
      	.then(res => res.json())
      	.then(
@@ -92,16 +103,6 @@ class SudokuService{
 	}
 }
 
-class SudokuValidator{
-	constructor(){
-		this.puzzleArray = []
-	}
-	validate = (puzzleString) =>{
-		this.puzzleArray = puzzleString.split("")
-		return true
-	}
-}
-
 class SudokuServiceResponse{
 	constructor(isValid){
 		this.isValid = isValid
@@ -117,6 +118,72 @@ class SudokuServiceResponse{
 		this.error = error
 	}
 }
+
+
+// --------------------------------
+
+
+class SudokuValidator{
+	constructor(){
+		this.puzzleArray = []
+		this.callback = null
+	}
+	validate = (puzzleString, callback) =>{
+		this.callback = callback
+		this.puzzleValues = puzzleString.split("")
+		this.getPuzzleSolution()
+	}
+
+	getPuzzleSolution = () => {
+		fetch("./json/puzzle.json")
+     	.then(res => res.json())
+     	.then(
+     		(res) => {
+				this.onSolutionReceived(res.puzzle.solution)
+        		},
+	        	(error) => {
+				console.log('getPuzzleSolution.error')
+	       	}
+     	)		
+	}
+
+	validateValues = (solutionString) => {
+		let errors = []
+		let solutionValues = solutionString.split("")
+		for(let i = 0; i < solutionValues.length; i++){
+			let puzzleVal = this.puzzleValues[i]
+			let solutionVal = solutionValues[i]
+			if(puzzleVal != "0" && puzzleVal != solutionVal){
+				errors.push(i)
+			}
+		}
+		this.onValidate (new SudokuValidatorResult(errors))
+	}
+
+
+	onSolutionReceived = (solutionString) => {
+		let validatorResult = this.validateValues(solutionString)
+	}
+
+	onValidate = (validatorResult) => {
+		this.callback(validatorResult)
+	}
+}
+
+class SudokuValidatorResult {
+	constructor(errors){
+		if(errors.length > 0){
+			this.isValid = false
+			this.errors = errors
+		}
+		else{
+			this.isValid = true
+			this.errors = []
+		}
+	}
+}
+
+
 
 
 class SBSCell {
