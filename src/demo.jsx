@@ -80,7 +80,7 @@
 	 		return [...a]
 	 	}
 
-	 	getColumnClass = (index) => {
+	 	getColumnClass = (index) => {  // this adds classes to create tictactoe lines
 	 		let classes = ""
 	 		let colIndex = index % 9
 	 		classes += (colIndex == 2 || colIndex == 5) ? "column-right " : ""
@@ -99,19 +99,27 @@
 	 		this.setState({puzzleArray: this.state.puzzleArray})
 	 	}
 
-	 	setNewPuzzle = (result) => {
-	 		let s = String(result.puzzle.start)
+	 	onCellChange = (event, i) => {
+	 		let val = event.target.value
+	 		if(val == "" || (!isNaN(val) && Number(val) > 0)){
+		 		this.state.puzzleArray[i] = val
+		 		this.updateStateOnCellChange()
+	 		}
+	 	}
+
+	 	setNewPuzzle = (sbsResponse) => {
+	 		let s = String(sbsResponse.puzzle.start)
 	 		let a = this.puzzleStringToArray(s)
 	 		this.originalPuzzleArray = [...a]
 	 		this.setState({puzzleArray:a})
 	 	}
 
-	 	onNewPuzzle = (result) =>{
-	 		if(result.isValid){
-	 			this.setNewPuzzle(result)
+	 	onNewPuzzle = (sbsResponse) =>{
+	 		if(sbsResponse.isValid){
+	 			this.setNewPuzzle(sbsResponse)
 	 		}
 	 		else{
-	 			alert("puzzle load failed: " + result.error)
+	 			alert("puzzle load failed: " + sbsResponse.error)
 	 		}
 	 		
 	 	}
@@ -135,14 +143,6 @@
 
 	 	getHint = () => {
 	 		console.log("getHint hit!!!!")
-	 	}
-
-	 	onCellChange = (event, i) => {
-	 		let val = event.target.value
-	 		if(val == "" || (!isNaN(val) && Number(val) > 0)){
-		 		this.state.puzzleArray[i] = val
-		 		this.updateStateOnCellChange()
-	 		}
 	 	}
 
 
