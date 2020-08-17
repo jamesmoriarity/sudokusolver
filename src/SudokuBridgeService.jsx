@@ -11,9 +11,8 @@ class SudokuBridgeService {
 	}
 
 	onValidate = (validationResponse) =>{
-		let isval = validationResponse.isValid
-		let sbs = new SBSResponse(isval)
-		sbs.error = validationResponse.error
+		let sbs = new SBSResponse(validationResponse.isValid)
+		sbs.setErrors(validationResponse.errors)
 		this.clientCallback(sbs)
 	}
 
@@ -34,10 +33,9 @@ class SudokuBridgeService {
 		}
 		else{
 			let sbsr = new SBSResponse(false)
-			sbsr.setError(serviceResponse.error)
+			sbsr.setErrors(serviceResponse.errors)
 			return(sbsr)
 		}
-		
 	}
 }
 
@@ -45,13 +43,13 @@ class SBSResponse{
 	constructor(isValid){
 		this.isValid = isValid
 		this.puzzle = null
-		this.error = null
+		this.errors = []
 	}
 	setPuzzle = (p) => {
 		this.puzzle = p
 	}
-	setError = (e) => {
-		this.error = e
+	setErrors = (e) => {
+		this.errors = [...e]
 	}
 }
 
@@ -73,7 +71,7 @@ class SudokuService{
 		if(result.isValid){
 			this.callback(new SudokuServiceResponse(true))
 		}else{
-			this.callback(this.getFailedServiceResponse(result.errors))
+			this.callback(this.getFailedValidationServiceResponse(result.errors))
 		}
 	}
 
@@ -82,24 +80,31 @@ class SudokuService{
      	.then(res => res.json())
      	.then(
      		(res) => {
-				callback(this.getSuccessfulServiceResponse(res))
+				callback(this.getSuccessfulNewPuzzleServiceResponse(res))
         		},
 	        	(error) => {
-				callback(this.getFailedServiceResponse(error))
+				callback(this.getFailedNewPuzzleServiceResponse(error))
 	       	}
      	)
 	}
 
-	getSuccessfulServiceResponse = (puzzleResult) => {
+	// TODO CHANGE NAME SO THEY'RE SPECIFIC TO NEW PUZZLE
+	getSuccessfulNewPuzzleServiceResponse = (puzzleResult) => {
 		let ssr = new SudokuServiceResponse(true)
 		ssr.setPuzzle(puzzleResult)
 		return ssr
 	}
 
-	getFailedServiceResponse = (error) => {
+	getFailedNewPuzzleServiceResponse = (error) => {
 		let ssr = new SudokuServiceResponse(false)
-		ssr.setError(error)
+		ssr.addError(error)
 		return ssr
+	}
+
+	getFailedValidationServiceResponse = (errors) => {
+		let ssr = new SudokuServiceResponse(false)
+		ssr.setErrors(errors)
+		return ssr	
 	}
 }
 
@@ -107,15 +112,18 @@ class SudokuServiceResponse{
 	constructor(isValid){
 		this.isValid = isValid
 		this.puzzle = null
-		this.error = null
+		this.errors = []
 
 	}
 	setPuzzle(puzzle){
 		let puzzleClone = Object.assign({}, puzzle);
 		this.puzzle = puzzleClone
 	}
-	setError = (error) =>{
-		this.error = error
+	addError = (error) => {
+		this.errors.push(error)
+	}
+	setErrors = (errors) =>{
+		this.errors = errors
 	}
 }
 

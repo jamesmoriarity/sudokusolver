@@ -9,7 +9,7 @@
 		}
 
 		getHTML = () => {
-			return <div class={"cell_shell " + this.getColumnRowClass(this.props.index)}>
+			return <div class={"cell_shell " + this.getClasses(this.props.index)}>
 						<input  
 			  				id={"cell_" + this.props.index} 
 			  				value={"" + this.props.value} 
@@ -18,12 +18,13 @@
 					</div>
 		}
 
-		getColumnRowClass = (index) => {
+		getClasses = (index) => {
 	 		let classes = ""
 	 		let colIndex = index % 9
-	 		classes += (colIndex == 2 || colIndex == 5) ? "column-right " : ""
+	 		classes += (colIndex == 2 || colIndex == 5) ? " column-right " : ""
 	 		let rowIndex = Math.floor(index/9)
-	 		classes += (rowIndex == 2 || rowIndex == 5) ? "row-bottom" : ""
+	 		classes += (rowIndex == 2 || rowIndex == 5) ? " row-bottom " : ""
+	 		classes += (!this.props.isValid) ? " invalidCell " : ""
 	 		return classes
 		}
 	}
@@ -32,14 +33,16 @@
 
 	 	constructor(props){
 	 		super(props)
-	 		this.greeting = "Aloha"
 	 		this.setInitialState()
 	 		this.originalPuzzleArray = this.state.puzzleArray.slice()
 	 	}
 
 	 	setInitialState = () => { 
 	 		this.state = {}
+	 		this.state.greeting = "Aloha"
+	 		this.state.isValid = false
 	 		this.state.puzzleArray = this.buildEmptyPuzzleArray()
+	 		this.state.validationErrors = []
 	 	}
 
 	 	getService = () => {
@@ -80,20 +83,16 @@
 	 		return [...a]
 	 	}
 
-	 	getColumnClass = (index) => {  // this adds classes to create tictactoe lines
-	 		let classes = ""
-	 		let colIndex = index % 9
-	 		classes += (colIndex == 2 || colIndex == 5) ? "column-right " : ""
-	 		let rowIndex = Math.floor(index/9)
-	 		classes += (rowIndex == 2 || rowIndex == 5) ? "row-bottom" : ""
-	 		return classes
-	 	}
-
 	 	getListItems = () => {
 	 		return this.state.puzzleArray.map((value, index) =>
-	 			<CellShell index={index} value={value} onCellChange={this.onCellChange}/>
+	 			<CellShell index={index} isValid={this.isListItemValid(index)} value={value} onCellChange={this.onCellChange}/>
 			)
 	 	} 
+
+	 	isListItemValid = (index) => {
+	 		let b = !this.state.validationErrors.includes(index)
+	 		return (b)
+	 	}
 
 	 	updateStateOnCellChange = () => {
 	 		this.setState({puzzleArray: this.state.puzzleArray})
@@ -102,10 +101,25 @@
 	 	onCellChange = (event, i) => {
 	 		let val = event.target.value
 	 		if(val == "" || (!isNaN(val) && Number(val) > 0)){
-		 		this.state.puzzleArray[i] = val
-		 		this.updateStateOnCellChange()
+	 			this.checkToRemoveValidationError(val, i);
+	 			let newArray = [...this.state.puzzleArray]
+	 			newArray[i] = val
+		 		this.setState({puzzleArray:newArray, isValid:false})
 	 		}
 	 	}
+
+	 	checkToRemoveValidationError = (val, i) => {
+	 			if(this.state.validationErrors.includes(i)){
+	 				this.removeFromValidationErrors(i)
+	 			}	
+	 	}
+	 	removeFromValidationErrors = (value) => {
+			let updatedValErrors = this.state.validationErrors.filter(
+				function(element){ return element != value }
+			)	
+	 		this.setState({validationErrors:updatedValErrors})
+	 	}
+
 
 	 	setNewPuzzle = (sbsResponse) => {
 	 		let s = String(sbsResponse.puzzle.start)
@@ -119,7 +133,7 @@
 	 			this.setNewPuzzle(sbsResponse)
 	 		}
 	 		else{
-	 			alert("puzzle load failed: " + sbsResponse.error)
+	 			alert("puzzle load failed: " + sbsResponse.errors.join(":"))
 	 		}
 	 		
 	 	}
@@ -132,8 +146,20 @@
 	 		this.setState({puzzleArray: [...this.originalPuzzleArray]})
 	 	}
 
+	 	setValidationErrors = (errors) => {
+	 		this.setState({validationErrors:errors})
+
+	 	}
+
+	 	handleValidationErrors = (errors) => {
+	 		this.setValidationErrors([...errors])
+	 	}
+
 	 	onValidate = (sbsResponse) => {
-	 		console.log("validate hit!!!! valid:" + sbsResponse.isValid )
+	 		this.setState({isValid:sbsResponse.isValid})
+	 		if(!sbsResponse.isValid){
+	 			this.handleValidationErrors(sbsResponse.errors)
+	 		}
 	 	}
 
 	 	validate = () => {
@@ -148,7 +174,7 @@
 
 	 	getHTML = () => {
 	 		return 	<div id="sudoku">
-						<div>{this.greeting}</div>
+						<div>{this.state.greeting} Valid: {(this.state.isValid) ? "true" : "false"}</div>
 						<div id="grid">
 							{this.getListItems()}
 						</div>
