@@ -61,7 +61,8 @@ class SudokuService{
 	}
 
 	validate(puzzleString, callback){
-		this.puzzleArray = puzzleString.split("")
+		let validator = new SudokuValidator()
+		let result = validator.validate(puzzleString)
 		callback(new SudokuServiceResponse(true))
 	}
 
@@ -88,6 +89,16 @@ class SudokuService{
 		let ssr = new SudokuServiceResponse(false)
 		ssr.setError(error)
 		return ssr
+	}
+}
+
+class SudokuValidator{
+	constructor(){
+		this.puzzleArray = []
+	}
+	validate = (puzzleString) =>{
+		this.puzzleArray = puzzleString.split("")
+		return true
 	}
 }
 
