@@ -40,7 +40,10 @@
 	 	setInitialState = () => { 
 	 		this.state = {}
 	 		this.state.puzzleArray = this.buildEmptyPuzzleArray()
-	 		this.state.sudokuService = new SudokuBridgeService()
+	 	}
+
+	 	getService = () => {
+	 		return new SudokuBridgeService()
 	 	}
 
 	 	buildEmptyPuzzleArray = () => {
@@ -104,21 +107,30 @@
 	 	}
 
 	 	onNewPuzzle = (result) =>{
-	 		this.setNewPuzzle(result)
+	 		if(result.isValid){
+	 			this.setNewPuzzle(result)
+	 		}
+	 		else{
+	 			alert("puzzle load failed: " + result.error)
+	 		}
+	 		
 	 	}
 
 	 	newPuzzle = () => {
-	 		this.state.sudokuService.getNewPuzzle(this.onNewPuzzle)
+	 		this.getService().getNewPuzzle(this.onNewPuzzle)
 	 	}
 
 	 	reset = () => {
 	 		this.setState({puzzleArray: [...this.originalPuzzleArray]})
 	 	}
 
+	 	onValidate = (sbsResponse) => {
+	 		console.log("validate hit!!!! valid:" + sbsResponse.isValid )
+	 	}
+
 	 	validate = () => {
-	 		let p = this.toString()
-	 		let sbsResponse = this.state.sudokuService.validate(p)
-	 		console.log("validate hit!!!! valid:" + sbsResponse.isValid + " toString:" + p)
+	 		let puzzleString = this.toString()
+	 		this.getService().validate(puzzleString, this.onValidate)	
 	 	}
 
 	 	getHint = () => {
