@@ -1,10 +1,25 @@
-// -- service bridge ------------//
+// -- service bridge ------------//  connects to sudoku services
 
 class SudokuBridgeService {
 	constructor(){
 		this.service = new SudokuService()
 		this.clientCallback = null
 	}
+
+	getHint = (puzzleString, callback) => {
+		this.clientCallback = callback
+		this.service.getHint(puzzleString, this.onHintReceived)
+	}
+
+	onHintReceived = (sudokuServiceResponse) => {
+		if(!sudokuServiceResponse.isValid){this.clientCallback(new SBSResponse(false))}
+		else{
+			let sbs = new SBSResponse(true)
+			sbs.setHint(sudokuServiceResponse.hint)
+			this.clientCallback(sbs)
+		}
+	}
+
 	validate = (puzzleString, callback) => {
 		this.clientCallback = callback
 		this.service.validate(puzzleString, this.onValidate)
@@ -22,10 +37,10 @@ class SudokuBridgeService {
 	}
 
 	onNewPuzzle = (serviceResponse) => {
-		this.clientCallback(this.getSBSResponse(serviceResponse))
+		this.clientCallback(this.getSBSNewPuzzleResponse(serviceResponse))
 	}
 
-	getSBSResponse = (serviceResponse) =>{
+	getSBSNewPuzzleResponse = (serviceResponse) =>{
 		if (serviceResponse.isValid){
 			let sbsr = new SBSResponse(true)
 			sbsr.setPuzzle(serviceResponse.puzzle.puzzle)
@@ -44,6 +59,7 @@ class SBSResponse{
 		this.isValid = isValid
 		this.puzzle = null
 		this.errors = []
+		this.hint = null
 	}
 	setPuzzle = (p) => {
 		this.puzzle = p
@@ -51,22 +67,37 @@ class SBSResponse{
 	setErrors = (e) => {
 		this.errors = [...e]
 	}
+	setHint = (h) => {
+		this.hint = h
+	}
 }
 
-// ---------- Sudoku Service ------------- //
+// ---------- Sudoku Service ------ used instead of web service --//
 
 class SudokuService{
 	constructor(){
 		this.puzzleArray = []
 		this.callback = null
 	}
-
+	// ----- hint
+	getHint = (puzzleString, callback) => {
+		this.callback = callback
+		let shf = new SudokuHintFinder()
+		shf.findHint(puzzleString, this.onHintReceived)
+	}
+	onHintReceived = (hint) => {
+		if(hint != null){
+			let ssr = new SudokuServiceResponse(true)
+			ssr.setHint(hint)
+			this.callback(ssr)
+		}
+	}
+	// ----- validate
 	validate = (puzzleString, callback) => {
 		this.callback = callback
 		let validator = new SudokuValidator()
 		validator.validate(puzzleString, this.onValidate)
 	}
-
 	onValidate = (result) => {
 		if(result.isValid){
 			this.callback(new SudokuServiceResponse(true))
@@ -74,7 +105,12 @@ class SudokuService{
 			this.callback(this.getFailedValidationServiceResponse(result.errors))
 		}
 	}
-
+	getFailedValidationServiceResponse = (errors) => {
+		let ssr = new SudokuServiceResponse(false)
+		ssr.setErrors(errors)
+		return ssr	
+	}
+	// ---- new puzzle
 	getNewPuzzle = (callback) => {
 		fetch("./json/puzzle.json")
      	.then(res => res.json())
@@ -87,24 +123,15 @@ class SudokuService{
 	       	}
      	)
 	}
-
-	// TODO CHANGE NAME SO THEY'RE SPECIFIC TO NEW PUZZLE
 	getSuccessfulNewPuzzleServiceResponse = (puzzleResult) => {
 		let ssr = new SudokuServiceResponse(true)
 		ssr.setPuzzle(puzzleResult)
 		return ssr
 	}
-
 	getFailedNewPuzzleServiceResponse = (error) => {
 		let ssr = new SudokuServiceResponse(false)
 		ssr.addError(error)
 		return ssr
-	}
-
-	getFailedValidationServiceResponse = (errors) => {
-		let ssr = new SudokuServiceResponse(false)
-		ssr.setErrors(errors)
-		return ssr	
 	}
 }
 
@@ -113,6 +140,7 @@ class SudokuServiceResponse{
 		this.isValid = isValid
 		this.puzzle = null
 		this.errors = []
+		this.hint = null
 
 	}
 	setPuzzle(puzzle){
@@ -125,6 +153,47 @@ class SudokuServiceResponse{
 	setErrors = (errors) =>{
 		this.errors = errors
 	}
+	setHint = (hint) => {
+		this.hint = hint
+	}
+}
+
+// ------ Sudoku Hint
+
+class SudokuHintFinder{
+	constructor(){
+		this.puzzleValues = []
+		this.cells = []
+	}
+	findHint = (puzzleString, callback) => {
+		this.callback = callback
+		this.puzzleValues = puzzleString.split("")
+		this.initCells()
+		this.callback(new SudokuHint(0,"9"))
+	}
+	initCells = () => {
+		let len = this.puzzleValues.length
+		for(let i = 0; i < len; i++){
+			this.cells.push(new SudokuSolutionCell(i, this.puzzleValues[i]))
+		}
+	}
+}
+
+class SudokuHint{
+	constructor(index, value){
+		this.index = index
+		this.value = value
+	}
+}
+
+class SudokuSolutionCell {
+	constructor(index, value){
+		this.index = index
+		this.value = value
+		this.row = null
+		this.cell = null
+		this.box = null
+	}
 }
 
 
@@ -133,7 +202,7 @@ class SudokuServiceResponse{
 
 class SudokuValidator{
 	constructor(){
-		this.puzzleArray = []
+		this.puzzleValues = []
 		this.callback = null
 	}
 	validate = (puzzleString, callback) =>{
@@ -194,10 +263,5 @@ class SudokuValidatorResult {
 
 
 
-class SBSCell {
-	constructor(index, value){
-		this.index = index
-		this.value = value
-	}
-}
+
 

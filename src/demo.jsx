@@ -9,7 +9,7 @@
 		}
 
 		getHTML = () => {
-			return <div class={"cell_shell " + this.getClasses(this.props.index)}>
+			return 	<div class={"cell_shell " + this.getClasses(this.props.index)}>
 						<input  
 			  				id={"cell_" + this.props.index} 
 			  				value={"" + this.props.value} 
@@ -19,13 +19,14 @@
 		}
 
 		getClasses = (index) => {
-	 		let classes = ""
+	 		let classes = []
 	 		let colIndex = index % 9
-	 		classes += (colIndex == 2 || colIndex == 5) ? " column-right " : ""
 	 		let rowIndex = Math.floor(index/9)
-	 		classes += (rowIndex == 2 || rowIndex == 5) ? " row-bottom " : ""
-	 		classes += (!this.props.isValid) ? " invalidCell " : ""
-	 		return classes
+	 		if(colIndex == 2 || colIndex == 5){	classes.push("column-right") }
+	 		if(rowIndex == 2 || rowIndex == 5){ 	classes.push("row-bottom") }
+	 		if(!this.props.isValid){ 			classes.push("invalidCell") }
+	 		if(this.props.isHinted){ 			classes.push("hintedCell") }
+	 		return classes.join(" ")
 		}
 	}
 
@@ -41,8 +42,19 @@
 	 		this.state = {}
 	 		this.state.greeting = "Aloha"
 	 		this.state.isValid = false
+	 		this.state.hint = null
 	 		this.state.puzzleArray = this.buildEmptyPuzzleArray()
 	 		this.state.validationErrors = []
+	 		this.setState(this.state)
+	 	}
+
+	 	resetState = () => {
+	 		this.setState({	
+	 				puzzleArray: [...this.originalPuzzleArray], 
+	 				isValid: true,
+	 				hint: null,
+	 				validationErrors: []
+	 		})
 	 	}
 
 	 	getService = () => {
@@ -85,13 +97,18 @@
 
 	 	getListItems = () => {
 	 		return this.state.puzzleArray.map((value, index) =>
-	 			<CellShell index={index} isValid={this.isListItemValid(index)} value={value} onCellChange={this.onCellChange}/>
+	 			<CellShell index={index} isValid={this.isListItemValid(index)} isHinted={this.isListItemHinted(index, value)} value={value} onCellChange={this.onCellChange}/>
 			)
 	 	} 
 
+	 	isListItemHinted = (index, value) => {
+	 		let b = (this.state.hint == null) ? false : (this.state.hint.index == index || this.state.hint.value == value)
+	 		return b
+	 	}
+
 	 	isListItemValid = (index) => {
 	 		let b = !this.state.validationErrors.includes(index)
-	 		return (b)
+	 		return b
 	 	}
 
 	 	updateStateOnCellChange = () => {
@@ -102,6 +119,7 @@
 	 		let val = event.target.value
 	 		if(val == "" || (!isNaN(val) && Number(val) > 0)){
 	 			this.checkToRemoveValidationError(val, i);
+	 			this.checkToRemoveHint(val, i)
 	 			let newArray = [...this.state.puzzleArray]
 	 			newArray[i] = val
 		 		this.setState({puzzleArray:newArray, isValid:false})
@@ -109,10 +127,17 @@
 	 	}
 
 	 	checkToRemoveValidationError = (val, i) => {
-	 			if(this.state.validationErrors.includes(i)){
-	 				this.removeFromValidationErrors(i)
-	 			}	
+ 			if(this.state.validationErrors.includes(i)){
+ 				this.removeFromValidationErrors(i)
+ 			}	
 	 	}
+
+	 	checkToRemoveHint = (val, i) => {
+	 		if(this.state.hint != null && i == this.state.hint.index){
+	 			this.setState({hint:null})
+	 		}
+	 	}
+
 	 	removeFromValidationErrors = (value) => {
 			let updatedValErrors = this.state.validationErrors.filter(
 				function(element){ return element != value }
@@ -120,8 +145,8 @@
 	 		this.setState({validationErrors:updatedValErrors})
 	 	}
 
-
 	 	setNewPuzzle = (sbsResponse) => {
+	 		this.resetState()
 	 		let s = String(sbsResponse.puzzle.start)
 	 		let a = this.puzzleStringToArray(s)
 	 		this.originalPuzzleArray = [...a]
@@ -143,12 +168,11 @@
 	 	}
 
 	 	reset = () => {
-	 		this.setState({puzzleArray: [...this.originalPuzzleArray]})
+	 		this.resetState()
 	 	}
 
 	 	setValidationErrors = (errors) => {
 	 		this.setState({validationErrors:errors})
-
 	 	}
 
 	 	handleValidationErrors = (errors) => {
@@ -167,10 +191,15 @@
 	 		this.getService().validate(puzzleString, this.onValidate)	
 	 	}
 
-	 	getHint = () => {
-	 		console.log("getHint hit!!!!")
+	 	onHintReceived = (sbsResponse) => {
+	 		this.setState({hint:sbsResponse.hint})
+	 		console.log("sbsResponse: hint " + sbsResponse.hint)
 	 	}
 
+	 	getHint = () => {
+	 		this.getService().getHint(this.toString(), this.onHintReceived)
+	 		console.log("getHint hit!!!!")
+	 	}
 
 	 	getHTML = () => {
 	 		return 	<div id="sudoku">
@@ -190,8 +219,6 @@
 		render() {
 			return this.getHTML()
 		}
-
-
       }
 
       ReactDOM.render(<SudokuSolver />, document.getElementById('sudoku_solver_shell'))
