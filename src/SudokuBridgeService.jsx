@@ -164,18 +164,184 @@ class SudokuHintFinder{
 	constructor(){
 		this.puzzleValues = []
 		this.cells = []
+		this.boxes = []
+		this.rows = []
+		this.columns = []
 	}
 	findHint = (puzzleString, callback) => {
 		this.callback = callback
 		this.puzzleValues = puzzleString.split("")
 		this.initCells()
-		this.callback(new SudokuHint(0,"9"))
+		this.initBoxesRowsColumns()
+		this.cellsSetOpenNumbers()
+
+		let hiddenSingleHint = this.findHiddenSingleInBoxes()
+		if(hiddenSingleHint != null){
+			this.callback(hiddenSingleHint)	
+		}
+		this.callback(null)
+		
 	}
 	initCells = () => {
 		let len = this.puzzleValues.length
 		for(let i = 0; i < len; i++){
 			this.cells.push(new SudokuSolutionCell(i, this.puzzleValues[i]))
 		}
+	}
+	initBoxesRowsColumns = () => {
+		for(let i = 0; i < 9; i++){
+			this.boxes.push(new SudokuBox(i, this.cells))
+			this.rows.push(new SudokuRow(i, this.cells))
+			this.columns.push(new SudokuColumn(i, this.cells))
+		}
+	}
+	cellsSetOpenNumbers = () => {
+		let len = this.cells.length
+		for(let i = 0; i < len; i++){
+			let cell = this.cells[i]
+			cell.setOpenNumbers()
+		}
+	}
+	findHiddenSingleInBoxes = () => {
+		let len = this.boxes.length
+		for(let i = 0; i < len; i++){
+			let box = this.boxes[i]
+			let hiddenSingleHint = this.getHiddenSingle(box.boxCells)
+			if(hiddenSingleHint != null){
+				return hiddenSingleHint
+			}
+		}
+		return null
+	}
+	getHiddenSingle = (cells) =>{
+		let len = cells.length
+		let vals = {"1":[], "2":[], "3":[], "4":[], "5":[],"6":[],"7":[], "8":[],"9":[]}
+		
+		// make a map of values with an array of cells that have that value as an open value
+		for(let bIndex = 0; bIndex < len; bIndex++){
+			let cell = cells[bIndex] 
+			let openNumbers = [...cell.openNumbers]
+			if(openNumbers.length > 0){
+				let leng = openNumbers.length
+				for(let openNumberIndex = 0; openNumberIndex < leng; openNumberIndex++){
+					let key = openNumbers[openNumberIndex]
+					vals[key].push(bIndex)
+				}
+			}
+		}
+		// loop through each key in vals, check to see if only one cell's index
+		// is in the array, length == 1, if so return it as a hidden single
+		for (let key in vals) {
+		  let cellIndexes = vals[key]
+		  if(cellIndexes.length == 1){
+		  	let index = cellIndexes[0]
+		  	let cell = cells[index]
+		  	return new SudokuHint(cell.index, key)
+		  }
+		}
+
+
+		return null	
+	}
+}
+
+class SudokuColumn{
+	constructor(index, cells){
+		this.index = index
+		this.allCells = cells
+		this.columnCells = []
+		this.setColumnCells()
+		this.allCells = null
+	}
+
+	setColumnCells = () =>{
+		let offset = this.index % 9
+		for(let i = 0; i < 9; i++){
+			let cell = this.allCells[(i*9) + offset]
+			cell.setColumn(this)
+			this.columnCells.push(cell)
+		}
+	}
+
+	getClosedNumbers = () =>{
+		let nums = []
+		for(let i = 0; i < this.columnCells.length; i++){
+			let cell = this.columnCells[i]
+			let val = cell.value
+			if (val != "0"){
+				nums.push(val)
+			}
+		}
+		return nums
+	}
+}
+
+class SudokuRow{
+	constructor(index, cells){
+		this.index = index
+		this.allCells = cells
+		this.rowCells = []
+		this.setRowCells()
+		this.allCells = null
+	}
+
+	setRowCells = () =>{
+		let start = this.index * 9
+		for(let i = 0; i < 9; i++){
+			let cell = this.allCells[start+i]
+			cell.setRow(this)
+			this.rowCells.push(cell)
+		}
+	}
+
+	getClosedNumbers = () =>{
+		let nums = []
+		for(let i = 0; i < this.rowCells.length; i++){
+			let cell = this.rowCells[i]
+			let val = cell.value
+			if (val != "0"){
+				nums.push(val)
+			}
+		}
+		return nums
+	}
+}
+
+class SudokuBox{
+	constructor(index, cells){
+		this.cellsInABoxRow = 3
+		this.index = index
+		this.allCells = cells
+		this.boxCells = []
+		this.setBoxCells()
+		this.allCells = null
+	}
+
+	setBoxCells = () =>{
+		let len = this.allCells.length
+		let rowStartIndex = Math.floor(this.index/this.cellsInABoxRow) * this.cellsInABoxRow
+		let columnStartIndex = (this.index % this.cellsInABoxRow) * this.cellsInABoxRow;
+		for(let i = 0; i < 3; i++){
+			for(let j = 0; j < 3; j++){
+				let fullIndex = (rowStartIndex * 9)  + (i * 9) + columnStartIndex + j
+				let cell = this.allCells[fullIndex]
+				cell.setBox(this)
+				this.boxCells.push(cell)
+			}
+		}
+	}
+
+	getClosedNumbers = () =>{
+		let nums = []
+		let len = this.boxCells.length
+		for(let i = 0; i < len; i++){
+			let cell = this.boxCells[i]
+			let val = cell.value
+			if (val != "0"){
+				nums.push(val)
+			}
+		}
+		return nums
 	}
 }
 
@@ -193,6 +359,42 @@ class SudokuSolutionCell {
 		this.row = null
 		this.cell = null
 		this.box = null
+		this.allClosedNumbers = []
+		this.openNumbers = []
+	}
+
+	setRow = (row) => {
+		this.row = row
+	}
+
+	setColumn = (column) => {
+		this.column = column
+	}
+
+	setBox = (box) => {
+		this.box = box
+	}
+
+	loadClosedNumbers = () => {
+		if(this.value == "0"){
+			let boxNumbers = this.box.getClosedNumbers()
+			let rowNumbers = this.row.getClosedNumbers()
+			let columnNumbers = this.column.getClosedNumbers()
+			this.allClosedNumbers = [ ...new Set( boxNumbers.concat(rowNumbers).concat(columnNumbers) ) ]		}
+
+	}
+
+	setOpenNumbers = () => {
+		if(this.value == "0"){
+			this.loadClosedNumbers()
+			for(let i = 1; i < 10; i++){
+				let val = String(i)
+				if(!this.allClosedNumbers.includes(val)){
+					this.openNumbers.push(val)
+				}
+			}			
+		}
+
 	}
 }
 
