@@ -28,6 +28,7 @@ class SudokuBridgeService {
 	onValidate = (validationResponse) =>{
 		let sbs = new SBSResponse(validationResponse.isValid)
 		sbs.setErrors(validationResponse.errors)
+		sbs.setIsComplete(validationResponse.isComplete)
 		this.clientCallback(sbs)
 	}
 
@@ -60,6 +61,7 @@ class SBSResponse{
 		this.puzzle = null
 		this.errors = []
 		this.hint = null
+		this.isComplete = false
 	}
 	setPuzzle = (p) => {
 		this.puzzle = p
@@ -69,6 +71,9 @@ class SBSResponse{
 	}
 	setHint = (h) => {
 		this.hint = h
+	}
+	setIsComplete = (b) => {
+		this.isComplete = b
 	}
 }
 
@@ -100,7 +105,10 @@ class SudokuService{
 	}
 	onValidate = (result) => {
 		if(result.isValid){
-			this.callback(new SudokuServiceResponse(true))
+			let ssr = new SudokuServiceResponse(result.isValid)
+			ssr.setIsComplete(result.isComplete)
+			ssr.setErrors(result.errors)
+			this.callback(ssr)
 		}else{
 			this.callback(this.getFailedValidationServiceResponse(result.errors))
 		}
@@ -138,12 +146,16 @@ class SudokuService{
 class SudokuServiceResponse{
 	constructor(isValid){
 		this.isValid = isValid
+		this.isComplete = false
 		this.puzzle = null
 		this.errors = []
 		this.hint = null
 
 	}
-	setPuzzle(puzzle){
+	setIsComplete = (isComplete) => {
+		this.isComplete = isComplete
+	}
+	setPuzzle = (puzzle) =>{
 		let puzzleClone = Object.assign({}, puzzle);
 		this.puzzle = puzzleClone
 	}
@@ -175,11 +187,46 @@ class SudokuHintFinder{
 		this.initBoxesRowsColumns()
 		this.cellsSetOpenNumbers()
 
-		let hiddenSingleHint = this.findHiddenSingleInBoxes()
-		if(hiddenSingleHint != null){
-			this.callback(hiddenSingleHint)	
+		let algorithmList = []
+		algorithmList.push(this.findHiddenSingleInBoxes)
+		algorithmList.push(this.findHiddenSingleInRows)
+		algorithmList.push(this.findHiddenSingleInColumns)
+		algorithmList.push(this.findNakedSingle)
+
+		for(let i = 0; i < algorithmList.length; i++){
+			let hint = algorithmList[i]()
+			if(hint != null){
+				this.callback(hint)
+				return
+			}
 		}
+/*
+		let nakedSingleHint = this.findNakedSingle()
+		if(nakedSingleHint != null){
+			this.callback(nakedSingleHint)
+			return
+		}
+
+		let hiddenSingleBoxHint = this.findHiddenSingleInBoxes()
+		if(hiddenSingleBoxHint != null){
+			this.callback(hiddenSingleBoxHint)
+			return	
+		}
+
+		let hiddenSingleRowHint = this.findHiddenSingleInRows()
+		if(hiddenSingleRowHint != null){
+			this.callback(hiddenSingleRowHint)
+			return	
+		}
+
+		let hiddenSingleColumnHint = this.findHiddenSingleInColumns()
+		if(hiddenSingleColumnHint != null){
+			this.callback(hiddenSingleColumnHint)
+			return	
+		}
+*/
 		this.callback(null)
+		return
 		
 	}
 	initCells = () => {
@@ -202,18 +249,42 @@ class SudokuHintFinder{
 			cell.setOpenNumbers()
 		}
 	}
+
+
 	findHiddenSingleInBoxes = () => {
-		let len = this.boxes.length
+		return this.findHiddenSingleInGroupings(this.boxes, "Box")
+	}
+	findHiddenSingleInRows = () => {
+		return this.findHiddenSingleInGroupings(this.rows, "Row")
+	}
+	findHiddenSingleInColumns = () => {
+		return this.findHiddenSingleInGroupings(this.columns, "Column")
+	}
+
+	findHiddenSingleInGroupings = (groupings, type) => {
+		let len = groupings.length
 		for(let i = 0; i < len; i++){
-			let box = this.boxes[i]
-			let hiddenSingleHint = this.getHiddenSingle(box.boxCells)
+			let group = groupings[i]
+			let hiddenSingleHint = this.getHiddenSingle(group.cells, type)
 			if(hiddenSingleHint != null){
 				return hiddenSingleHint
 			}
 		}
+		return null	
+	}
+
+	findNakedSingle = () => {
+		let len = this.cells.length
+		for(let i = 0; i < len; i++){
+			let cell = this.cells[i]
+			if(cell.value == "0" && cell.openNumbers.length == 1){
+		    		return (new SudokuHint(cell.index, cell.openNumbers[0], "Naked Single"))
+		    	}
+		}
 		return null
 	}
-	getHiddenSingle = (cells) =>{
+
+	getHiddenSingle = (cells, type) =>{
 		let len = cells.length
 		let vals = {"1":[], "2":[], "3":[], "4":[], "5":[],"6":[],"7":[], "8":[],"9":[]}
 		
@@ -236,7 +307,7 @@ class SudokuHintFinder{
 		  if(cellIndexes.length == 1){
 		  	let index = cellIndexes[0]
 		  	let cell = cells[index]
-		  	return new SudokuHint(cell.index, key)
+		  	return new SudokuHint(cell.index, key, type + " Hidden Single")
 		  }
 		}
 
@@ -249,24 +320,24 @@ class SudokuColumn{
 	constructor(index, cells){
 		this.index = index
 		this.allCells = cells
-		this.columnCells = []
-		this.setColumnCells()
+		this.cells = []
+		this.setCells()
 		this.allCells = null
 	}
 
-	setColumnCells = () =>{
+	setCells = () =>{
 		let offset = this.index % 9
 		for(let i = 0; i < 9; i++){
 			let cell = this.allCells[(i*9) + offset]
 			cell.setColumn(this)
-			this.columnCells.push(cell)
+			this.cells.push(cell)
 		}
 	}
 
 	getClosedNumbers = () =>{
 		let nums = []
-		for(let i = 0; i < this.columnCells.length; i++){
-			let cell = this.columnCells[i]
+		for(let i = 0; i < this.cells.length; i++){
+			let cell = this.cells[i]
 			let val = cell.value
 			if (val != "0"){
 				nums.push(val)
@@ -280,24 +351,24 @@ class SudokuRow{
 	constructor(index, cells){
 		this.index = index
 		this.allCells = cells
-		this.rowCells = []
-		this.setRowCells()
+		this.cells = []
+		this.setCells()
 		this.allCells = null
 	}
 
-	setRowCells = () =>{
+	setCells = () =>{
 		let start = this.index * 9
 		for(let i = 0; i < 9; i++){
 			let cell = this.allCells[start+i]
 			cell.setRow(this)
-			this.rowCells.push(cell)
+			this.cells.push(cell)
 		}
 	}
 
 	getClosedNumbers = () =>{
 		let nums = []
-		for(let i = 0; i < this.rowCells.length; i++){
-			let cell = this.rowCells[i]
+		for(let i = 0; i < this.cells.length; i++){
+			let cell = this.cells[i]
 			let val = cell.value
 			if (val != "0"){
 				nums.push(val)
@@ -312,12 +383,12 @@ class SudokuBox{
 		this.cellsInABoxRow = 3
 		this.index = index
 		this.allCells = cells
-		this.boxCells = []
-		this.setBoxCells()
+		this.cells = []
+		this.setCells()
 		this.allCells = null
 	}
 
-	setBoxCells = () =>{
+	setCells = () =>{
 		let len = this.allCells.length
 		let rowStartIndex = Math.floor(this.index/this.cellsInABoxRow) * this.cellsInABoxRow
 		let columnStartIndex = (this.index % this.cellsInABoxRow) * this.cellsInABoxRow;
@@ -326,16 +397,16 @@ class SudokuBox{
 				let fullIndex = (rowStartIndex * 9)  + (i * 9) + columnStartIndex + j
 				let cell = this.allCells[fullIndex]
 				cell.setBox(this)
-				this.boxCells.push(cell)
+				this.cells.push(cell)
 			}
 		}
 	}
 
 	getClosedNumbers = () =>{
 		let nums = []
-		let len = this.boxCells.length
+		let len = this.cells.length
 		for(let i = 0; i < len; i++){
-			let cell = this.boxCells[i]
+			let cell = this.cells[i]
 			let val = cell.value
 			if (val != "0"){
 				nums.push(val)
@@ -346,9 +417,10 @@ class SudokuBox{
 }
 
 class SudokuHint{
-	constructor(index, value){
+	constructor(index, value, type){
 		this.index = index
 		this.value = value
+		this.type = type
 	}
 }
 
@@ -408,6 +480,7 @@ class SudokuValidator{
 		this.callback = null
 	}
 	validate = (puzzleString, callback) =>{
+		this.puzzleString = puzzleString
 		this.callback = callback
 		this.puzzleValues = puzzleString.split("")
 		this.getPuzzleSolution()
@@ -428,15 +501,23 @@ class SudokuValidator{
 
 	validateValues = (solutionString) => {
 		let errors = []
+		let isComplete = false
+		let isValid = true
 		let solutionValues = solutionString.split("")
 		for(let i = 0; i < solutionValues.length; i++){
 			let puzzleVal = this.puzzleValues[i]
 			let solutionVal = solutionValues[i]
 			if(puzzleVal != "0" && puzzleVal != solutionVal){
 				errors.push(i)
+				isValid = false
 			}
 		}
-		this.onValidate (new SudokuValidatorResult(errors))
+		if(isValid){
+			let sv = Number(solutionString)
+			let ps = Number(this.puzzleString)
+			isComplete = (sv == ps)
+		}
+		this.onValidate (new SudokuValidatorResult(isValid, isComplete, errors))
 	}
 
 
@@ -450,15 +531,10 @@ class SudokuValidator{
 }
 
 class SudokuValidatorResult {
-	constructor(errors){
-		if(errors.length > 0){
-			this.isValid = false
-			this.errors = errors
-		}
-		else{
-			this.isValid = true
-			this.errors = []
-		}
+	constructor(isValid, isComplete, errors){
+		this.isValid = isValid
+		this.isComplete = isComplete
+		this.errors = errors
 	}
 }
 

@@ -9,13 +9,13 @@
 		}
 
 		getHTML = () => {
-			return 	<div class={"cell_shell " + this.getClasses(this.props.index)}>
-						<input  
-			  				id={"cell_" + this.props.index} 
-			  				value={"" + this.props.value} 
-			  				onChange={(ev) => this.props.onCellChange(ev, this.props.index)}
-			  				type="text" maxlength="1"  />
-					</div>
+		return	<div class={"cell_shell " + this.getClasses(this.props.index)}>
+					<input  
+		  				id={"cell_" + this.props.index} 
+		  				value={"" + this.props.value} 
+		  				onChange={(ev) => this.props.onCellChange(ev, this.props.index)}
+		  				type="text" maxlength="1"  />
+				</div>
 		}
 
 		getClasses = (index) => {
@@ -26,6 +26,7 @@
 	 		if(rowIndex == 2 || rowIndex == 5){ 	classes.push("row-bottom") }
 	 		if(!this.props.isValid){ 			classes.push("invalidCell") }
 	 		if(this.props.isHinted){ 			classes.push("hintedCell") }
+	 		if(this.props.isHintRelated){ 		classes.push("hintRelatedCell") }
 	 		return classes.join(" ")
 		}
 	}
@@ -35,23 +36,26 @@
 	 	constructor(props){
 	 		super(props)
 	 		this.setInitialState()
-	 		this.originalPuzzleArray = this.state.puzzleArray.slice()
 	 	}
 
 	 	setInitialState = () => { 
 	 		this.state = {}
-	 		this.state.greeting = "Aloha"
+	 		this.state.greeting = "Sudoku Puzzle Status: "
 	 		this.state.isValid = false
 	 		this.state.hint = null
 	 		this.state.puzzleArray = this.buildEmptyPuzzleArray()
 	 		this.state.validationErrors = []
+	 		this.state.isComplete = false
+	 		this.state.originalPuzzleArray = [...this.state.puzzleArray]
 	 		this.setState(this.state)
 	 	}
 
+	 //-- utility functions
 	 	resetState = () => {
 	 		this.setState({	
-	 				puzzleArray: [...this.originalPuzzleArray], 
+	 				puzzleArray: [...this.state.originalPuzzleArray], 
 	 				isValid: true,
+	 				isComplete: false,
 	 				hint: null,
 	 				validationErrors: []
 	 		})
@@ -95,14 +99,26 @@
 	 		return [...a]
 	 	}
 
+	 // -- build cells and css helper functions
 	 	getListItems = () => {
 	 		return this.state.puzzleArray.map((value, index) =>
-	 			<CellShell index={index} isValid={this.isListItemValid(index)} isHinted={this.isListItemHinted(index, value)} value={value} onCellChange={this.onCellChange}/>
+	 			<CellShell 
+	 				index={index} 
+	 				isValid={this.isListItemValid(index)} 
+	 				isHintRelated={this.isListItemHintRelated(index, value)} 
+	 				isHinted={this.isListItemHinted(index, value)} 
+	 				value={value} 
+	 				onCellChange={this.onCellChange}/>
 			)
 	 	} 
 
+	 	isListItemHintRelated = (index, value) => {
+	 		let b = (this.state.hint == null) ? false : (this.state.hint.index != index && this.state.hint.value == value && String(this.state.hint.type).includes("Hidden Single") )
+	 		return b	
+	 	}
+
 	 	isListItemHinted = (index, value) => {
-	 		let b = (this.state.hint == null) ? false : (this.state.hint.index == index || this.state.hint.value == value)
+	 		let b = (this.state.hint == null) ? false : (this.state.hint.index == index && this.state.hint.value == value)
 	 		return b
 	 	}
 
@@ -111,9 +127,7 @@
 	 		return b
 	 	}
 
-	 	updateStateOnCellChange = () => {
-	 		this.setState({puzzleArray: this.state.puzzleArray})
-	 	}
+	 //-- Cell Change
 
 	 	onCellChange = (event, i) => {
 	 		let val = event.target.value
@@ -122,7 +136,7 @@
 	 			this.checkToRemoveHint(val, i)
 	 			let newArray = [...this.state.puzzleArray]
 	 			newArray[i] = val
-		 		this.setState({puzzleArray:newArray, isValid:false})
+		 		this.setState({puzzleArray:newArray, isValid:false, isComplete:false})
 	 		}
 	 	}
 
@@ -145,12 +159,14 @@
 	 		this.setState({validationErrors:updatedValErrors})
 	 	}
 
+
+	 //-- new puzzle	 	
+
 	 	setNewPuzzle = (sbsResponse) => {
 	 		this.resetState()
 	 		let s = String(sbsResponse.puzzle.start)
 	 		let a = this.puzzleStringToArray(s)
-	 		this.originalPuzzleArray = [...a]
-	 		this.setState({puzzleArray:a})
+	 		this.setState({puzzleArray:a, originalPuzzleArray: [...a]})
 	 	}
 
 	 	onNewPuzzle = (sbsResponse) =>{
@@ -167,9 +183,13 @@
 	 		this.getService().getNewPuzzle(this.onNewPuzzle)
 	 	}
 
+	 //-- reset
+
 	 	reset = () => {
 	 		this.resetState()
 	 	}
+
+	 //-- validation 
 
 	 	setValidationErrors = (errors) => {
 	 		this.setState({validationErrors:errors})
@@ -180,10 +200,11 @@
 	 	}
 
 	 	onValidate = (sbsResponse) => {
-	 		this.setState({isValid:sbsResponse.isValid})
+	 		let e = []
 	 		if(!sbsResponse.isValid){
-	 			this.handleValidationErrors(sbsResponse.errors)
+	 			e = [...sbsResponse.errors]
 	 		}
+	 		this.setState({isValid:sbsResponse.isValid, isComplete:sbsResponse.isComplete, errors:e})
 	 	}
 
 	 	validate = () => {
@@ -191,19 +212,24 @@
 	 		this.getService().validate(puzzleString, this.onValidate)	
 	 	}
 
+	//-- hint
+
 	 	onHintReceived = (sbsResponse) => {
-	 		this.setState({hint:sbsResponse.hint})
-	 		console.log("sbsResponse: hint " + sbsResponse.hint)
+	 		let a = [...this.state.puzzleArray]
+	 		a[sbsResponse.hint.index] = sbsResponse.hint.value
+	 		this.setState({puzzleArray: a, hint:sbsResponse.hint})
+	 		console.log("sbsResponse: hint " + sbsResponse.hint.type)
 	 	}
 
 	 	getHint = () => {
 	 		this.getService().getHint(this.toString(), this.onHintReceived)
-	 		console.log("getHint hit!!!!")
 	 	}
+
+	// -- html
 
 	 	getHTML = () => {
 	 		return 	<div id="sudoku">
-						<div>{this.state.greeting} Valid: {(this.state.isValid) ? "true" : "false"}</div>
+						<div>{this.state.greeting} Valid: {(this.state.isValid) ? "true" : "false"} Complete: {(this.state.isComplete)?"true":"false"}</div>
 						<div id="grid">
 							{this.getListItems()}
 						</div>
