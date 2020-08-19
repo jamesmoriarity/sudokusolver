@@ -101,7 +101,7 @@
 
 	 // -- build cells and css helper functions
 	 	getListItems = () => {
-	 		return this.state.puzzleArray.map((value, index) =>
+	 		let cellShells = this.state.puzzleArray.map((value, index) =>
 	 			<CellShell 
 	 				index={index} 
 	 				isValid={this.isListItemValid(index)} 
@@ -110,7 +110,30 @@
 	 				value={value} 
 	 				onCellChange={this.onCellChange}/>
 			)
+			return cellShells
+			
+			/*
+			for(let i = 0; i < this.state.puzzleArray.length; i++){
+
+			}
+			let h = <table id="What">{this.getRow(0, cellShells)}</table>
+			return h
+			*/
 	 	} 
+
+	 	getRowCells = (rowIndex) => {
+			let rowStart = rowIndex * 9
+			let cells = []
+			for(let i = 0; i < 9; i++){
+				//cells.push(this.)
+			}
+			return cells
+
+	 	}
+
+	 	getRow = (rowIndex, cellShells) => {
+	 		return <tr>{this.getRowCells(rowIndex, cellShells)}</tr>
+	 	}
 
 	 	isListItemHintRelated = (index, value) => {
 	 		let b = (this.state.hint == null) ? false : (this.state.hint.index != index && this.state.hint.value == value && String(this.state.hint.type).includes("Hidden Single") )
