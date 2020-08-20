@@ -513,8 +513,8 @@ class SudokuValidator{
 			}
 		}
 		if(isValid){
-			let sv = Number(solutionString)
-			let ps = Number(this.puzzleString)
+			let sv = String(solutionString)
+			let ps = String(this.puzzleString)
 			isComplete = (sv == ps)
 		}
 		this.onValidate (new SudokuValidatorResult(isValid, isComplete, errors))

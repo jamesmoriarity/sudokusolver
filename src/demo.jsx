@@ -44,6 +44,7 @@
 	 		this.state.isValid = false
 	 		this.state.hint = null
 	 		this.state.puzzleArray = this.buildEmptyPuzzleArray()
+	 		this.state.puzzleGrid = this.buildPuzzleGridFromArray([...this.state.puzzleArray])
 	 		this.state.validationErrors = []
 	 		this.state.isComplete = false
 	 		this.state.originalPuzzleArray = [...this.state.puzzleArray]
@@ -51,6 +52,21 @@
 	 	}
 
 	 //-- utility functions
+
+		buildPuzzleGridFromArray = (arr) => {
+			let grid = []
+			for(let i = 0; i < 9; i++){
+				let row = []
+				for(let j = 0; j < 9; j++){
+					let arrIndex = (i * 9) + j
+					row.push(arr[arrIndex])
+				}
+				grid.push(row)
+			}
+			return grid
+		}
+
+
 	 	resetState = () => {
 	 		this.setState({	
 	 				puzzleArray: [...this.state.originalPuzzleArray], 
@@ -100,6 +116,10 @@
 	 	}
 
 	 // -- build cells and css helper functions
+
+	 	// create a grid array with rows from this.state.puzzleArray
+	 	// iterate through each row and layout each cell
+
 	 	getListItems = () => {
 	 		let cellShells = this.state.puzzleArray.map((value, index) =>
 	 			<CellShell 
@@ -111,14 +131,11 @@
 	 				onCellChange={this.onCellChange}/>
 			)
 			return cellShells
-			
-			/*
-			for(let i = 0; i < this.state.puzzleArray.length; i++){
 
-			}
-			let h = <table id="What">{this.getRow(0, cellShells)}</table>
-			return h
-			*/
+
+
+
+
 	 	} 
 
 	 	getRowCells = (rowIndex) => {
@@ -189,7 +206,8 @@
 	 		this.resetState()
 	 		let s = String(sbsResponse.puzzle.start)
 	 		let a = this.puzzleStringToArray(s)
-	 		this.setState({puzzleArray:a, originalPuzzleArray: [...a]})
+	 		let g = this.buildPuzzleGridFromArray([...a])
+	 		this.setState({puzzleArray:a, puzzleGrid: g, originalPuzzleArray: [...a], isValid:true, isComplete:false})
 	 	}
 
 	 	onNewPuzzle = (sbsResponse) =>{
@@ -227,7 +245,7 @@
 	 		if(!sbsResponse.isValid){
 	 			e = [...sbsResponse.errors]
 	 		}
-	 		this.setState({isValid:sbsResponse.isValid, isComplete:sbsResponse.isComplete, errors:e})
+	 		this.setState({isValid:sbsResponse.isValid, isComplete:sbsResponse.isComplete, validationErrors:e})
 	 	}
 
 	 	validate = () => {
