@@ -40,11 +40,11 @@
 
 	 	setInitialState = () => { 
 	 		this.state = {}
+	 		this.tableBuild = {}
 	 		this.state.greeting = "Sudoku Puzzle Status: "
 	 		this.state.isValid = false
 	 		this.state.hint = null
 	 		this.state.puzzleArray = this.buildEmptyPuzzleArray()
-	 		this.state.puzzleGrid = this.buildPuzzleGridFromArray([...this.state.puzzleArray])
 	 		this.state.validationErrors = []
 	 		this.state.isComplete = false
 	 		this.state.originalPuzzleArray = [...this.state.puzzleArray]
@@ -115,41 +115,31 @@
 	 		return [...a]
 	 	}
 
-	 // -- build cells and css helper functions
+	 // -- build grid with cells and css helper functions 
 
-	 	// create a grid array with rows from this.state.puzzleArray
-	 	// iterate through each row and layout each cell
-
-	 	getListItems = () => {
-	 		let cellShells = this.state.puzzleArray.map((value, index) =>
-	 			<CellShell 
-	 				index={index} 
-	 				isValid={this.isListItemValid(index)} 
-	 				isHintRelated={this.isListItemHintRelated(index, value)} 
-	 				isHinted={this.isListItemHinted(index, value)} 
-	 				value={value} 
-	 				onCellChange={this.onCellChange}/>
-			)
-			return cellShells
-
-
-
-
-
-	 	} 
-
-	 	getRowCells = (rowIndex) => {
-			let rowStart = rowIndex * 9
-			let cells = []
-			for(let i = 0; i < 9; i++){
-				//cells.push(this.)
-			}
-			return cells
-
+	 	getTableGrid = () => {
+	 		let puzzleGrid = this.buildPuzzleGridFromArray([...this.state.puzzleArray])
+	 		this.state.tableBuild = {}
+	 		let rows = puzzleGrid.map(this.renderTableRow)
+	 		return <table>{rows}</table>
 	 	}
 
-	 	getRow = (rowIndex, cellShells) => {
-	 		return <tr>{this.getRowCells(rowIndex, cellShells)}</tr>
+	 	renderTableRow = (row, rowIndex) => {
+	 		this.state.tableBuild.rowIndex = rowIndex
+	 		let cells = row.map(this.renderTableCell)
+	 		return <tr>{cells}</tr>
+	 	}
+
+	 	renderTableCell = (value, cellIndex) =>{
+	 		let fullIndex = (this.state.tableBuild.rowIndex * 9) + cellIndex
+	 		let cell = <CellShell 
+		 				index={fullIndex} 
+		 				isValid={this.isListItemValid(fullIndex)} 
+		 				isHintRelated={this.isListItemHintRelated(fullIndex, value)} 
+		 				isHinted={this.isListItemHinted(fullIndex, value)} 
+		 				value={value} 
+		 				onCellChange={this.onCellChange}/>
+	 		return cell
 	 	}
 
 	 	isListItemHintRelated = (index, value) => {
@@ -206,8 +196,7 @@
 	 		this.resetState()
 	 		let s = String(sbsResponse.puzzle.start)
 	 		let a = this.puzzleStringToArray(s)
-	 		let g = this.buildPuzzleGridFromArray([...a])
-	 		this.setState({puzzleArray:a, puzzleGrid: g, originalPuzzleArray: [...a], isValid:true, isComplete:false})
+	 		this.setState({puzzleArray:a, originalPuzzleArray: [...a], isValid:true, isComplete:false})
 	 	}
 
 	 	onNewPuzzle = (sbsResponse) =>{
@@ -258,8 +247,25 @@
 	 	onHintReceived = (sbsResponse) => {
 	 		let a = [...this.state.puzzleArray]
 	 		a[sbsResponse.hint.index] = sbsResponse.hint.value
+	 		this.makeHighlightMap(sbsResponse.hint)
 	 		this.setState({puzzleArray: a, hint:sbsResponse.hint})
 	 		console.log("sbsResponse: hint " + sbsResponse.hint.type)
+	 	}
+
+	 	makeHighlightMap = (hint) => {
+	 		let highlightMap = []
+	 		if(hint.type == "Box Hidden Single"){
+/*		
+	 			get all row indexes and column indexes intersecting box
+
+	 			for each row/column
+	 				if there's a cell with hint.value in that row/column
+	 					superhighlight that cell
+	 					- highlightMap.push({index:matchIndex, state:"hintNumber"})
+	 					highlight
+
+*/
+	 		}
 	 	}
 
 	 	getHint = () => {
@@ -272,7 +278,7 @@
 	 		return 	<div id="sudoku">
 						<div>{this.state.greeting} Valid: {(this.state.isValid) ? "true" : "false"} Complete: {(this.state.isComplete)?"true":"false"}</div>
 						<div id="grid">
-							{this.getListItems()}
+							{this.getTableGrid()}
 						</div>
 						<div id="new_game_shell">
 							<button id="new_game_btn" onClick={this.newPuzzle}>New Puzzle</button>
