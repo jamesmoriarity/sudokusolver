@@ -153,7 +153,4 @@
 		}
       }
 
-
-
-
       ReactDOM.render(<SudokuSolver />, document.getElementById('sudoku_solver_shell'))

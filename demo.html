@@ -3,7 +3,12 @@
   <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-  <script src="src/SudokuBridgeService.jsx"></script>
+
+  <script src="src/SudokuService.jsx" type="text/babel"></script>
+  <script src="src/SudokuBridgeService.jsx" type="text/babel"></script>
+  <script src="src/SudokuSolverUtilities.jsx" type="text/babel"></script>
+  <script src="src/CellShell.jsx" type="text/babel"></script>
+  <script src="src/SudokuRenderer.jsx" type="text/babel"></script>
   <style type="text/css">
 
     div {
@@ -44,11 +49,9 @@
     .invalidCell{
       background-color:red;
     }
-
     .invalidCell input{
       color:white;
     }
-
     .hintedCell{
       background-color:orange;
     }
@@ -58,11 +61,9 @@
     .boxHiddenSinglePattern{
       background-color:#dddddd;
     }
-
     .column-right{
       border-right:3px solid grey;
     }
-
     .row-bottom{
       border-bottom:3px solid grey;
     }
@@ -70,6 +71,6 @@
   </style>
   <body>
     <div id="sudoku_solver_shell"></div>
-    <script src="src/demo.jsx" type="text/babel"></script>
+    <script src="src/SudokuSolver.jsx" type="text/babel"></script>
   </body>
 </html>
