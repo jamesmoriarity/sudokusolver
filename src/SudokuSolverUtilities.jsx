@@ -2,8 +2,24 @@ class SudokuSolverUtilities{
 
 		constructor(clientSolver){
 			this.clientSolver = clientSolver
-			this.state = clientSolver.state
 		}
+
+
+	 	checkToRemoveHint = (cellIndex) => {
+	 		if(this.clientSolver.state.hint != null && cellIndex == this.clientSolver.state.hint.index){
+	 			this.clientSolver.setState({hint:null})
+	 		}
+	 	}
+
+	 	checkToRemoveValidationError = (cellIndex) => {
+	 		if(this.clientSolver.state.validationErrors.includes(cellIndex)){
+				let updatedValErrors = this.clientSolver.state.validationErrors.filter(
+					function(element){ return element != cellIndex }
+				)	
+		 		this.clientSolver.setState({validationErrors:updatedValErrors})	 			
+	 		}
+
+	 	}
 
 	 	buildEmptyPuzzleArray = () => {
 	 		let a = []
@@ -13,8 +29,7 @@ class SudokuSolverUtilities{
 	 		return a
 	 	}
 
-	 	toString = () => {
-	 		let arr = this.clientSolver.state.puzzleArray 
+	 	toString = (arr) => { 
 	 		let len = arr.length 
 	 		let str = ""
 	 		for(let i = 0; i < len; i++){

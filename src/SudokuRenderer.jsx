@@ -1,15 +1,15 @@
 	class SudokuRenderer{
 		
-		constructor(renderClient){  // expects a RenderClient interface
+		constructor(){  // expects a RenderClient interface
 			this.renderClient = null
 			this.state = null
-			this.tableBuild = null
+			this.renderRowIndex = 0
 		}
 
 		render = (renderClient) => {
 			this.renderClient = renderClient
 			this.state = renderClient.state
-			return <div id="sudoku">
+			return	<div id="sudoku">
 						<div>{this.state.greeting} Valid: {(this.state.isValid) ? "true" : "false"} Complete: {(this.state.isComplete)?"true":"false"}</div>
 						<div id="grid">
 							{this.getTableGrid()}
@@ -25,22 +25,21 @@
 
 		getTableGrid = () => {
 			let puzzleGrid = this.buildPuzzleGridFromArray([...this.state.puzzleArray])
-			this.tableBuild = {}
 			let rows = puzzleGrid.map(this.renderTableRow)
 			return <table cellpadding="0" cellspacing="0" border="0">{rows}</table>
 		}
 
 		renderTableRow = (row, rowIndex) => {
-			this.tableBuild.rowIndex = rowIndex
+			this.renderRowIndex = rowIndex
 			let cells = row.map(this.renderTableCell)
 			return <tr>{cells}</tr>
 		}
 
 		renderTableCell = (value, cellIndex) =>{
-			let fullIndex = (this.tableBuild.rowIndex * 9) + cellIndex
+			let fullIndex = (this.renderRowIndex * 9) + cellIndex
 			let cell = <td><CellShell 
-	 				index={fullIndex} 
-	 				isValid={this.isListItemValid(fullIndex)} 
+					renderClient={this.renderClient}
+	 				index={fullIndex}  
 	 				isHintRelated={this.isListItemHintRelated(fullIndex, value)} 
 	 				isHinted={this.isListItemHinted(fullIndex, value)} 
 	 				value={value} 
@@ -93,10 +92,7 @@
 			return b
 		}
 
-		isListItemValid = (index) => {
-			let b = !this.state.validationErrors.includes(index)
-			return b
-		}
+
 
 	 	buildPuzzleGridFromArray = (arr) => {
 			let grid = []
