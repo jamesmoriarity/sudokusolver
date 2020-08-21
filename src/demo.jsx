@@ -22,10 +22,15 @@
 	 		let classes = []
 	 		let colIndex = index % 9
 	 		let rowIndex = Math.floor(index/9)
+	 		let isInHintDisplay = this.props.hintMap.includes(Number(index))
 	 		if(colIndex == 2 || colIndex == 5){	classes.push("column-right") }
 	 		if(rowIndex == 2 || rowIndex == 5){ 	classes.push("row-bottom") }
 	 		if(!this.props.isValid){ 			classes.push("invalidCell") }
 	 		if(this.props.isHinted){ 			classes.push("hintedCell") }
+	 		if(isInHintDisplay && !this.props.isHintRelated){
+	 										classes.push("boxHiddenSinglePattern")
+	 		}
+	
 	 		if(this.props.isHintRelated){ 		classes.push("hintRelatedCell") }
 	 		return classes.join(" ")
 		}
@@ -48,6 +53,9 @@
 	 		this.state.validationErrors = []
 	 		this.state.isComplete = false
 	 		this.state.originalPuzzleArray = [...this.state.puzzleArray]
+
+	 		this.state.hintMap = [0,1,2,3,9,10]
+
 	 		this.setState(this.state)
 	 	}
 
@@ -121,7 +129,7 @@
 	 		let puzzleGrid = this.buildPuzzleGridFromArray([...this.state.puzzleArray])
 	 		this.state.tableBuild = {}
 	 		let rows = puzzleGrid.map(this.renderTableRow)
-	 		return <table>{rows}</table>
+	 		return <table cellpadding="0" cellspacing="0" border="0">{rows}</table>
 	 	}
 
 	 	renderTableRow = (row, rowIndex) => {
@@ -132,23 +140,63 @@
 
 	 	renderTableCell = (value, cellIndex) =>{
 	 		let fullIndex = (this.state.tableBuild.rowIndex * 9) + cellIndex
-	 		let cell = <CellShell 
+	 		let cell = <td><CellShell 
 		 				index={fullIndex} 
 		 				isValid={this.isListItemValid(fullIndex)} 
 		 				isHintRelated={this.isListItemHintRelated(fullIndex, value)} 
 		 				isHinted={this.isListItemHinted(fullIndex, value)} 
 		 				value={value} 
-		 				onCellChange={this.onCellChange}/>
+		 				onCellChange={this.onCellChange}
+						hintMap={this.state.hintMap}/></td>
 	 		return cell
 	 	}
 
 	 	isListItemHintRelated = (index, value) => {
+
+	 		/*
+	 			get the rows and columns in the same box as the hinted cell
+				if they contain the hinted value, highlight the row/column from
+				the cell with the hinted value through the box
+
+				get box from cellindex
+					let row = Math.floor(index/9)
+					let column = index % 9
+					let boxIndex = (row * 3) + column
+
+				get rowIndexes from boxIndex
+					let startRow = (Math.floor(boxIndex/3) * 3)
+					return [startRow, startRow + 1, startRow + 2]
+
+				get columnIndexes from boxIndex
+					let startColumn = (boxIndex % 3) * 3
+					return [startColumn, startColumn + 1, startColumn + 2]
+
+				getCellIndexesFromRowByRowIndex
+					let start = rowIndex * 9
+					let end = start + 9
+					let a = []
+					for(let i = start; i < end; i++){
+						a.push(String(i))
+					}
+					return a
+
+				getCellIndexesFromColumnByColumnIndex
+					let a = []
+					for(let i = 0; i < 9; i++){
+						a.push( (9 * i) + columnIndex )
+					}
+					return a
+	 		*/
+
+
+
+
 	 		let b = (this.state.hint == null) ? false : (this.state.hint.index != index && this.state.hint.value == value && String(this.state.hint.type).includes("Hidden Single") )
 	 		return b	
 	 	}
 
 	 	isListItemHinted = (index, value) => {
-	 		let b = (this.state.hint == null) ? false : (this.state.hint.index == index && this.state.hint.value == value)
+	 		let b = (this.state.hint == null) ? false : (this.state.hint.index == index)
 	 		return b
 	 	}
 
@@ -221,20 +269,9 @@
 
 	 //-- validation 
 
-	 	setValidationErrors = (errors) => {
-	 		this.setState({validationErrors:errors})
-	 	}
-
-	 	handleValidationErrors = (errors) => {
-	 		this.setValidationErrors([...errors])
-	 	}
-
 	 	onValidate = (sbsResponse) => {
-	 		let e = []
-	 		if(!sbsResponse.isValid){
-	 			e = [...sbsResponse.errors]
-	 		}
-	 		this.setState({isValid:sbsResponse.isValid, isComplete:sbsResponse.isComplete, validationErrors:e})
+	 		this.setState({isValid:sbsResponse.isValid, isComplete:sbsResponse.isComplete, validationErrors:sbsResponse.errors})
+	 		// this.setState(sbsResponse)
 	 	}
 
 	 	validate = () => {
@@ -248,7 +285,7 @@
 	 		let a = [...this.state.puzzleArray]
 	 		a[sbsResponse.hint.index] = sbsResponse.hint.value
 	 		this.makeHighlightMap(sbsResponse.hint)
-	 		this.setState({puzzleArray: a, hint:sbsResponse.hint})
+	 		this.setState({hint:sbsResponse.hint, puzzleArray:a})
 	 		console.log("sbsResponse: hint " + sbsResponse.hint.type)
 	 	}
 

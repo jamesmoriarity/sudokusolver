@@ -17,12 +17,13 @@
       margin-top: 3px;
       text-align:center;
       font-size: 27px;
+      background:none;
     }
 
     #sudoku_solver_shell  {}
     #grid {
       /* -- width: 700px; --*/
-      margin-bottom: 30px;
+      margin: 30px;
       /* border: 3px solid grey; */
       display: inline-block
     }
@@ -45,7 +46,7 @@
     }
 
     .invalidCell input{
-      color:red;
+      color:white;
     }
 
     .hintedCell{
@@ -53,6 +54,9 @@
     }
     .hintRelatedCell{
       background-color:yellow;
+    }
+    .boxHiddenSinglePattern{
+      background-color:#dddddd;
     }
 
     .column-right{
