@@ -6,9 +6,9 @@
 	 		this.setInitialState()
 	 	}
 
-	 	setInitialState = () => { 
+	 	setInitialState = () => {
 	 		this.state = {}
-	 		this.state.greeting = "Sudoku Puzzle Status: "
+	 		this.state.greeting = "Sudoku Puzzle : Status : "
 	 		this.state.isValid = false
 	 		this.state.hint = null
 	 		this.state.puzzleArray = this.solverUtilities.buildEmptyPuzzleArray()
@@ -58,7 +58,7 @@
 
 	 	newPuzzle = () => {
 	 		this.getService().getNewPuzzle(this.onNewPuzzle)
-	 	}	
+	 	}
 
 	 	onNewPuzzle = (sbsResponse) =>{
 	 		if(sbsResponse.isValid){
@@ -67,18 +67,18 @@
 	 		else{
 	 			alert("puzzle load failed: " + sbsResponse.errors.join(":"))
 	 		}
-	 		
-	 	} 	
+
+	 	}
 
 	 	setNewPuzzle = (sbsResponse) => {
 	 		let s = String(sbsResponse.puzzle.start)
 	 		let a = this.solverUtilities.puzzleStringToArray(s)
-	 		this.setState({	
-	 						puzzleArray:a, 
-	 						originalPuzzleArray: [...a], 
-	 						isValid:true, 
-	 						isComplete:false, 
-	 						validationErrors:[], 
+	 		this.setState({
+	 						puzzleArray:a,
+	 						originalPuzzleArray: [...a],
+	 						isValid:true,
+	 						isComplete:false,
+	 						validationErrors:[],
 	 						hint:null,
 	 						patternMap:null	})
 	 	}
@@ -90,8 +90,8 @@
 	 	}
 
 	 	resetPuzzle = () => {
-	 		this.setState({	
-	 						puzzleArray: [...this.state.originalPuzzleArray], 
+	 		this.setState({
+	 						puzzleArray: [...this.state.originalPuzzleArray],
 	 						isValid: true,
 	 						isComplete: false,
 	 						validationErrors: [],
@@ -99,7 +99,7 @@
 	 						patternMap: null	})
 	 	}
 
-	 	//-- validation 
+	 	//-- validation
 
 	 	onValidate = (sbsResponse) => {
 	 		this.setState({puzzlieArray:[...this.state.puzzleArray], isValid:sbsResponse.isValid, isComplete:sbsResponse.isComplete, validationErrors:[...sbsResponse.errors]})
@@ -108,7 +108,7 @@
 
 	 	validate = () => {
 	 		let puzzleString = this.solverUtilities.toString(this.state.puzzleArray)
-	 		this.getService().validate(puzzleString, this.onValidate)	
+	 		this.getService().validate(puzzleString, this.onValidate)
 	 	}
 
 		//-- hint
