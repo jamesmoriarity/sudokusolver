@@ -1822,7 +1822,7 @@ var SudokuSolver = function (_React$Component2) {
 		};
 
 		_this2.sudokuService = new SudokuBridgeService();
-		_this2.greeting = "Aloha";
+		_this2.greeting = "Alohaz";
 		_this2.setInitialState();
 		_this2.originalPuzzleArray = _this2.state.puzzleArray.slice();
 		return _this2;
