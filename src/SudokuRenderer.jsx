@@ -1,5 +1,5 @@
 	class SudokuRenderer{
-		
+
 		constructor(){  // expects a RenderClient interface
 			this.renderClient = null
 			this.state = null
@@ -9,7 +9,7 @@
 		render = (renderClient) => {
 			this.renderClient = renderClient
 			this.state = renderClient.state
-			return	<div id="sudoku">
+			return	<div id="_sudoku">
 						<div>{this.state.greeting} Valid: {(this.state.isValid) ? "true" : "false"} Complete: {(this.state.isComplete)?"true":"false"}</div>
 						<div id="grid">
 							{this.getTableGrid()}
@@ -37,17 +37,17 @@
 
 		renderTableCell = (value, cellIndex) =>{
 			let fullIndex = (this.renderRowIndex * 9) + cellIndex
-			let cell = <td><CellShell 
+			let cell = <td><CellShell
 					renderClient={this.renderClient}
-	 				index={fullIndex}  
-	 				isHintRelated={this.isListItemHintRelated(fullIndex, value)} 
-	 				isHinted={this.isListItemHinted(fullIndex, value)} 
-	 				value={value} 
+	 				index={fullIndex}
+	 				isHintRelated={this.isListItemHintRelated(fullIndex, value)}
+	 				isHinted={this.isListItemHinted(fullIndex, value)}
+	 				value={value}
 	 				onCellChange={this.renderClient.onCellChange}/></td>
-	 		
+
 			return cell
 		}
-		
+
 		isListItemHintRelated = (index, value) => {
 			/*
 				get the rows and columns in the same box as the hinted cell
@@ -84,7 +84,7 @@
 					return a
 				*/
 			let b = (this.state.hint == null) ? false : (this.state.hint.index != index && this.state.hint.value == value && String(this.state.hint.type).includes("Hidden Single") )
-			return b	
+			return b
 		}
 
 		isListItemHinted = (index, value) => {
