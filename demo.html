@@ -23,7 +23,9 @@
       text-align:center;
       font-size: 27px;
       background:none;
+      outline-width: 0;
     }
+    input.middle:focus {}
 
     #sudoku_solver_shell  {}
     #grid {
@@ -53,12 +55,12 @@
       color:white;
     }
     .hintedCell{
-      background-color:orange;
+      background-color:#d6ea12;
     }
-    .hintRelatedCell{
-      background-color:yellow;
+    .hintValueRelatedCell{
+      background-color:#e1e6a8;;
     }
-    .boxHiddenSinglePattern{
+    .hintBackgroundCell{
       background-color:#dddddd;
     }
     .column-right{
@@ -67,6 +69,8 @@
     .row-bottom{
       border-bottom:3px solid grey;
     }
+
+   
 
   </style>
   <body>

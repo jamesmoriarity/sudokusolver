@@ -15,7 +15,7 @@
 	 		this.state.validationErrors = []
 	 		this.state.isComplete = false
 	 		this.state.originalPuzzleArray = [...this.state.puzzleArray]
-	 		this.state.hintMap = [0,1,2,3,9,10]
+	 		this.state.patternMap = {}
 	 		this.setState(this.state)
 	 	}
 
@@ -28,7 +28,19 @@
 	 	//-- Cell Change
 
 	 	onCellChange = (event, cellIndex) => {
-	 		let value = event.target.value
+			let value = event.target.value
+
+	 		/* if mode == pencil
+				this.cells[cellIndex].setPencil(value)
+	 		*/
+
+	 		/* if mode == possibleValues
+				this.cells[cellIndex].setPossibleValue(value)
+	 		*/
+
+
+			// if mode == value
+
 	 		if(value == "" || (!isNaN(value) && Number(value) > 0)){
 		 		this.solverUtilities.checkToRemoveValidationError(cellIndex);
 		 		this.solverUtilities.checkToRemoveHint(cellIndex)
@@ -38,7 +50,7 @@
 
 	 	updateCell = (cellIndex, value) => {
  			let newArray = [...this.state.puzzleArray]
- 			newArray[cellIndex] = val
+ 			newArray[cellIndex] = value
 	 		this.setState({puzzleArray:newArray, isValid:false, isComplete:false})
 	 	}
 
@@ -67,7 +79,8 @@
 	 						isValid:true, 
 	 						isComplete:false, 
 	 						validationErrors:[], 
-	 						hint:null		})
+	 						hint:null,
+	 						patternMap:null	})
 	 	}
 
 	 	//-- reset
@@ -81,8 +94,9 @@
 	 						puzzleArray: [...this.state.originalPuzzleArray], 
 	 						isValid: true,
 	 						isComplete: false,
+	 						validationErrors: [],
 	 						hint: null,
-	 						validationErrors: []	})
+	 						patternMap: null	})
 	 	}
 
 	 	//-- validation 
@@ -104,8 +118,8 @@
 	 	}
 
 	 	onHintReceived = (sbsResponse) => {
-			this.setState({hint:sbsResponse.hint})
-			this.updateCell(sbsResponse.hint.index, sbsResponse.hint.value)
+			this.setState({hint:sbsResponse.hint, patternMap:this.solverUtilities.getPatternMap()})
+			//this.updateCell(sbsResponse.hint.index, sbsResponse.hint.value)
 	 		console.log("sbsResponse: hint " + sbsResponse.hint.type)
 	 	}
 

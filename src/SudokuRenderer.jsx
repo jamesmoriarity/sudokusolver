@@ -43,8 +43,8 @@
 	 				isHintRelated={this.isListItemHintRelated(fullIndex, value)} 
 	 				isHinted={this.isListItemHinted(fullIndex, value)} 
 	 				value={value} 
-	 				onCellChange={this.renderClient.onCellChange}
-					hintMap={this.state.hintMap}/></td>
+	 				onCellChange={this.renderClient.onCellChange}/></td>
+	 		
 			return cell
 		}
 		

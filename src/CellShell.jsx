@@ -23,20 +23,27 @@
 	 		let classes = []
 	 		let colIndex = this.props.index % 9
 	 		let rowIndex = Math.floor(this.props.index/9)
-	 		let isInHintDisplay = this.props.hintMap.includes(Number(this.props.index))
+	 		if(this.props.isHinted){
+	 			classes.push("hintedCell")
+	 		}
+	 		else{
+	 			if(this.renderClient.state.patternMap &&  this.renderClient.state.patternMap["hintBackgroundCells"]){
+			 		let isHintBackgroundCell = this.renderClient.state.patternMap["hintBackgroundCells"].includes(this.props.index)
+			 		if(isHintBackgroundCell){classes.push("hintBackgroundCell")}
+			 		else{
+			 			let isHintValueRelatedCell = this.renderClient.state.patternMap["hintValueRelatedCells"].includes(this.props.index)
+			 			if(isHintValueRelatedCell){classes.push("hintValueRelatedCell")}
+			 		}				
+	 			}
+
+		 	} 
 	 		if(colIndex == 2 || colIndex == 5)	
 	 			classes.push("column-right") 
 	 		if(rowIndex == 2 || rowIndex == 5)	
 	 			classes.push("row-bottom") 
 	 		if(!this.isListItemValid(this.props.index))
-	 			classes.push("invalidCell") 
-	 		if(this.props.isHinted)			
-	 			classes.push("hintedCell") 
-	 		if(isInHintDisplay && !this.props.isHintRelated)
-	 			classes.push("boxHiddenSinglePattern")
-	 		if(this.props.isHintRelated) 		
-	 			classes.push("hintRelatedCell")
-	 		return classes.join(" ")
+	 			classes.push("invalidCell")
+		 	return classes.join(" ")
 		}
 
 		isListItemValid = (index) => {
