@@ -22,6 +22,9 @@ var SudokuServiceResponse = /** @class */ (function () {
         this.setHint = function (hint) {
             _this.hint = hint;
         };
+        this.getHint = function () {
+            return _this.hint;
+        };
         this.isValid = isValid;
         this.errors = [];
         this.className = "c";

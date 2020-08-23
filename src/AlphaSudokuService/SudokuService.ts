@@ -22,12 +22,12 @@ class SudokuService{
 		}
 	}
 	// ----- validate
-	validate = (puzzleString, callback) => {
+	validate = (puzzleString:String, callback:Function) => {
 		this.callback = callback
 		let validator = new SudokuValidator()
 		validator.validate(puzzleString, this.onValidate)
 	}
-	onValidate = (result) => {
+	onValidate = (result:SudokuValidatorResult) => {
 		if(result.isValid){
 			let ssr = new SudokuServiceResponse(result.isValid)
 			ssr.setIsComplete(result.isComplete)
@@ -37,14 +37,14 @@ class SudokuService{
 			this.callback(this.getFailedValidationServiceResponse(result.errors))
 		}
 	}
-	getFailedValidationServiceResponse = (errors) => {
+	getFailedValidationServiceResponse = (errors:Array<Number>) => {
 		let ssr = new SudokuServiceResponse(false)
 		ssr.setErrors(errors)
 		return ssr
 	}
 
 	// ---- new puzzle
-	getNewPuzzle = (callback) => {
+	getNewPuzzle = (callback:Function) => {
 		fetch("./json/puzzle.json")
      	.then(res => res.json())
      	.then(
@@ -56,12 +56,12 @@ class SudokuService{
 	       	}
      	)
 	}
-	getSuccessfulNewPuzzleServiceResponse = (puzzleResult) => {
+	getSuccessfulNewPuzzleServiceResponse = (puzzleResult:any) => {
 		let ssr = new SudokuServiceResponse(true)
 		ssr.setPuzzle(puzzleResult)
 		return ssr
 	}
-	getFailedNewPuzzleServiceResponse = (error) => {
+	getFailedNewPuzzleServiceResponse = (error:any) => {
 		let ssr = new SudokuServiceResponse(false)
 		ssr.addError(error)
 		return ssr
@@ -70,6 +70,12 @@ class SudokuService{
 // ------ Sudoku Hint
 
 class SudokuHintFinder{
+	puzzleValues:Array<String>
+	cells:Array<SudokuSolutionCell>
+	boxes:Array<SudokuBox>
+	rows:Array<SudokuRow>
+	columns:Array<SudokuColumn>
+	callback:Function
 	constructor(){
 		this.puzzleValues = []
 		this.cells = []
@@ -77,7 +83,7 @@ class SudokuHintFinder{
 		this.rows = []
 		this.columns = []
 	}
-	findHint = (puzzleString, callback) => {
+	findHint = (puzzleString:String, callback:Function) => {
 		this.callback = callback
 		this.puzzleValues = puzzleString.split("")
 		this.initCells()
@@ -124,14 +130,14 @@ class SudokuHintFinder{
 	findNakedSingle = () => {
 		let len = this.cells.length
 		for(let i = 0; i < len; i++){
-			let cell = this.cells[i]
+			let cell:SudokuSolutionCell = this.cells[i]
 			if(cell.value == "0" && cell.openNumbers.length == 1){
-		    		return (new SudokuHint(cell.index, cell.openNumbers[0], "Naked Single"))
+		    		return (new SudokuHint(cell.index, String(cell.openNumbers[0]), "Naked Single"))
 		    	}
 		}
 		return null
 	}
-	findHiddenSingleInGroupings = (groupings, type) => {
+	findHiddenSingleInGroupings = (groupings:Array<any>, type:String) => {
 		let len = groupings.length
 		for(let i = 0; i < len; i++){
 			let group = groupings[i]
@@ -142,7 +148,7 @@ class SudokuHintFinder{
 		}
 		return null
 	}
-	getHiddenSingle = (cells, type) =>{
+	getHiddenSingle = (cells:Array<SudokuSolutionCell>, type:String) =>{
 		let len = cells.length
 		let vals = {"1":[], "2":[], "3":[], "4":[], "5":[],"6":[],"7":[], "8":[],"9":[]}
 		// make a map of values with an array of cells that have that value as an open value
@@ -152,7 +158,7 @@ class SudokuHintFinder{
 			if(openNumbers.length > 0){
 				let leng = openNumbers.length
 				for(let j = 0; j < leng; j++){
-					let key = openNumbers[j]
+					let key = String(openNumbers[j])
 					vals[key].push(i)
 				}
 			}
@@ -174,7 +180,10 @@ class SudokuHintFinder{
 }
 
 class SudokuColumn{
-	constructor(index, cells){
+	index:Number
+	allCells:Array<SudokuSolutionCell>
+	cells:Array<SudokuSolutionCell>
+	constructor(index:Number, cells:Array<SudokuSolutionCell>){
 		this.index = index
 		this.allCells = cells
 		this.cells = []
@@ -183,7 +192,7 @@ class SudokuColumn{
 	}
 
 	setCells = () =>{
-		let offset = this.index % 9
+		let offset = Number(this.index) % 9
 		for(let i = 0; i < 9; i++){
 			let cell = this.allCells[(i*9) + offset]
 			cell.setColumn(this)
@@ -202,16 +211,18 @@ class SudokuColumn{
 }
 
 class SudokuRow{
-	constructor(index, cells){
+	index:Number
+	allCells:Array<SudokuSolutionCell>
+	cells:Array<SudokuSolutionCell>
+	constructor(index:Number, cells:Array<SudokuSolutionCell>){
 		this.index = index
 		this.allCells = cells
 		this.cells = []
 		this.setCells()
-		this.allCells = null
 	}
 
 	setCells = () =>{
-		let start = this.index * 9
+		let start = Number(this.index) * 9
 		for(let i = 0; i < 9; i++){
 			let cell = this.allCells[start+i]
 			cell.setRow(this)
@@ -230,22 +241,25 @@ class SudokuRow{
 }
 
 class SudokuBox{
-	constructor(index, cells){
+	cellsInABoxRow:Number
+	index:Number
+	allCells:Array<SudokuSolutionCell>
+	cells:Array<SudokuSolutionCell>
+	constructor(index:Number, cells:Array<SudokuSolutionCell>){
 		this.cellsInABoxRow = 3
 		this.index = index
 		this.allCells = cells
 		this.cells = []
 		this.setCells()
-		this.allCells = null
 	}
 
 	setCells = () =>{
-		let len = this.allCells.length
-		let rowStartIndex = Math.floor(this.index/this.cellsInABoxRow) * this.cellsInABoxRow
-		let columnStartIndex = (this.index % this.cellsInABoxRow) * this.cellsInABoxRow;
+		let indexPerCells:number = Number(this.index)/Number(this.cellsInABoxRow)
+		let rowStartIndex:Number = Math.floor(indexPerCells) * Number(this.cellsInABoxRow)
+		let columnStartIndex = (Number(this.index) % Number(this.cellsInABoxRow)) * Number(this.cellsInABoxRow);
 		for(let i = 0; i < 3; i++){
 			for(let j = 0; j < 3; j++){
-				let fullIndex = (rowStartIndex * 9)  + (i * 9) + columnStartIndex + j
+				let fullIndex = (Number(rowStartIndex) * 9)  + (i * 9) + columnStartIndex + j
 				let cell = this.allCells[fullIndex]
 				cell.setBox(this)
 				this.cells.push(cell)
@@ -267,7 +281,10 @@ class SudokuBox{
 }
 
 class SudokuHint{
-	constructor(index, value, type){
+	index:Number
+	value:String
+	type:String
+	constructor(index:Number, value:String, type:String){
 		this.index = index
 		this.value = value
 		this.type = type
@@ -275,25 +292,32 @@ class SudokuHint{
 }
 
 class SudokuSolutionCell {
-	constructor(index, value){
+	index:Number
+	value:String
+	row:SudokuRow
+	column:SudokuColumn
+	box:SudokuBox
+	allClosedNumbers:Set<String>
+	openNumbers:Array<Number>
+	constructor(index:Number, value:String){
 		this.index = index
 		this.value = value
 		this.row = null
-		this.cell = null
 		this.box = null
-		this.allClosedNumbers = []
+		this.column = null
+		this.allClosedNumbers = null
 		this.openNumbers = []
 	}
 
-	setRow = (row) => {
+	setRow = (row:SudokuRow) => {
 		this.row = row
 	}
 
-	setColumn = (column) => {
+	setColumn = (column:SudokuColumn) => {
 		this.column = column
 	}
 
-	setBox = (box) => {
+	setBox = (box:SudokuBox) => {
 		this.box = box
 	}
 
@@ -310,9 +334,8 @@ class SudokuSolutionCell {
 		if(this.value == "0"){
 			this.loadClosedNumbers()
 			for(let i = 1; i < 10; i++){
-				let val = String(i)
-				if(!this.allClosedNumbers.has(val)){
-					this.openNumbers.push(val)
+				if(!this.allClosedNumbers.has(String(i))){
+					this.openNumbers.push(i)
 				}
 			}
 		}
@@ -325,11 +348,14 @@ class SudokuSolutionCell {
 
 
 class SudokuValidator{
+	puzzleString:String
+	puzzleValues:Array<String>
+	callback:Function
 	constructor(){
 		this.puzzleValues = []
 		this.callback = null
 	}
-	validate = (puzzleString, callback) =>{
+	validate = (puzzleString:String, callback:Function) =>{
 		this.puzzleString = puzzleString
 		this.callback = callback
 		this.puzzleValues = puzzleString.split("")
@@ -343,11 +369,11 @@ class SudokuValidator{
 				this.onSolutionReceived(res.puzzle.solution)
         		},
 	        	(error) => {
-				console.log('getPuzzleSolution.error')
+							console.log('getPuzzleSolution.error' + error)
 	       	}
      	)
 	}
-	validateValues = (solutionString) => {
+	validateValues = (solutionString:String) => {
 		let errors = []
 		let isComplete = false
 		let isValid = true
@@ -367,18 +393,22 @@ class SudokuValidator{
 		}
 		this.onValidate (new SudokuValidatorResult(isValid, isComplete, errors))
 	}
-	onSolutionReceived = (solutionString) => {
-		let validatorResult = this.validateValues(solutionString)
+	onSolutionReceived = (solutionString:String) => {
+		this.validateValues(solutionString)
 	}
-	onValidate = (validatorResult) => {
+	onValidate = (validatorResult:SudokuValidatorResult) => {
 		this.callback(validatorResult)
 	}
 }
 
 class SudokuValidatorResult {
-	constructor(isValid, isComplete, errors){
+	isValid:Boolean
+	isComplete:Boolean
+	errors:Array<Number>
+	constructor(isValid:Boolean, isComplete:Boolean, errors:Array<Number>){
 		this.isValid = isValid
 		this.isComplete = isComplete
 		this.errors = errors
 	}
 }
+export default SudokuService

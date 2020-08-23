@@ -30,7 +30,11 @@ class SudokuServiceResponse {
 	setHint = (hint:SudokuServiceHint) => {
 		this.hint = hint
 	}
+  getHint = () => {
+    return this.hint
+  }
 }
+
 
 class SudokuPuzzle{
 

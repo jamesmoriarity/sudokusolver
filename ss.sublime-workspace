@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"cl",
+				"clientSolver"
+			],
+			[
+				"Su",
+				"SudokuRenderer"
+			],
+			[
+				"set",
+				"setHintState"
+			],
+			[
+				"table",
+				"tableBuild"
+			],
+			[
+				"is",
+				"isComplete"
+			],
+			[
+				"cells",
+				"cellsInARow"
+			],
+			[
+				"ini",
+				"initBoxesRowsColumns"
+			],
+			[
 				"puzzle",
 				"puzzleArray"
 			],
@@ -68,18 +96,50 @@
 	"buffers":
 	[
 		{
-			"file": "index.html",
+			"file": "src/CellShell.jsx",
 			"settings":
 			{
-				"buffer_size": 1,
+				"buffer_size": 1597,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/james/Documents/projects/proto/proto/public/index.html",
+			"file": "src/SudokuRenderer.jsx",
 			"settings":
 			{
-				"buffer_size": 1722,
+				"buffer_size": 3339,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/SudokuSolver.jsx",
+			"settings":
+			{
+				"buffer_size": 3430,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/SudokuService.jsx",
+			"settings":
+			{
+				"buffer_size": 9483,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/index.jsx",
+			"settings":
+			{
+				"buffer_size": 191,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "demo.html",
+			"settings":
+			{
+				"buffer_size": 1931,
 				"line_ending": "Unix"
 			}
 		}
@@ -120,15 +180,23 @@
 	},
 	"file_history":
 	[
+		"/Users/james/Documents/projects/sudokusolver/src/SudokuSolverUtilities.jsx",
+		"/Users/james/Documents/projects/sudokusolver/src/SudokuRenderer.jsx",
+		"/Users/james/Documents/projects/sudokusolver/docs/framework_notes",
 		"/Users/james/Documents/projects/sudokusolver/demo.html",
+		"/Users/james/Documents/projects/sudokusolver/json/puzzle.json",
+		"/Users/james/Documents/projects/sudokusolver/src/SudokuService.jsx",
+		"/Users/james/Documents/projects/sudokusolver/src/SudokuBridgeService.jsx",
+		"/Users/james/Documents/projects/sudokusolver/src/CellShell.jsx",
+		"/Users/james/Documents/projects/sudokusolver/src/SudokuSolver.jsx",
 		"/Users/james/Documents/projects/sudokusolver/index.html",
+		"/Users/james/Documents/projects/proto/proto/public/index.html",
 		"/Users/james/Documents/projects/sudokusolver/src/index.js",
 		"/Users/james/Documents/projects/sudokusolver/importer.html",
 		"/Users/james/Documents/projects/sudokusolver/src/importer.js",
 		"/Users/james/Documents/projects/sudokusolver/src/importer.jsx",
 		"/Users/james/Documents/projects/sudokusolver/src/App.css",
 		"/Users/james/Documents/projects/sudokusolver/src/App.js",
-		"/Users/james/Documents/projects/sudokusolver/docs/framework_notes",
 		"/Users/james/Documents/projects/sudokusolver/src/SudokuBridgeService.js",
 		"/Users/james/Documents/projects/sudokusolver/src/demo.jsx",
 		"/Users/james/Documents/projects/sudokusolver/src/App.jsx",
@@ -239,15 +307,7 @@
 		"/Users/james/Documents/magento/skin/frontend/fate/default/scss/layout/_global.scss",
 		"/Users/james/Documents/fate/html/css/style.css",
 		"/Users/james/Documents/magento/skin/frontend/fate/default/css/madisonisland.css",
-		"/Users/james/Documents/magento/app/design/frontend/rwd/default/template/page/1column.phtml",
-		"/Users/james/Documents/js/spine.js",
-		"/Users/james/Documents/workspace/adidas/code/cartridges/adidasoutdoors_core/precompile/coffee/gallery.coffee",
-		"/Users/james/Documents/workspace/adidas/code/cartridges/adidasoutdoors_core/precompile/scss/ao/layouts/_adventure.scss",
-		"/Users/james/Documents/workspace/adidas/code/adidasoutdoors_core/precompile/coffee/gallery.coffee",
-		"/Users/james/Documents/workspace/adidas/code/adidasoutdoors_core/precompile/scss/ao/layouts/_adventure.scss",
-		"/Users/james/Documents/adidas/jeet/precompiled/sass/styles.sass",
-		"/Users/james/Documents/workspace/adidas/code/adidasoutdoors_core/precompile/scss/ao/_ao-base.scss",
-		"/Applications/adidasprototype/Shell proto/precompiled_old/Sass/adidas/_variables.scss"
+		"/Users/james/Documents/magento/app/design/frontend/rwd/default/template/page/1column.phtml"
 	],
 	"find":
 	{
@@ -333,6 +393,63 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"patternMap",
+			"getPatternMap",
+			"tableBuild",
+			"this.",
+			"resetState",
+			"renderClient",
+			"puzzlearr",
+			"single",
+			"sinle",
+			"Hidden Single",
+			"solverUtilities",
+			"toString",
+			"puzzleStringToArray",
+			"toString",
+			"buildEmptyPuzzleArray",
+			"getService",
+			"tableBuild",
+			"this.state.",
+			"this.state,",
+			"this.state",
+			"buildPuzzleGridFromArray",
+			"setHintState",
+			"hint:",
+			"//",
+			"puzzleGrid",
+			"puzzleArray",
+			"getRow",
+			"puzzleGrid",
+			"isValid",
+			"originalPuzzleArray",
+			"resetState",
+			"Hidden",
+			"boxCells",
+			"rowCells",
+			"columnCells",
+			" ",
+			"updateStateOnCellChange",
+			"puzzleString",
+			"onHintReceived",
+			"SBSResponse",
+			"valid",
+			"			this.callback(ssr)\n			this.callback(ssr)\nSBSResponse",
+			"			this.callback(ssr)\n			this.callback(ssr)\nsudoku",
+			"			this.callback(ssr)\n			this.callback(ssr)\nSudokuServiceResponse",
+			"			this.callback(ssr)\nSudokuServiceResponse",
+			"SudokuServiceResponse",
+			"callback",
+			"SudokuHint",
+			"findNakedSingle",
+			"getHiddenSingle",
+			"boxIndex",
+			"console",
+			"getColumnClass",
+			"constains",
+			"error",
+			"console",
+			"p ",
 			"setPuzzleArray",
 			"getColumnClass",
 			"getListItems",
@@ -403,64 +520,7 @@
 			"$width",
 			"width",
 			"listing",
-			"PLS_Map",
-			"color",
-			"PLS_Image",
-			"property-details-slideshow",
-			"listing_type",
-			"entry-content",
-			"entry-header",
-			"property-image-gallery",
-			"7FB9",
-			"7FB91E",
-			"box",
-			"$mobile$mobile-max$mobile-max",
-			"$mobile",
-			"960",
-			"<tr",
-			"tr",
-			"tbody",
-			"head",
-			"wp_nav_menu",
-			"navmenu",
-			"wp_nav_menu",
-			"menu-item",
-			"twentyfifteen_nav_description",
-			"menu-item",
-			"main-menu-container",
-			"wp_nav_menu",
-			"custom_property_details_html_filter",
-			"PLS_Partials_Property_Details",
-			"addressLocality",
-			"address-locality",
-			"type-property",
-			"view property details",
-			"pls-listings",
-			"line-he",
-			"radius",
-			"18",
-			"font-size",
-			"Q. ",
-			"caption=",
-			"state=\"open\"",
-			"learn_more",
-			"sm_testimonial",
-			"client=",
-			"location=",
-			"console",
-			"logo",
-			"getChartUrl",
-			"terms2",
-			"return policy",
-			"terms\">",
-			"terms",
-			"@include column",
-			"cover-panel-menu",
-			"button",
-			"22px",
-			"product-name",
-			".product-image",
-			"inherit"
+			"PLS_Map"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -468,6 +528,11 @@
 		"regex": false,
 		"replace_history":
 		[
+			"",
+			"cells",
+			"",
+			"bIndex",
+			"errors",
 			"cube",
 			"updateSquare",
 			"this.cubeValues",
@@ -518,15 +583,123 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "index.html",
+					"file": "src/CellShell.jsx",
 					"settings":
 					{
-						"buffer_size": 1,
+						"buffer_size": 1597,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1197,
+								1197
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/SudokuRenderer.jsx",
+					"settings":
+					{
+						"buffer_size": 3339,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1759,
+								1759
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/SudokuSolver.jsx",
+					"settings":
+					{
+						"buffer_size": 3430,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2395,
+								2395
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/SudokuService.jsx",
+					"settings":
+					{
+						"buffer_size": 9483,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9243,
+								9243
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 6456.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/index.jsx",
+					"settings":
+					{
+						"buffer_size": 191,
 						"regions":
 						{
 						},
@@ -539,7 +712,7 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -548,19 +721,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "/Users/james/Documents/projects/proto/proto/public/index.html",
+					"buffer": 5,
+					"file": "demo.html",
 					"settings":
 					{
-						"buffer_size": 1722,
+						"buffer_size": 1931,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1171,
-								1171
+								1596,
+								1596
 							]
 						],
 						"settings":
@@ -570,7 +743,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 768.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -611,7 +784,7 @@
 		"cols":
 		[
 			0.0,
-			0.88922611992,
+			0.95187680462,
 			1.0
 		],
 		"rows":
@@ -678,6 +851,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 302.0,
+	"side_bar_width": 220.0,
 	"status_bar_visible": true
 }

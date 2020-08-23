@@ -118,7 +118,7 @@ var SudokuHintFinder = /** @class */ (function () {
             for (var i = 0; i < len; i++) {
                 var cell = _this.cells[i];
                 if (cell.value == "0" && cell.openNumbers.length == 1) {
-                    return (new SudokuHint(cell.index, cell.openNumbers[0], "Naked Single"));
+                    return (new SudokuHint(cell.index, String(cell.openNumbers[0]), "Naked Single"));
                 }
             }
             return null;
@@ -144,7 +144,7 @@ var SudokuHintFinder = /** @class */ (function () {
                 if (openNumbers.length > 0) {
                     var leng = openNumbers.length;
                     for (var j = 0; j < leng; j++) {
-                        var key = openNumbers[j];
+                        var key = String(openNumbers[j]);
                         vals[key].push(i);
                     }
                 }
@@ -173,7 +173,7 @@ var SudokuColumn = /** @class */ (function () {
     function SudokuColumn(index, cells) {
         var _this = this;
         this.setCells = function () {
-            var offset = _this.index % 9;
+            var offset = Number(_this.index) % 9;
             for (var i = 0; i < 9; i++) {
                 var cell = _this.allCells[(i * 9) + offset];
                 cell.setColumn(_this);
@@ -202,7 +202,7 @@ var SudokuRow = /** @class */ (function () {
     function SudokuRow(index, cells) {
         var _this = this;
         this.setCells = function () {
-            var start = _this.index * 9;
+            var start = Number(_this.index) * 9;
             for (var i = 0; i < 9; i++) {
                 var cell = _this.allCells[start + i];
                 cell.setRow(_this);
@@ -223,7 +223,6 @@ var SudokuRow = /** @class */ (function () {
         this.allCells = cells;
         this.cells = [];
         this.setCells();
-        this.allCells = null;
     }
     return SudokuRow;
 }());
@@ -231,12 +230,12 @@ var SudokuBox = /** @class */ (function () {
     function SudokuBox(index, cells) {
         var _this = this;
         this.setCells = function () {
-            var len = _this.allCells.length;
-            var rowStartIndex = Math.floor(_this.index / _this.cellsInABoxRow) * _this.cellsInABoxRow;
-            var columnStartIndex = (_this.index % _this.cellsInABoxRow) * _this.cellsInABoxRow;
+            var indexPerCells = Number(_this.index) / Number(_this.cellsInABoxRow);
+            var rowStartIndex = Math.floor(indexPerCells) * Number(_this.cellsInABoxRow);
+            var columnStartIndex = (Number(_this.index) % Number(_this.cellsInABoxRow)) * Number(_this.cellsInABoxRow);
             for (var i = 0; i < 3; i++) {
                 for (var j = 0; j < 3; j++) {
-                    var fullIndex = (rowStartIndex * 9) + (i * 9) + columnStartIndex + j;
+                    var fullIndex = (Number(rowStartIndex) * 9) + (i * 9) + columnStartIndex + j;
                     var cell = _this.allCells[fullIndex];
                     cell.setBox(_this);
                     _this.cells.push(cell);
@@ -259,7 +258,6 @@ var SudokuBox = /** @class */ (function () {
         this.allCells = cells;
         this.cells = [];
         this.setCells();
-        this.allCells = null;
     }
     return SudokuBox;
 }());
@@ -295,9 +293,8 @@ var SudokuSolutionCell = /** @class */ (function () {
             if (_this.value == "0") {
                 _this.loadClosedNumbers();
                 for (var i = 1; i < 10; i++) {
-                    var val = String(i);
-                    if (!_this.allClosedNumbers.has(val)) {
-                        _this.openNumbers.push(val);
+                    if (!_this.allClosedNumbers.has(String(i))) {
+                        _this.openNumbers.push(i);
                     }
                 }
             }
@@ -305,9 +302,9 @@ var SudokuSolutionCell = /** @class */ (function () {
         this.index = index;
         this.value = value;
         this.row = null;
-        this.cell = null;
         this.box = null;
-        this.allClosedNumbers = [];
+        this.column = null;
+        this.allClosedNumbers = null;
         this.openNumbers = [];
     }
     return SudokuSolutionCell;
@@ -328,7 +325,7 @@ var SudokuValidator = /** @class */ (function () {
                 .then(function (res) {
                 _this.onSolutionReceived(res.puzzle.solution);
             }, function (error) {
-                console.log('getPuzzleSolution.error');
+                console.log('getPuzzleSolution.error' + error);
             });
         };
         this.validateValues = function (solutionString) {
@@ -352,7 +349,7 @@ var SudokuValidator = /** @class */ (function () {
             _this.onValidate(new SudokuValidatorResult(isValid, isComplete, errors));
         };
         this.onSolutionReceived = function (solutionString) {
-            var validatorResult = _this.validateValues(solutionString);
+            _this.validateValues(solutionString);
         };
         this.onValidate = function (validatorResult) {
             _this.callback(validatorResult);
@@ -370,3 +367,4 @@ var SudokuValidatorResult = /** @class */ (function () {
     }
     return SudokuValidatorResult;
 }());
+exports["default"] = SudokuService;

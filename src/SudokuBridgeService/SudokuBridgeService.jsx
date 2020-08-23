@@ -9,12 +9,13 @@ class SudokuBridgeService {
 		this.service.getHint(puzzleString, this.onHintReceived)
 	}
 
-	onHintReceived = (sudokuServiceResponse) => {
+	onHintReceived = (sudokuServiceResponse:SudokuServiceResponse) => {
 		if(!sudokuServiceResponse.isValid){this.clientCallback(new SBSResponse(false))}
 		else{
-			let sbs = new SBSResponse(true)
-			sbs.setHint(sudokuServiceResponse.hint)
-			this.clientCallback(sbs)
+			let sbsResponse:SBSResponse = new SBSResponse(true)
+			let ssbHint:SudokuServiceBridgeHint = SudokuServiceBridgeHint.fromSudokuServiceHint(sudokuServiceResponse.getHint())
+			sbsResponse.setHint(ssbHint)
+			this.clientCallback(sbsResponse)
 		}
 	}
 
@@ -74,4 +75,3 @@ class SBSResponse{
 		this.isComplete = b
 	}
 }
-
