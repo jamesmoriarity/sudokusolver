@@ -1,3 +1,5 @@
+"use strict";
+exports.__esModule = true;
 var SudokuServiceResponse = /** @class */ (function () {
     function SudokuServiceResponse(isValid) {
         var _this = this;
@@ -26,13 +28,9 @@ var SudokuServiceResponse = /** @class */ (function () {
     }
     return SudokuServiceResponse;
 }());
-var SudokuHint = /** @class */ (function () {
-    function SudokuHint() {
-    }
-    return SudokuHint;
-}());
 var SudokuPuzzle = /** @class */ (function () {
     function SudokuPuzzle() {
     }
     return SudokuPuzzle;
 }());
+exports["default"] = SudokuServiceResponse;

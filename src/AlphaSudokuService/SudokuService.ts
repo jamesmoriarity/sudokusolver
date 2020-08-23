@@ -1,16 +1,20 @@
+import SudokuServiceHint from "./SudokuServiceHint"
+
 class SudokuService{
+	puzzleArray:Array<Number>
+	callback:Function
 	constructor(){
 		this.puzzleArray = []
 		this.callback = null
 	}
 
 	// ----- hint
-	getHint = (puzzleString, callback) => {
+	getHint = (puzzleString:String, callback:Function) => {
 		this.callback = callback
-		let shf = new SudokuHintFinder()
+		let shf:SudokuHintFinder = new SudokuHintFinder()
 		shf.findHint(puzzleString, this.onHintReceived)
 	}
-	onHintReceived = (hint) => {
+	onHintReceived = (hint:SudokuServiceHint) => {
 		if(hint != null){
 			let ssr = new SudokuServiceResponse(true)
 			ssr.setHint(hint)
@@ -144,7 +148,7 @@ class SudokuHintFinder{
 		// make a map of values with an array of cells that have that value as an open value
 		for(let i = 0; i < len; i++){
 			let cell = cells[i]
-			let openNumbers = [...cell.openNumbers]
+			let openNumbers = cell.openNumbers
 			if(openNumbers.length > 0){
 				let leng = openNumbers.length
 				for(let j = 0; j < leng; j++){
@@ -298,8 +302,8 @@ class SudokuSolutionCell {
 			let boxNumbers = this.box.getClosedNumbers()
 			let rowNumbers = this.row.getClosedNumbers()
 			let columnNumbers = this.column.getClosedNumbers()
-			this.allClosedNumbers = [ ...new Set( boxNumbers.concat(rowNumbers).concat(columnNumbers) ) ]		}
-
+			this.allClosedNumbers = new Set( boxNumbers.concat(rowNumbers).concat(columnNumbers) )
+		}
 	}
 
 	setOpenNumbers = () => {
@@ -307,7 +311,7 @@ class SudokuSolutionCell {
 			this.loadClosedNumbers()
 			for(let i = 1; i < 10; i++){
 				let val = String(i)
-				if(!this.allClosedNumbers.includes(val)){
+				if(!this.allClosedNumbers.has(val)){
 					this.openNumbers.push(val)
 				}
 			}

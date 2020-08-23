@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html title="sudoku solver">
+  <script>var exports = {};</script>
   <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 
-  <script src="src/SudokuService.jsx" type="text/babel"></script>
-  <script src="src/SudokuBridgeService.jsx" type="text/babel"></script>
-  <script src="src/SudokuSolverUtilities.jsx" type="text/babel"></script>
-  <script src="src/CellShell.jsx" type="text/babel"></script>
-  <script src="src/SudokuRenderer.jsx" type="text/babel"></script>
+  <script src="src/AlphaSudokuService/SudokuServiceResponse.js"></script>
+  <script src="src/AlphaSudokuService/SudokuService.js"></script>
+  <script src="src/SudokuBridgeService/SudokuBridgeService.jsx" type="text/babel"></script>
+  <script src="src/SudokuSolver/SudokuSolverUtilities.jsx" type="text/babel"></script>
+  <script src="src/SudokuSolver/Renderer/CellShell.jsx" type="text/babel"></script>
+  <script src="src/SudokuSolver/Renderer/SudokuRenderer.jsx" type="text/babel"></script>
   <style type="text/css">
 
     div {
@@ -70,7 +72,7 @@
       border-bottom:3px solid grey;
     }
 
-   
+
 
   </style>
   <body>

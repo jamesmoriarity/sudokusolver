@@ -1,39 +1,39 @@
-class SudokuServiceResponse{
+import SudokuServiceHint from "./SudokuServiceHint"
+
+class SudokuServiceResponse {
 
   isValid: Boolean = false
   isComplete: Boolean = false
   puzzle: SudokuPuzzle = null
   errors: Array<Number>
-  hint: SudokuHint
+  hint: SudokuServiceHint
   className: String
 
-	constructor(isValid){
+	constructor(isValid:Boolean){
 		this.isValid = isValid
 		this.errors = []
     this.className = "c"
 	}
-	setIsComplete = (isComplete) => {
+	setIsComplete = (isComplete:Boolean) => {
 		this.isComplete = isComplete
 	}
-	setPuzzle = (puzzle) =>{
+	setPuzzle = (puzzle:SudokuPuzzle) =>{
 		let puzzleClone = Object.assign({}, puzzle);
 		this.puzzle = puzzleClone
 	}
-	addError = (error) => {
+	addError = (error:Number) => {
 		this.errors.push(error)
 	}
-	setErrors = (errors) =>{
+	setErrors = (errors:Array<Number>) =>{
 		this.errors = errors
 	}
-	setHint = (hint) => {
+	setHint = (hint:SudokuServiceHint) => {
 		this.hint = hint
 	}
-}
-
-class SudokuHint{
-
 }
 
 class SudokuPuzzle{
 
 }
+
+export default SudokuServiceResponse
