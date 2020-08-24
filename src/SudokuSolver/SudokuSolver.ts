@@ -1,11 +1,23 @@
       /// <reference types="react" />
       /// <reference path="./SudokuSolverUtilities.ts" />
       /// <reference path="./Renderer/SudokuRenderer.jsx" />
+      class SSState {
+        greeting:String
+        isValid:Boolean
+        hint:SudokuServiceBridgeHint
+        puzzleArray:Array<Number>
+        validationErrors:Array<Number>
+        isComplete:Boolean
+        originalPuzzleArray:Array<String>
+        patternMap:Object
+        constructor(){}
 
+      }
 
       class SudokuSolver extends React.Component {
 
         solverUtilities:SudokuSolverUtilities
+        state:SSState
 
     	 	constructor(props:any){
     	 		super(props)
@@ -14,7 +26,7 @@
     	 	}
 
     	 	setInitialState = () => {
-    	 		this.state = {}
+    	 		this.state = new SSState()
     	 		this.state.greeting = "Sudoku Puzzle : Status : "
     	 		this.state.isValid = false
     	 		this.state.hint = null
@@ -41,21 +53,20 @@
     	 		/* if mode == possibleValues
     				this.cells[cellIndex].setPossibleValue(value)*/
           // if mode == value
-    	 		if(value == "" || (!isNaN(value) && Number(value) > 0)){
+          let isValidEntry:Boolean = (value == "" || (!isNaN(value) && Number(value) > 0))
+    	 		if(isValidEntry){
     		 		this.solverUtilities.checkToRemoveValidationError(cellIndex);
     		 		this.solverUtilities.checkToRemoveHint(cellIndex)
     	 			this.updateCell(cellIndex, value)
     	 		}
     	 	}
-
-    	 	updateCell = (cellIndex:Number, value:String) => {
+    	 	updateCell = (cellIndex:any, value:String) => {
      			let newArray:Array<String> = this.getPuzzleArray()
      			newArray[cellIndex] = value
     	 		this.setState({puzzleArray:newArray, isValid:false, isComplete:false})
     	 	}
 
     	 	//-- new puzzle
-
     	 	newPuzzle = () => {
     	 		this.getService().getNewPuzzle(this.onNewPuzzle)
     	 	}

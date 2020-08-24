@@ -1,6 +1,3 @@
-/// <reference types="react" />
-/// <reference path="./SudokuSolverUtilities.ts" />
-/// <reference path="./Renderer/SudokuRenderer.jsx" />
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -21,12 +18,20 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
+/// <reference types="react" />
+/// <reference path="./SudokuSolverUtilities.ts" />
+/// <reference path="./Renderer/SudokuRenderer.jsx" />
+var SSState = /** @class */ (function () {
+    function SSState() {
+    }
+    return SSState;
+}());
 var SudokuSolver = /** @class */ (function (_super) {
     __extends(SudokuSolver, _super);
     function SudokuSolver(props) {
         var _this = _super.call(this, props) || this;
         _this.setInitialState = function () {
-            _this.state = {};
+            _this.state = new SSState();
             _this.state.greeting = "Sudoku Puzzle : Status : ";
             _this.state.isValid = false;
             _this.state.hint = null;
@@ -49,7 +54,8 @@ var SudokuSolver = /** @class */ (function (_super) {
             /* if mode == possibleValues
                 this.cells[cellIndex].setPossibleValue(value)*/
             // if mode == value
-            if (value == "" || (!isNaN(value) && Number(value) > 0)) {
+            var isValidEntry = (value == "" || (!isNaN(value) && Number(value) > 0));
+            if (isValidEntry) {
                 _this.solverUtilities.checkToRemoveValidationError(cellIndex);
                 _this.solverUtilities.checkToRemoveHint(cellIndex);
                 _this.updateCell(cellIndex, value);
