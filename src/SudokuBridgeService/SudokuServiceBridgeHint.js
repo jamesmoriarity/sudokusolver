@@ -1,14 +1,13 @@
-"use strict";
-exports.__esModule = true;
+/// <reference path="../AlphaSudokuService/SudokuServiceHint.ts" />
 var SudokuServiceBridgeHint = /** @class */ (function () {
     function SudokuServiceBridgeHint() {
     }
-    SudokuServiceBridgeHint.fromSudokuServiceHint = function (ssh) {
-        var ssb = new SudokuServiceBridgeHint();
-        ssb.value = ssh.value;
-        ssb.index = ssh.index;
-        return ssb;
+    SudokuServiceBridgeHint.fromSudokuServiceHint = function (h) {
+        var ssbHint = new SudokuServiceBridgeHint();
+        ssbHint.value = h.value;
+        ssbHint.index = h.index;
+        ssbHint.type = h.type;
+        return ssbHint;
     };
     return SudokuServiceBridgeHint;
 }());
-exports["default"] = SudokuServiceBridgeHint;

@@ -1,8 +1,11 @@
-import SudokuServiceHint from "./SudokuServiceHint"
+/// <reference path="./SudokuServiceHint.ts" />
+/// <reference path="./SudokuServiceResponse.ts" />
+/// <reference path="./SudokuValidatorResult.ts" />
 
 class SudokuService{
 	puzzleArray:Array<Number>
 	callback:Function
+  isValid: any
 	constructor(){
 		this.puzzleArray = []
 		this.callback = null
@@ -91,7 +94,7 @@ class SudokuHintFinder{
 		this.cellsSetOpenNumbers()
 		let algorithmList = [this.findHiddenSingleInBoxes,this.findHiddenSingleInRows, this.findHiddenSingleInColumns, this.findNakedSingle]
 		for(let i = 0; i < algorithmList.length; i++){
-			let hint = algorithmList[i]()
+			let hint:SudokuServiceHint = algorithmList[i]()
 			if(hint != null){this.callback(hint); return}
 		}
 		this.callback(null)
@@ -132,7 +135,7 @@ class SudokuHintFinder{
 		for(let i = 0; i < len; i++){
 			let cell:SudokuSolutionCell = this.cells[i]
 			if(cell.value == "0" && cell.openNumbers.length == 1){
-		    		return (new SudokuHint(cell.index, String(cell.openNumbers[0]), "Naked Single"))
+		    		return (new SudokuServiceHint(cell.index, String(cell.openNumbers[0]), "Naked Single"))
 		    	}
 		}
 		return null
@@ -170,7 +173,7 @@ class SudokuHintFinder{
 		  if(cellIndexes.length == 1){
 		  	let index = cellIndexes[0]
 		  	let cell = cells[index]
-		  	return new SudokuHint(cell.index, key, "Hidden Single:" + type)
+		  	return new SudokuServiceHint(cell.index, key, "Hidden Single:" + type)
 		  }
 		}
 
@@ -277,17 +280,6 @@ class SudokuBox{
 			}
 		}
 		return nums
-	}
-}
-
-class SudokuHint{
-	index:Number
-	value:String
-	type:String
-	constructor(index:Number, value:String, type:String){
-		this.index = index
-		this.value = value
-		this.type = type
 	}
 }
 
@@ -400,15 +392,3 @@ class SudokuValidator{
 		this.callback(validatorResult)
 	}
 }
-
-class SudokuValidatorResult {
-	isValid:Boolean
-	isComplete:Boolean
-	errors:Array<Number>
-	constructor(isValid:Boolean, isComplete:Boolean, errors:Array<Number>){
-		this.isValid = isValid
-		this.isComplete = isComplete
-		this.errors = errors
-	}
-}
-export default SudokuService

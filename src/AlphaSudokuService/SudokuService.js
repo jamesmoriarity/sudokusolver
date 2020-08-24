@@ -1,5 +1,6 @@
-"use strict";
-exports.__esModule = true;
+/// <reference path="./SudokuServiceHint.ts" />
+/// <reference path="./SudokuServiceResponse.ts" />
+/// <reference path="./SudokuValidatorResult.ts" />
 var SudokuService = /** @class */ (function () {
     function SudokuService() {
         var _this = this;
@@ -118,7 +119,7 @@ var SudokuHintFinder = /** @class */ (function () {
             for (var i = 0; i < len; i++) {
                 var cell = _this.cells[i];
                 if (cell.value == "0" && cell.openNumbers.length == 1) {
-                    return (new SudokuHint(cell.index, String(cell.openNumbers[0]), "Naked Single"));
+                    return (new SudokuServiceHint(cell.index, String(cell.openNumbers[0]), "Naked Single"));
                 }
             }
             return null;
@@ -156,7 +157,7 @@ var SudokuHintFinder = /** @class */ (function () {
                 if (cellIndexes.length == 1) {
                     var index = cellIndexes[0];
                     var cell = cells[index];
-                    return new SudokuHint(cell.index, key, "Hidden Single:" + type);
+                    return new SudokuServiceHint(cell.index, key, "Hidden Single:" + type);
                 }
             }
             return null;
@@ -261,14 +262,6 @@ var SudokuBox = /** @class */ (function () {
     }
     return SudokuBox;
 }());
-var SudokuHint = /** @class */ (function () {
-    function SudokuHint(index, value, type) {
-        this.index = index;
-        this.value = value;
-        this.type = type;
-    }
-    return SudokuHint;
-}());
 var SudokuSolutionCell = /** @class */ (function () {
     function SudokuSolutionCell(index, value) {
         var _this = this;
@@ -359,12 +352,3 @@ var SudokuValidator = /** @class */ (function () {
     }
     return SudokuValidator;
 }());
-var SudokuValidatorResult = /** @class */ (function () {
-    function SudokuValidatorResult(isValid, isComplete, errors) {
-        this.isValid = isValid;
-        this.isComplete = isComplete;
-        this.errors = errors;
-    }
-    return SudokuValidatorResult;
-}());
-exports["default"] = SudokuService;

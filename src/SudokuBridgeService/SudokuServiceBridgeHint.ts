@@ -1,15 +1,16 @@
+/// <reference path="../AlphaSudokuService/SudokuServiceHint.ts" />
+
 class SudokuServiceBridgeHint{
   value:String
   index:Number
-  extra:Boolean
+  type:String
   constructor(){}
 
-  static fromSudokuServiceHint(ssh:SudokuServiceBridgeHint){
-    let ssb = new SudokuServiceBridgeHint()
-    ssb.value = ssh.value
-    ssb.index = ssh.index
-    return ssb
+  static fromSudokuServiceHint(h:SudokuServiceHint){
+    let ssbHint = new SudokuServiceBridgeHint()
+    ssbHint.value = h.value
+    ssbHint.index = h.index
+    ssbHint.type = h.type
+    return ssbHint
   }
 }
-
-export default SudokuServiceBridgeHint

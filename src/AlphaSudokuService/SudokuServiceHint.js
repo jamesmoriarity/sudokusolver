@@ -1,15 +1,15 @@
-"use strict";
-exports.__esModule = true;
 var SudokuServiceHint = /** @class */ (function () {
-    function SudokuServiceHint() {
+    function SudokuServiceHint(index, value, type) {
         var _this = this;
         this.setValue = function (val) {
             _this.value = val;
         };
         this.getValue = function () {
-            return ("aloha");
+            return (_this.value);
         };
+        this.index = index;
+        this.value = value;
+        this.type = type;
     }
     return SudokuServiceHint;
 }());
-exports["default"] = SudokuServiceHint;

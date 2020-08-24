@@ -1,7 +1,6 @@
-import SudokuServiceHint from "./SudokuServiceHint"
+/// <reference path="./SudokuServiceHint.ts" />
 
 class SudokuServiceResponse {
-
   isValid: Boolean = false
   isComplete: Boolean = false
   puzzle: SudokuPuzzle = null
@@ -37,7 +36,5 @@ class SudokuServiceResponse {
 
 
 class SudokuPuzzle{
-
+  puzzle:any
 }
-
-export default SudokuServiceResponse

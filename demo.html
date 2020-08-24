@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html title="sudoku solver">
   <script>var exports = {};</script>
+  <script src="https://cdn.jsdelivr.net/npm/commonjs-require@1.4.6/commonjs-require.js"></script>
   <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 
+  <script src="src/AlphaSudokuService/SudokuValidatorResult.js"></script>
   <script src="src/AlphaSudokuService/SudokuServiceResponse.js"></script>
+  <script src="src/AlphaSudokuService/SudokuServiceHint.js"></script>
   <script src="src/AlphaSudokuService/SudokuService.js"></script>
   <script src="src/SudokuBridgeService/SudokuServiceBridgeHint.js"></script>
-  <script src="src/SudokuBridgeService/SudokuBridgeService.jsx" type="text/babel"></script>
-  <script src="src/SudokuSolver/SudokuSolverUtilities.jsx" type="text/babel"></script>
+  <script src="src/SudokuBridgeService/SudokuBridgeService.js"></script>
+
+  <script src="src/SudokuSolver/SudokuSolverUtilities.js"></script>
   <script src="src/SudokuSolver/Renderer/CellShell.jsx" type="text/babel"></script>
   <script src="src/SudokuSolver/Renderer/SudokuRenderer.jsx" type="text/babel"></script>
   <style type="text/css">
-
     div {
       box-sizing:border-box;
     }
@@ -72,12 +75,14 @@
     .row-bottom{
       border-bottom:3px solid grey;
     }
-
-
-
   </style>
+
   <body>
     <div id="sudoku_solver_shell"></div>
-    <script src="src/SudokuSolver/SudokuSolver.jsx" type="text/babel"></script>
+    <script>
+      console.log("before");
+      //ReactDOM.render(<SudokuSolver />, document.getElementById('sudoku_solver_shell'))
+    </script>
+    <script src="src/SudokuSolver/SudokuSolver.jsx" type="text/babel">
   </body>
 </html>

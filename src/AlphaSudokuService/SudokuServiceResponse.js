@@ -1,5 +1,4 @@
-"use strict";
-exports.__esModule = true;
+/// <reference path="./SudokuServiceHint.ts" />
 var SudokuServiceResponse = /** @class */ (function () {
     function SudokuServiceResponse(isValid) {
         var _this = this;
@@ -36,4 +35,3 @@ var SudokuPuzzle = /** @class */ (function () {
     }
     return SudokuPuzzle;
 }());
-exports["default"] = SudokuServiceResponse;
