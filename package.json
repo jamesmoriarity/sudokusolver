@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
     "babel-cli": "^6.26.0",
     "babel-preset-react-app": "^3.1.2",
     "prop-types": "^15.7.2",

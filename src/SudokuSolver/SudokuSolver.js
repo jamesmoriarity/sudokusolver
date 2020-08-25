@@ -1,4 +1,5 @@
 /// <reference types="react" />
+/// <reference types="react-dom" />
 /// <reference path="./SudokuSolverUtilities.ts" />
 /// <reference path="./Renderer/SudokuRenderer.jsx" />
 var __extends = this && this.__extends || function () {
