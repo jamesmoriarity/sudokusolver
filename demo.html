@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html title="sudoku solver">
-  <script>var exports = {};</script>
+<head>
   <script src="https://cdn.jsdelivr.net/npm/commonjs-require@1.4.6/commonjs-require.js"></script>
   <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-
   <script src="src/SudokuSolver/Renderer/SudokuRenderer.js"></script>
   <script src="src/AlphaSudokuService/SudokuValidatorResult.js"></script>
   <script src="src/AlphaSudokuService/SudokuServiceResponse.js"></script>
@@ -15,75 +14,13 @@
   <script src="src/SudokuBridgeService/SudokuBridgeService.js"></script>
   <script src="src/SudokuSolver/SudokuSolverUtilities.js"></script>
   <script src="src/SudokuSolver/Renderer/CellShell.js"></script>
-  <style type="text/css">
-    div {
-      box-sizing:border-box;
-    }
-    input {
-      width: 30px;
-      height: 30px;
-      border: 0;
-      margin: 0;
-      margin-top: 3px;
-      text-align:center;
-      font-size: 27px;
-      background:none;
-      outline-width: 0;
-    }
-    input.middle:focus {}
-
-    #sudoku_solver_shell  {}
-    #grid {
-      /* -- width: 700px; --*/
-      margin: 30px;
-      /* border: 3px solid grey; */
-      display: inline-block
-    }
-
-    .cell_shell{
-      margin: 0px;
-      margin-left: -1px;
-      width: 44.3px;
-      height: 40px;
-      overflow: hidden;
-      border: 1px solid grey;
-      margin-top: 0px;
-      margin-bottom: -5px;
-      display:inline-block;
-      text-align:center;
-    }
-
-    .invalidCell{
-      background-color:red;
-    }
-    .invalidCell input{
-      color:white;
-    }
-    .hintedCell{
-      background-color:#d6ea12;
-    }
-    .hintValueRelatedCell{
-      background-color:#e1e6a8;;
-    }
-    .hintBackgroundCell{
-      background-color:#dddddd;
-    }
-    .column-right{
-      border-right:3px solid grey;
-    }
-    .row-bottom{
-      border-bottom:3px solid grey;
-    }
-  </style>
-
+  <script src="src/SudokuSolver/SudokuSolver.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+</head>
   <body>
     <div id="sudoku_solver_shell"></div>
-    <script>
-      console.log("before");
-    </script>
-    <script src="src/SudokuSolver/SudokuSolver.js">
-    <script>
-      console.log("afterl");
-    </script>
   </body>
+  <script>
+    ReactDOM.render(React.createElement(SudokuSolver, null), document.getElementById('sudoku_solver_shell'))
+  </script>
 </html>

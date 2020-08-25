@@ -139,4 +139,3 @@ var SudokuSolver = /** @class */ (function (_super) {
     };
     return SudokuSolver;
 }(React.Component));
-ReactDOM.render(React.createElement(SudokuSolver, null), document.getElementById('sudoku_solver_shell'));

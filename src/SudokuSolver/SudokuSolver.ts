@@ -145,4 +145,3 @@
     	 		return renderer.render(this)
     		}
       }
-      ReactDOM.render(React.createElement(SudokuSolver, null),document.getElementById('sudoku_solver_shell'));
