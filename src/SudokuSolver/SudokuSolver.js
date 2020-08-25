@@ -30,12 +30,7 @@ var __spreadArrays = this && this.__spreadArrays || function () {
     }return r;
 };
 var SSState = /** @class */function () {
-    function SSState() {
-        var _this = this;
-        this.getPuzzleArray = function () {
-            return _this.puzzleArray;
-        };
-    }
+    function SSState() {}
     return SSState;
 }();
 var SudokuSolver = /** @class */function (_super) {

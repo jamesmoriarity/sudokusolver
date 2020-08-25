@@ -12,10 +12,6 @@
         originalPuzzleArray:Array<String>
         patternMap:Object
         constructor(){}
-        getPuzzleArray = () =>{
-          return this.puzzleArray
-        }
-
       }
 
       class SudokuSolver extends React.Component {
@@ -142,13 +138,10 @@
     			this.updateCell(sbsResponse.hint.index, sbsResponse.hint.value)
     	 		console.log("sbsResponse: hint " + sbsResponse.hint.type)
     	 	}
-
     	 	//-- render
-
     		render() {
     			let renderer = new SudokuRenderer()
     	 		return renderer.render(this)
     		}
-
       }
       ReactDOM.render(React.createElement(SudokuSolver, null),document.getElementById('sudoku_solver_shell'));
