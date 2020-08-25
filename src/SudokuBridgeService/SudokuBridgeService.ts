@@ -3,6 +3,7 @@
 /// <reference path="../AlphaSudokuService/SudokuServiceResponse.ts" />
 /// <reference path="./SudokuServiceBridgeHint.ts" />
 
+console.log("SudokuBridgeService")
 class SudokuBridgeService {
 	service:SudokuService
 	clientCallback:Function

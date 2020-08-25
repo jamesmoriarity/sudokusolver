@@ -1,16 +1,20 @@
       /// <reference types="react" />
       /// <reference path="./SudokuSolverUtilities.ts" />
       /// <reference path="./Renderer/SudokuRenderer.jsx" />
+
       class SSState {
         greeting:String
         isValid:Boolean
         hint:SudokuServiceBridgeHint
-        puzzleArray:Array<Number>
+        puzzleArray:Array<String>
         validationErrors:Array<Number>
         isComplete:Boolean
         originalPuzzleArray:Array<String>
         patternMap:Object
         constructor(){}
+        getPuzzleArray = () =>{
+          return this.puzzleArray
+        }
 
       }
 
@@ -111,7 +115,7 @@
     	 	}
 
         getPuzzleArray = () =>{
-          let a:Array<String> = this.getPuzzleArray()
+          let a:Array<String> = this.state.puzzleArray
           return a
         }
 
@@ -147,5 +151,4 @@
     		}
 
       }
-
-    //  ReactDOM.render(<SudokuSolver />, document.getElementById('sudoku_solver_shell'))
+      ReactDOM.render(React.createElement(SudokuSolver, null),document.getElementById('sudoku_solver_shell'));

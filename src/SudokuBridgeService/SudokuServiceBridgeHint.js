@@ -1,7 +1,6 @@
 /// <reference path="../AlphaSudokuService/SudokuServiceHint.ts" />
-var SudokuServiceBridgeHint = /** @class */ (function () {
-    function SudokuServiceBridgeHint() {
-    }
+var SudokuServiceBridgeHint = /** @class */function () {
+    function SudokuServiceBridgeHint() {}
     SudokuServiceBridgeHint.fromSudokuServiceHint = function (h) {
         var ssbHint = new SudokuServiceBridgeHint();
         ssbHint.value = h.value;
@@ -10,4 +9,4 @@ var SudokuServiceBridgeHint = /** @class */ (function () {
         return ssbHint;
     };
     return SudokuServiceBridgeHint;
-}());
+}();

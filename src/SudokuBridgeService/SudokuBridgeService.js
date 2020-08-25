@@ -2,14 +2,17 @@
 /// <reference path="../AlphaSudokuService/SudokuValidatorResult.ts" />
 /// <reference path="../AlphaSudokuService/SudokuServiceResponse.ts" />
 /// <reference path="./SudokuServiceBridgeHint.ts" />
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+var __spreadArrays = this && this.__spreadArrays || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
+        s += arguments[i].length;
+    }for (var r = Array(s), k = 0, i = 0; i < il; i++) {
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) {
             r[k] = a[j];
-    return r;
+        }
+    }return r;
 };
-var SudokuBridgeService = /** @class */ (function () {
+console.log("SudokuBridgeService");
+var SudokuBridgeService = /** @class */function () {
     function SudokuBridgeService() {
         var _this = this;
         this.getHint = function (puzzleString, callback) {
@@ -19,8 +22,7 @@ var SudokuBridgeService = /** @class */ (function () {
         this.onHintReceived = function (sudokuServiceResponse) {
             if (!sudokuServiceResponse.isValid) {
                 _this.clientCallback(new SBSResponse(false));
-            }
-            else {
+            } else {
                 var sbsResponse = new SBSResponse(true);
                 var ssbHint = SudokuServiceBridgeHint.fromSudokuServiceHint(sudokuServiceResponse.getHint());
                 sbsResponse.setHint(ssbHint);
@@ -50,20 +52,19 @@ var SudokuBridgeService = /** @class */ (function () {
             if (serviceResponse.isValid) {
                 var sbsr = new SBSResponse(true);
                 sbsr.setPuzzle(serviceResponse.puzzle.puzzle);
-                return (sbsr);
-            }
-            else {
+                return sbsr;
+            } else {
                 var sbsr = new SBSResponse(false);
                 sbsr.setErrors(serviceResponse.errors);
-                return (sbsr);
+                return sbsr;
             }
         };
         this.service = new SudokuService();
         this.clientCallback = null;
     }
     return SudokuBridgeService;
-}());
-var SBSResponse = /** @class */ (function () {
+}();
+var SBSResponse = /** @class */function () {
     function SBSResponse(isValid) {
         var _this = this;
         this.setPuzzle = function (p) {
@@ -85,4 +86,4 @@ var SBSResponse = /** @class */ (function () {
         this.isComplete = false;
     }
     return SBSResponse;
-}());
+}();

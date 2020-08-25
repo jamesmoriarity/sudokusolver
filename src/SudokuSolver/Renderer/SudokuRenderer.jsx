@@ -1,3 +1,6 @@
+
+console.log("SudokuRenderer.jsx")
+
 	class SudokuRenderer{
 
 		constructor(){  // expects a RenderClient interface

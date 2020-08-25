@@ -1,32 +1,44 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 /// <reference types="react" />
 /// <reference path="./SudokuSolverUtilities.ts" />
 /// <reference path="./Renderer/SudokuRenderer.jsx" />
-var SSState = /** @class */ (function () {
+var __extends = this && this.__extends || function () {
+    var _extendStatics = function extendStatics(d, b) {
+        _extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+            d.__proto__ = b;
+        } || function (d, b) {
+            for (var p in b) {
+                if (b.hasOwnProperty(p)) d[p] = b[p];
+            }
+        };
+        return _extendStatics(d, b);
+    };
+    return function (d, b) {
+        _extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+var __spreadArrays = this && this.__spreadArrays || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
+        s += arguments[i].length;
+    }for (var r = Array(s), k = 0, i = 0; i < il; i++) {
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) {
+            r[k] = a[j];
+        }
+    }return r;
+};
+var SSState = /** @class */function () {
     function SSState() {
+        var _this = this;
+        this.getPuzzleArray = function () {
+            return _this.puzzleArray;
+        };
     }
     return SSState;
-}());
-var SudokuSolver = /** @class */ (function (_super) {
+}();
+var SudokuSolver = /** @class */function (_super) {
     __extends(SudokuSolver, _super);
     function SudokuSolver(props) {
         var _this = _super.call(this, props) || this;
@@ -54,7 +66,7 @@ var SudokuSolver = /** @class */ (function (_super) {
             /* if mode == possibleValues
                 this.cells[cellIndex].setPossibleValue(value)*/
             // if mode == value
-            var isValidEntry = (value == "" || (!isNaN(value) && Number(value) > 0));
+            var isValidEntry = value == "" || !isNaN(value) && Number(value) > 0;
             if (isValidEntry) {
                 _this.solverUtilities.checkToRemoveValidationError(cellIndex);
                 _this.solverUtilities.checkToRemoveHint(cellIndex);
@@ -73,8 +85,7 @@ var SudokuSolver = /** @class */ (function (_super) {
         _this.onNewPuzzle = function (sbsResponse) {
             if (sbsResponse.isValid) {
                 _this.setNewPuzzle(sbsResponse);
-            }
-            else {
+            } else {
                 alert("puzzle load failed: " + sbsResponse.errors.join(":"));
             }
         };
@@ -106,7 +117,7 @@ var SudokuSolver = /** @class */ (function (_super) {
             });
         };
         _this.getPuzzleArray = function () {
-            var a = _this.getPuzzleArray();
+            var a = _this.state.puzzleArray;
             return a;
         };
         //-- validation
@@ -137,5 +148,5 @@ var SudokuSolver = /** @class */ (function (_super) {
         return renderer.render(this);
     };
     return SudokuSolver;
-}(React.Component));
-//  ReactDOM.render(<SudokuSolver />, document.getElementById('sudoku_solver_shell'))
+}(React.Component);
+ReactDOM.render(React.createElement(SudokuSolver, null), document.getElementById('sudoku_solver_shell'));

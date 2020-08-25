@@ -1,8 +1,9 @@
+console.log("SudokuSolverUtilities")
+
 class ClientSolver{
 	state:any
 	setState = (o:Object) =>{this.state = o}
 }
-
 
 class SudokuSolverUtilities{
 		clientSolver:ClientSolver

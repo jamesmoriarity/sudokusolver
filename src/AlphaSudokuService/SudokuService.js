@@ -1,7 +1,7 @@
 /// <reference path="./SudokuServiceHint.ts" />
 /// <reference path="./SudokuServiceResponse.ts" />
 /// <reference path="./SudokuValidatorResult.ts" />
-var SudokuService = /** @class */ (function () {
+var SudokuService = /** @class */function () {
     function SudokuService() {
         var _this = this;
         // ----- hint
@@ -29,8 +29,7 @@ var SudokuService = /** @class */ (function () {
                 ssr.setIsComplete(result.isComplete);
                 ssr.setErrors(result.errors);
                 _this.callback(ssr);
-            }
-            else {
+            } else {
                 _this.callback(_this.getFailedValidationServiceResponse(result.errors));
             }
         };
@@ -41,9 +40,9 @@ var SudokuService = /** @class */ (function () {
         };
         // ---- new puzzle
         this.getNewPuzzle = function (callback) {
-            fetch("./json/puzzle.json")
-                .then(function (res) { return res.json(); })
-                .then(function (res) {
+            fetch("./json/puzzle.json").then(function (res) {
+                return res.json();
+            }).then(function (res) {
                 callback(_this.getSuccessfulNewPuzzleServiceResponse(res));
             }, function (error) {
                 callback(_this.getFailedNewPuzzleServiceResponse(error));
@@ -63,9 +62,9 @@ var SudokuService = /** @class */ (function () {
         this.callback = null;
     }
     return SudokuService;
-}());
+}();
 // ------ Sudoku Hint
-var SudokuHintFinder = /** @class */ (function () {
+var SudokuHintFinder = /** @class */function () {
     function SudokuHintFinder() {
         var _this = this;
         this.findHint = function (puzzleString, callback) {
@@ -119,7 +118,7 @@ var SudokuHintFinder = /** @class */ (function () {
             for (var i = 0; i < len; i++) {
                 var cell = _this.cells[i];
                 if (cell.value == "0" && cell.openNumbers.length == 1) {
-                    return (new SudokuServiceHint(cell.index, String(cell.openNumbers[0]), "Naked Single"));
+                    return new SudokuServiceHint(cell.index, String(cell.openNumbers[0]), "Naked Single");
                 }
             }
             return null;
@@ -169,14 +168,14 @@ var SudokuHintFinder = /** @class */ (function () {
         this.columns = [];
     }
     return SudokuHintFinder;
-}());
-var SudokuColumn = /** @class */ (function () {
+}();
+var SudokuColumn = /** @class */function () {
     function SudokuColumn(index, cells) {
         var _this = this;
         this.setCells = function () {
             var offset = Number(_this.index) % 9;
             for (var i = 0; i < 9; i++) {
-                var cell = _this.allCells[(i * 9) + offset];
+                var cell = _this.allCells[i * 9 + offset];
                 cell.setColumn(_this);
                 _this.cells.push(cell);
             }
@@ -198,8 +197,8 @@ var SudokuColumn = /** @class */ (function () {
         this.allCells = null;
     }
     return SudokuColumn;
-}());
-var SudokuRow = /** @class */ (function () {
+}();
+var SudokuRow = /** @class */function () {
     function SudokuRow(index, cells) {
         var _this = this;
         this.setCells = function () {
@@ -226,17 +225,17 @@ var SudokuRow = /** @class */ (function () {
         this.setCells();
     }
     return SudokuRow;
-}());
-var SudokuBox = /** @class */ (function () {
+}();
+var SudokuBox = /** @class */function () {
     function SudokuBox(index, cells) {
         var _this = this;
         this.setCells = function () {
             var indexPerCells = Number(_this.index) / Number(_this.cellsInABoxRow);
             var rowStartIndex = Math.floor(indexPerCells) * Number(_this.cellsInABoxRow);
-            var columnStartIndex = (Number(_this.index) % Number(_this.cellsInABoxRow)) * Number(_this.cellsInABoxRow);
+            var columnStartIndex = Number(_this.index) % Number(_this.cellsInABoxRow) * Number(_this.cellsInABoxRow);
             for (var i = 0; i < 3; i++) {
                 for (var j = 0; j < 3; j++) {
-                    var fullIndex = (Number(rowStartIndex) * 9) + (i * 9) + columnStartIndex + j;
+                    var fullIndex = Number(rowStartIndex) * 9 + i * 9 + columnStartIndex + j;
                     var cell = _this.allCells[fullIndex];
                     cell.setBox(_this);
                     _this.cells.push(cell);
@@ -261,8 +260,8 @@ var SudokuBox = /** @class */ (function () {
         this.setCells();
     }
     return SudokuBox;
-}());
-var SudokuSolutionCell = /** @class */ (function () {
+}();
+var SudokuSolutionCell = /** @class */function () {
     function SudokuSolutionCell(index, value) {
         var _this = this;
         this.setRow = function (row) {
@@ -301,9 +300,9 @@ var SudokuSolutionCell = /** @class */ (function () {
         this.openNumbers = [];
     }
     return SudokuSolutionCell;
-}());
+}();
 // --------------------------------
-var SudokuValidator = /** @class */ (function () {
+var SudokuValidator = /** @class */function () {
     function SudokuValidator() {
         var _this = this;
         this.validate = function (puzzleString, callback) {
@@ -313,9 +312,9 @@ var SudokuValidator = /** @class */ (function () {
             _this.getPuzzleSolution();
         };
         this.getPuzzleSolution = function () {
-            fetch("./json/puzzle.json")
-                .then(function (res) { return res.json(); })
-                .then(function (res) {
+            fetch("./json/puzzle.json").then(function (res) {
+                return res.json();
+            }).then(function (res) {
                 _this.onSolutionReceived(res.puzzle.solution);
             }, function (error) {
                 console.log('getPuzzleSolution.error' + error);
@@ -337,7 +336,7 @@ var SudokuValidator = /** @class */ (function () {
             if (isValid) {
                 var sv = String(solutionString);
                 var ps = String(_this.puzzleString);
-                isComplete = (sv == ps);
+                isComplete = sv == ps;
             }
             _this.onValidate(new SudokuValidatorResult(isValid, isComplete, errors));
         };
@@ -351,4 +350,4 @@ var SudokuValidator = /** @class */ (function () {
         this.callback = null;
     }
     return SudokuValidator;
-}());
+}();
