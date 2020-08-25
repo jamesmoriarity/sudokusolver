@@ -1,5 +1,5 @@
 /// <reference path="./SudokuServiceHint.ts" />
-var SudokuServiceResponse = /** @class */function () {
+var SudokuServiceResponse = /** @class */ (function () {
     function SudokuServiceResponse(isValid) {
         var _this = this;
         this.isValid = false;
@@ -29,8 +29,9 @@ var SudokuServiceResponse = /** @class */function () {
         this.className = "c";
     }
     return SudokuServiceResponse;
-}();
-var SudokuPuzzle = /** @class */function () {
-    function SudokuPuzzle() {}
+}());
+var SudokuPuzzle = /** @class */ (function () {
+    function SudokuPuzzle() {
+    }
     return SudokuPuzzle;
-}();
+}());

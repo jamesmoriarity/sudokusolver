@@ -1,14 +1,12 @@
 console.log("SudokuSolverUtilities");
-var ClientSolver = /** @class */function () {
+var ClientSolver = /** @class */ (function () {
     function ClientSolver() {
         var _this = this;
-        this.setState = function (o) {
-            _this.state = o;
-        };
+        this.setState = function (o) { _this.state = o; };
     }
     return ClientSolver;
-}();
-var SudokuSolverUtilities = /** @class */function () {
+}());
+var SudokuSolverUtilities = /** @class */ (function () {
     function SudokuSolverUtilities(clientSolver) {
         var _this = this;
         this.checkToRemoveHint = function (cellIndex) {
@@ -18,9 +16,7 @@ var SudokuSolverUtilities = /** @class */function () {
         };
         this.checkToRemoveValidationError = function (cellIndex) {
             if (_this.clientSolver.state.validationErrors.includes(cellIndex)) {
-                var updatedValErrors = _this.clientSolver.state.validationErrors.filter(function (element) {
-                    return element != cellIndex;
-                });
+                var updatedValErrors = _this.clientSolver.state.validationErrors.filter(function (element) { return element != cellIndex; });
                 _this.clientSolver.setState({ validationErrors: updatedValErrors });
             }
         };
@@ -62,4 +58,4 @@ var SudokuSolverUtilities = /** @class */function () {
         return { "hintBackgroundCells": hintBackgroundCells, "hintValueRelatedCells": hintValueRelatedCells };
     };
     return SudokuSolverUtilities;
-}();
+}());

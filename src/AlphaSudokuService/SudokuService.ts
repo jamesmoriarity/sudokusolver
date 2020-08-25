@@ -6,6 +6,7 @@ class SudokuService{
 	puzzleArray:Array<Number>
 	callback:Function
   isValid: any
+	
 	constructor(){
 		this.puzzleArray = []
 		this.callback = null

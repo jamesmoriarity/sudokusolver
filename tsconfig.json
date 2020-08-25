@@ -1,1 +1,4 @@
-{"compileOnSave": true}
+{ "compileOnSave": true,
+  "compilerOptions": {"jsx": "react"},
+  "module":"None"
+}

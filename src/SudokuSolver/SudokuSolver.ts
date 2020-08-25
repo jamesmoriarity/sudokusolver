@@ -1,7 +1,7 @@
       /// <reference types="react" />
       /// <reference types="react-dom" />
       /// <reference path="./SudokuSolverUtilities.ts" />
-      /// <reference path="./Renderer/SudokuRenderer.jsx" />
+      /// <reference path="./Renderer/SudokuRenderer.js" />
 
       class SSState {
         greeting:String

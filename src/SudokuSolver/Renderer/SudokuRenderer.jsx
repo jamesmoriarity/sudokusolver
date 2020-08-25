@@ -1,8 +1,7 @@
 
-console.log("SudokuRenderer.jsx")
+console.log("SudokuRenderer1.jsx")
 
 	class SudokuRenderer{
-
 		constructor(){  // expects a RenderClient interface
 			this.renderClient = null
 			this.state = null
