@@ -11,19 +11,28 @@ class SudokuSolverUtilities{
 			this.clientSolver = clientSolver
 		}
 
+		isValidEntry = (s:String) =>{
+			if(s == ""){return true}
+			let n:number = Number(s).valueOf()
+			if(!isNaN(n) && n > 0 && n < 10){
+				return true
+			}
+			return false
+		}
+
 		getPatternMap(){
 			let hintBackgroundCells:Array<Number> = [0,1,3,4,5,6,7,8,6,15,16,24,33,42,51,60,78,8,17,26,35,53,62,71,80]
 			let hintValueRelatedCells:Array<Number> = [2,69,44]
 			return {"hintBackgroundCells": hintBackgroundCells, "hintValueRelatedCells": hintValueRelatedCells}
 		}
 
-	 	checkToRemoveHint = (cellIndex:Number) => {
+	 	checkToRemoveRelatedHint = (cellIndex:Number) => {
 	 		if(this.clientSolver.state.hint != null && cellIndex == this.clientSolver.state.hint.index){
 				this.clientSolver.setState({hint:null, patternMap:null})
 	 		}
 	 	}
 
-	 	checkToRemoveValidationError = (cellIndex:Number) => {
+	 	checkToRemoveRelatedValidationError = (cellIndex:Number) => {
 	 		if(this.clientSolver.state.validationErrors.includes(cellIndex)){
 				let updatedValErrors = this.clientSolver.state.validationErrors.filter(
 					function(element:Number){ return element != cellIndex }
@@ -41,7 +50,7 @@ class SudokuSolverUtilities{
 	 		return a
 	 	}
 
-	 	toString = (arr:Array<String>) => {
+	 	puzzleArrayToString = (arr:Array<String>) => {
 	 		let len:Number = arr.length
 	 		let str:String = ""
 	 		for(let i = 0; i < len; i++){

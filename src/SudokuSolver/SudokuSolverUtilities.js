@@ -9,12 +9,22 @@ var ClientSolver = /** @class */ (function () {
 var SudokuSolverUtilities = /** @class */ (function () {
     function SudokuSolverUtilities(clientSolver) {
         var _this = this;
-        this.checkToRemoveHint = function (cellIndex) {
+        this.isValidEntry = function (s) {
+            if (s == "") {
+                return true;
+            }
+            var n = Number(s).valueOf();
+            if (!isNaN(n) && n > 0 && n < 10) {
+                return true;
+            }
+            return false;
+        };
+        this.checkToRemoveRelatedHint = function (cellIndex) {
             if (_this.clientSolver.state.hint != null && cellIndex == _this.clientSolver.state.hint.index) {
                 _this.clientSolver.setState({ hint: null, patternMap: null });
             }
         };
-        this.checkToRemoveValidationError = function (cellIndex) {
+        this.checkToRemoveRelatedValidationError = function (cellIndex) {
             if (_this.clientSolver.state.validationErrors.includes(cellIndex)) {
                 var updatedValErrors = _this.clientSolver.state.validationErrors.filter(function (element) { return element != cellIndex; });
                 _this.clientSolver.setState({ validationErrors: updatedValErrors });
@@ -27,7 +37,7 @@ var SudokuSolverUtilities = /** @class */ (function () {
             }
             return a;
         };
-        this.toString = function (arr) {
+        this.puzzleArrayToString = function (arr) {
             var len = arr.length;
             var str = "";
             for (var i = 0; i < len; i++) {

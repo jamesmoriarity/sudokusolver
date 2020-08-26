@@ -25,9 +25,8 @@ var SudokuService = /** @class */ (function () {
         };
         this.onValidate = function (result) {
             if (result.isValid) {
-                var ssr = new SudokuServiceResponse(result.isValid);
+                var ssr = new SudokuServiceResponse(true);
                 ssr.setIsComplete(result.isComplete);
-                ssr.setErrors(result.errors);
                 _this.callback(ssr);
             }
             else {

@@ -46,10 +46,8 @@ console.log("SudokuRenderer1.jsx")
 	 				isHinted={this.isListItemHinted(fullIndex, value)}
 	 				value={value}
 	 				onCellChange={this.renderClient.onCellChange}/></td>
-
 			return cell
 		}
-
 		isListItemHintRelated = (index, value) => {
 			/*
 				get the rows and columns in the same box as the hinted cell
@@ -88,14 +86,10 @@ console.log("SudokuRenderer1.jsx")
 			let b = (this.state.hint == null) ? false : (this.state.hint.index != index && this.state.hint.value == value && String(this.state.hint.type).includes("Hidden Single") )
 			return b
 		}
-
 		isListItemHinted = (index, value) => {
 			let b = (this.state.hint == null) ? false : (this.state.hint.index == index)
 			return b
 		}
-
-
-
 	 	buildPuzzleGridFromArray = (arr) => {
 			let grid = []
 			for(let i = 0; i < 9; i++){
@@ -108,5 +102,4 @@ console.log("SudokuRenderer1.jsx")
 			}
 			return grid
 		}
-
 	}

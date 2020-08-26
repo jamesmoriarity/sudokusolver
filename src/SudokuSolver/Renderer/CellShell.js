@@ -13,7 +13,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-console.log("CellShell tsx");
 var CellShell = /** @class */ (function (_super) {
     __extends(CellShell, _super);
     function CellShell(props) {
@@ -47,16 +46,22 @@ var CellShell = /** @class */ (function (_super) {
                     }
                 }
             }
-            if (colIndex == 2 || colIndex == 5)
+            if (_this.isSideOfBox(colIndex))
                 classes.push("column-right");
-            if (rowIndex == 2 || rowIndex == 5)
+            if (_this.isBottomOfBox(rowIndex))
                 classes.push("row-bottom");
-            if (!_this.isListItemValid(_this.getProps().index))
+            if (_this.isInvalidCell(_this.getProps().index))
                 classes.push("invalidCell");
             return classes.join(" ");
         };
-        _this.isListItemValid = function (index) {
-            var b = !_this.renderClient.state.validationErrors.includes(index);
+        _this.isBottomOfBox = function (rowIndex) {
+            return (rowIndex == 2 || rowIndex == 5);
+        };
+        _this.isSideOfBox = function (colIndex) {
+            return (colIndex == 2 || colIndex == 5);
+        };
+        _this.isInvalidCell = function (index) {
+            var b = _this.renderClient.state.validationErrors.includes(index);
             return b;
         };
         _this.renderClient = props.renderClient;

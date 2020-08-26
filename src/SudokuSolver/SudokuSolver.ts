@@ -12,11 +12,17 @@
         isComplete:Boolean
         originalPuzzleArray:Array<String>
         patternMap:Object
-        constructor(){}
+        constructor(){
+    	 		this.greeting = "Sudoku Puzzle : Status : "
+          this.patternMap = {}
+    	 		this.validationErrors = []
+    	 		this.isComplete = false
+    	 		this.isValid = false
+    	 		this.hint = null
+        }
       }
 
       class SudokuSolver extends React.Component {
-
         solverUtilities:SudokuSolverUtilities
         state:SSState
 
@@ -27,40 +33,43 @@
     	 	}
 
     	 	setInitialState = () => {
-    	 		this.state = new SSState()
-    	 		this.state.greeting = "Sudoku Puzzle : Status : "
-    	 		this.state.isValid = false
-    	 		this.state.hint = null
-    	 		this.state.puzzleArray = this.solverUtilities.buildEmptyPuzzleArray()
-    	 		this.state.validationErrors = []
-    	 		this.state.isComplete = false
-    	 		this.state.originalPuzzleArray = [...this.getPuzzleArray()]
-    	 		this.state.patternMap = {}
-    	 		this.setState(this.state)
+    	 		let sss = new SSState()
+    	 		sss.puzzleArray = this.solverUtilities.buildEmptyPuzzleArray()
+    	 		sss.originalPuzzleArray = this.solverUtilities.buildEmptyPuzzleArray()
+    	 		this.state = sss
+          // don't use setState at this point, because no state obj exists yet
+          // use setState after setInitialState has fired
     	 	}
 
     	 	//-- utility functions
 
-    	 	getService = () => {
+    	 	getBridgeService = () => {
     	 		return new SudokuBridgeService()
     	 	}
+
+        getPuzzleArray = () =>{
+          let a:Array<String> = this.state.puzzleArray
+          return a
+        }
+        toString = () =>{
+          return this.solverUtilities.puzzleArrayToString(this.getPuzzleArray())
+        }
+
 
     	 	//-- Cell Change
 
     	 	onCellChange = (event:any, cellIndex:Number) => {
-    			let value = event.target.value
-    	 		/* if mode == pencil
-    				this.cells[cellIndex].setPencil(value)*/
-    	 		/* if mode == possibleValues
-    				this.cells[cellIndex].setPossibleValue(value)*/
+    	 		/* if mode == pencil this.cells[cellIndex].setPencil(value)*/
+    	 		/* if mode == possibleValues this.cells[cellIndex].setPossibleValue(value)*/
           // if mode == value
-          let isValidEntry:Boolean = (value == "" || (!isNaN(value) && Number(value) > 0))
-    	 		if(isValidEntry){
-    		 		this.solverUtilities.checkToRemoveValidationError(cellIndex);
-    		 		this.solverUtilities.checkToRemoveHint(cellIndex)
-    	 			this.updateCell(cellIndex, value)
+          let valString = String(event.target.value)
+    	 		if(this.solverUtilities.isValidEntry(valString)){
+    		 		this.solverUtilities.checkToRemoveRelatedValidationError(cellIndex);
+    		 		this.solverUtilities.checkToRemoveRelatedHint(cellIndex)
+    	 			this.updateCell(cellIndex, valString)
     	 		}
     	 	}
+
     	 	updateCell = (cellIndex:any, value:String) => {
      			let newArray:Array<String> = this.getPuzzleArray()
      			newArray[cellIndex] = value
@@ -69,7 +78,7 @@
 
     	 	//-- new puzzle
     	 	newPuzzle = () => {
-    	 		this.getService().getNewPuzzle(this.onNewPuzzle)
+    	 		this.getBridgeService().getNewPuzzle(this.onNewPuzzle)
     	 	}
 
     	 	onNewPuzzle = (sbsResponse:SBSResponse) =>{
@@ -77,23 +86,23 @@
     	 			this.setNewPuzzle(sbsResponse)
     	 		}
     	 		else{
-    	 			alert("puzzle load failed: " + sbsResponse.errors.join(":"))
+    	 			this.handlePuzzleLoadFailure(sbsResponse)
     	 		}
-
     	 	}
+
+        handlePuzzleLoadFailure = (sbsResponse:SBSResponse) =>{
+          alert("puzzle load failed: " + sbsResponse.errors.join(":"))
+        }
 
     	 	setNewPuzzle = (sbsResponse:SBSResponse) => {
-    	 		let s = String(sbsResponse.puzzle.start)
-    	 		let a = this.solverUtilities.puzzleStringToArray(s)
-    	 		this.setState({
-    	 						puzzleArray:a,
-    	 						originalPuzzleArray: [...a],
-    	 						isValid:true,
-    	 						isComplete:false,
-    	 						validationErrors:[],
-    	 						hint:null,
-    	 						patternMap:null	})
-    	 	}
+    	 		let startNumbers = String(sbsResponse.puzzle.start)
+    	 		let a = this.solverUtilities.puzzleStringToArray(startNumbers)
+    	 		let newState = new SSState()
+    	 		newState.puzzleArray = a
+    	 		newState.originalPuzzleArray = [...a]
+    	 		newState.isValid = true
+          this.setState(newState)
+    	}
 
     	 	//-- reset
 
@@ -102,38 +111,23 @@
     	 	}
 
     	 	resetPuzzle = () => {
-    	 		this.setState({
-    	 						puzzleArray: [...this.state.originalPuzzleArray],
-    	 						isValid: true,
-    	 						isComplete: false,
-    	 						validationErrors: [],
-    	 						hint: null,
-    	 						patternMap: null	})
+          let state:SSState = new SSState()
+          state.puzzleArray = [...this.state.originalPuzzleArray]
+          state.isValid = true
+    	 		this.setState(state)
     	 	}
-
-        getPuzzleArray = () =>{
-          let a:Array<String> = this.state.puzzleArray
-          return a
-        }
 
     	 	//-- validation
-
+        validate = () => {
+          this.getBridgeService().validate(this.toString(), this.onValidate)
+        }
     	 	onValidate = (sbsResponse:SBSResponse) => {
-    	 		this.setState({puzzlieArray:[...this.getPuzzleArray()], isValid:sbsResponse.isValid, isComplete:sbsResponse.isComplete, validationErrors:[...sbsResponse.errors]})
-    	 		// this.setState(sbsResponse)
+    	 		this.setState({isValid:sbsResponse.isValid, isComplete:sbsResponse.isComplete, validationErrors:[...sbsResponse.errors]})
     	 	}
-
-    	 	validate = () => {
-    	 		let puzzleString = this.solverUtilities.toString(this.getPuzzleArray())
-    	 		this.getService().validate(puzzleString, this.onValidate)
-    	 	}
-
     		//-- hint
-
     	 	getHint = () => {
-    	 		this.getService().getHint(this.solverUtilities.toString(this.getPuzzleArray()), this.onHintReceived)
+    	 		this.getBridgeService().getHint(this.toString(), this.onHintReceived)
     	 	}
-
     	 	onHintReceived = (sbsResponse:SBSResponse) => {
     			this.setState({hint:sbsResponse.hint, patternMap:this.solverUtilities.getPatternMap()})
     			this.updateCell(sbsResponse.hint.index, sbsResponse.hint.value)

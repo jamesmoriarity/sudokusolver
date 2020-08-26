@@ -24,6 +24,12 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 var SSState = /** @class */ (function () {
     function SSState() {
+        this.greeting = "Sudoku Puzzle : Status : ";
+        this.patternMap = {};
+        this.validationErrors = [];
+        this.isComplete = false;
+        this.isValid = false;
+        this.hint = null;
     }
     return SSState;
 }());
@@ -32,34 +38,34 @@ var SudokuSolver = /** @class */ (function (_super) {
     function SudokuSolver(props) {
         var _this = _super.call(this, props) || this;
         _this.setInitialState = function () {
-            _this.state = new SSState();
-            _this.state.greeting = "Sudoku Puzzle : Status : ";
-            _this.state.isValid = false;
-            _this.state.hint = null;
-            _this.state.puzzleArray = _this.solverUtilities.buildEmptyPuzzleArray();
-            _this.state.validationErrors = [];
-            _this.state.isComplete = false;
-            _this.state.originalPuzzleArray = __spreadArrays(_this.getPuzzleArray());
-            _this.state.patternMap = {};
-            _this.setState(_this.state);
+            var sss = new SSState();
+            sss.puzzleArray = _this.solverUtilities.buildEmptyPuzzleArray();
+            sss.originalPuzzleArray = _this.solverUtilities.buildEmptyPuzzleArray();
+            _this.state = sss;
+            // don't use setState at this point, because no state obj exists yet
+            // use setState after setInitialState has fired
         };
         //-- utility functions
-        _this.getService = function () {
+        _this.getBridgeService = function () {
             return new SudokuBridgeService();
+        };
+        _this.getPuzzleArray = function () {
+            var a = _this.state.puzzleArray;
+            return a;
+        };
+        _this.toString = function () {
+            return _this.solverUtilities.puzzleArrayToString(_this.getPuzzleArray());
         };
         //-- Cell Change
         _this.onCellChange = function (event, cellIndex) {
-            var value = event.target.value;
-            /* if mode == pencil
-                this.cells[cellIndex].setPencil(value)*/
-            /* if mode == possibleValues
-                this.cells[cellIndex].setPossibleValue(value)*/
+            /* if mode == pencil this.cells[cellIndex].setPencil(value)*/
+            /* if mode == possibleValues this.cells[cellIndex].setPossibleValue(value)*/
             // if mode == value
-            var isValidEntry = (value == "" || (!isNaN(value) && Number(value) > 0));
-            if (isValidEntry) {
-                _this.solverUtilities.checkToRemoveValidationError(cellIndex);
-                _this.solverUtilities.checkToRemoveHint(cellIndex);
-                _this.updateCell(cellIndex, value);
+            var valString = String(event.target.value);
+            if (_this.solverUtilities.isValidEntry(valString)) {
+                _this.solverUtilities.checkToRemoveRelatedValidationError(cellIndex);
+                _this.solverUtilities.checkToRemoveRelatedHint(cellIndex);
+                _this.updateCell(cellIndex, valString);
             }
         };
         _this.updateCell = function (cellIndex, value) {
@@ -69,59 +75,48 @@ var SudokuSolver = /** @class */ (function (_super) {
         };
         //-- new puzzle
         _this.newPuzzle = function () {
-            _this.getService().getNewPuzzle(_this.onNewPuzzle);
+            _this.getBridgeService().getNewPuzzle(_this.onNewPuzzle);
         };
         _this.onNewPuzzle = function (sbsResponse) {
             if (sbsResponse.isValid) {
                 _this.setNewPuzzle(sbsResponse);
             }
             else {
-                alert("puzzle load failed: " + sbsResponse.errors.join(":"));
+                _this.handlePuzzleLoadFailure(sbsResponse);
             }
         };
+        _this.handlePuzzleLoadFailure = function (sbsResponse) {
+            alert("puzzle load failed: " + sbsResponse.errors.join(":"));
+        };
         _this.setNewPuzzle = function (sbsResponse) {
-            var s = String(sbsResponse.puzzle.start);
-            var a = _this.solverUtilities.puzzleStringToArray(s);
-            _this.setState({
-                puzzleArray: a,
-                originalPuzzleArray: __spreadArrays(a),
-                isValid: true,
-                isComplete: false,
-                validationErrors: [],
-                hint: null,
-                patternMap: null
-            });
+            var startNumbers = String(sbsResponse.puzzle.start);
+            var a = _this.solverUtilities.puzzleStringToArray(startNumbers);
+            var newState = new SSState();
+            newState.puzzleArray = a;
+            newState.originalPuzzleArray = __spreadArrays(a);
+            newState.isValid = true;
+            _this.setState(newState);
         };
         //-- reset
         _this.reset = function () {
             _this.resetPuzzle();
         };
         _this.resetPuzzle = function () {
-            _this.setState({
-                puzzleArray: __spreadArrays(_this.state.originalPuzzleArray),
-                isValid: true,
-                isComplete: false,
-                validationErrors: [],
-                hint: null,
-                patternMap: null
-            });
-        };
-        _this.getPuzzleArray = function () {
-            var a = _this.state.puzzleArray;
-            return a;
+            var state = new SSState();
+            state.puzzleArray = __spreadArrays(_this.state.originalPuzzleArray);
+            state.isValid = true;
+            _this.setState(state);
         };
         //-- validation
-        _this.onValidate = function (sbsResponse) {
-            _this.setState({ puzzlieArray: __spreadArrays(_this.getPuzzleArray()), isValid: sbsResponse.isValid, isComplete: sbsResponse.isComplete, validationErrors: __spreadArrays(sbsResponse.errors) });
-            // this.setState(sbsResponse)
-        };
         _this.validate = function () {
-            var puzzleString = _this.solverUtilities.toString(_this.getPuzzleArray());
-            _this.getService().validate(puzzleString, _this.onValidate);
+            _this.getBridgeService().validate(_this.toString(), _this.onValidate);
+        };
+        _this.onValidate = function (sbsResponse) {
+            _this.setState({ isValid: sbsResponse.isValid, isComplete: sbsResponse.isComplete, validationErrors: __spreadArrays(sbsResponse.errors) });
         };
         //-- hint
         _this.getHint = function () {
-            _this.getService().getHint(_this.solverUtilities.toString(_this.getPuzzleArray()), _this.onHintReceived);
+            _this.getBridgeService().getHint(_this.toString(), _this.onHintReceived);
         };
         _this.onHintReceived = function (sbsResponse) {
             _this.setState({ hint: sbsResponse.hint, patternMap: _this.solverUtilities.getPatternMap() });

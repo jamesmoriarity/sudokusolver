@@ -6,7 +6,7 @@ class SudokuService{
 	puzzleArray:Array<Number>
 	callback:Function
   isValid: any
-	
+
 	constructor(){
 		this.puzzleArray = []
 		this.callback = null
@@ -33,9 +33,8 @@ class SudokuService{
 	}
 	onValidate = (result:SudokuValidatorResult) => {
 		if(result.isValid){
-			let ssr = new SudokuServiceResponse(result.isValid)
+			let ssr = new SudokuServiceResponse(true)
 			ssr.setIsComplete(result.isComplete)
-			ssr.setErrors(result.errors)
 			this.callback(ssr)
 		}else{
 			this.callback(this.getFailedValidationServiceResponse(result.errors))
