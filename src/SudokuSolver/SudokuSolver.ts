@@ -10,7 +10,7 @@
         puzzleArray:Array<String>
         validationErrors:Array<Number>
         isComplete:Boolean
-        originalPuzzleArray:Array<String>
+        originalPuzzleString:String
         patternMap:Object
         constructor(){
     	 		this.greeting = "Sudoku Puzzle : Status : "
