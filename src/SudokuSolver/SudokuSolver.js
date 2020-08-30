@@ -39,28 +39,15 @@ var SudokuSolver = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.setInitialState = function () {
             var sss = new SSState();
-            sss.puzzleArray = _this.solverUtilities.buildEmptyPuzzleArray();
-            sss.originalPuzzleArray = _this.solverUtilities.buildEmptyPuzzleArray();
+            var a = _this.solverUtilities.buildEmptyPuzzleArray();
+            sss.puzzleArray = a;
+            sss.originalPuzzleString = _this.solverUtilities.puzzleArrayToString(a);
             _this.state = sss;
-            // don't use setState at this point, because no state obj exists yet
+            // don't use setState at this point, because the state obj doesn't yet exist
             // use setState after setInitialState has fired
-        };
-        //-- utility functions
-        _this.getBridgeService = function () {
-            return new SudokuBridgeService();
-        };
-        _this.getPuzzleArray = function () {
-            var a = _this.state.puzzleArray;
-            return a;
-        };
-        _this.toString = function () {
-            return _this.solverUtilities.puzzleArrayToString(_this.getPuzzleArray());
         };
         //-- Cell Change
         _this.onCellChange = function (event, cellIndex) {
-            /* if mode == pencil this.cells[cellIndex].setPencil(value)*/
-            /* if mode == possibleValues this.cells[cellIndex].setPossibleValue(value)*/
-            // if mode == value
             var valString = String(event.target.value);
             if (_this.solverUtilities.isValidEntry(valString)) {
                 _this.solverUtilities.checkToRemoveRelatedValidationError(cellIndex);
@@ -77,23 +64,18 @@ var SudokuSolver = /** @class */ (function (_super) {
         _this.newPuzzle = function () {
             _this.getBridgeService().getNewPuzzle(_this.onNewPuzzle);
         };
-        _this.onNewPuzzle = function (sbsResponse) {
-            if (sbsResponse.isValid) {
-                _this.setNewPuzzle(sbsResponse);
+        _this.onNewPuzzle = function (sbsPuzzle) {
+            if (sbsPuzzle) {
+                _this.initNewPuzzle(sbsPuzzle);
             }
             else {
-                _this.handlePuzzleLoadFailure(sbsResponse);
+                alert("puzzle load failed. puzzle object is null");
             }
         };
-        _this.handlePuzzleLoadFailure = function (sbsResponse) {
-            alert("puzzle load failed: " + sbsResponse.errors.join(":"));
-        };
-        _this.setNewPuzzle = function (sbsResponse) {
-            var startNumbers = String(sbsResponse.puzzle.start);
-            var a = _this.solverUtilities.puzzleStringToArray(startNumbers);
+        _this.initNewPuzzle = function (sbsPuzzle) {
             var newState = new SSState();
-            newState.puzzleArray = a;
-            newState.originalPuzzleArray = __spreadArrays(a);
+            newState.originalPuzzleString = sbsPuzzle.puzzleString;
+            newState.puzzleArray = _this.solverUtilities.puzzleStringToArray(sbsPuzzle.puzzleString);
             newState.isValid = true;
             _this.setState(newState);
         };
@@ -103,34 +85,52 @@ var SudokuSolver = /** @class */ (function (_super) {
         };
         _this.resetPuzzle = function () {
             var state = new SSState();
-            state.puzzleArray = __spreadArrays(_this.state.originalPuzzleArray);
+            state.puzzleArray = _this.solverUtilities.puzzleStringToArray(_this.state.originalPuzzleString);
             state.isValid = true;
+            state.isComplete = false;
             _this.setState(state);
         };
         //-- validation
         _this.validate = function () {
-            _this.getBridgeService().validate(_this.toString(), _this.onValidate);
+            _this.getBridgeService().validate(_this.toPuzzleString(), _this.onValidate);
         };
-        _this.onValidate = function (sbsResponse) {
-            _this.setState({ isValid: sbsResponse.isValid, isComplete: sbsResponse.isComplete, validationErrors: __spreadArrays(sbsResponse.errors) });
+        _this.onValidate = function (val) {
+            if (val)
+                _this.setState({ isValid: val.isValid, isComplete: val.isComplete, validationErrors: __spreadArrays(val.invalidCells) });
         };
         //-- hint
         _this.getHint = function () {
-            _this.getBridgeService().getHint(_this.toString(), _this.onHintReceived);
+            _this.getBridgeService().getHint(_this.toPuzzleString(), _this.onHintReceived);
         };
-        _this.onHintReceived = function (sbsResponse) {
-            _this.setState({ hint: sbsResponse.hint, patternMap: _this.solverUtilities.getPatternMap() });
-            _this.updateCell(sbsResponse.hint.index, sbsResponse.hint.value);
-            console.log("sbsResponse: hint " + sbsResponse.hint.type);
+        _this.onHintReceived = function (ssbHint) {
+            if (ssbHint) {
+                _this.setState({ hint: ssbHint, patternMap: _this.solverUtilities.getPatternMap(ssbHint) });
+                _this.updateCell(ssbHint.index, ssbHint.value);
+                console.log("SudokuServiceBridgeHint: hint " + ssbHint.type);
+            }
+            else {
+                console.log("onHintReceived: The hint object was null.");
+            }
+        };
+        //-- render
+        _this.render = function () {
+            var renderer = new SudokuRenderer();
+            return renderer.render(_this);
+        };
+        //-- general functions
+        _this.getBridgeService = function () {
+            return new SudokuBridgeService();
+        };
+        _this.getPuzzleArray = function () {
+            var a = _this.state.puzzleArray;
+            return a;
+        };
+        _this.toPuzzleString = function () {
+            return _this.solverUtilities.puzzleArrayToString(_this.getPuzzleArray());
         };
         _this.solverUtilities = new SudokuSolverUtilities(_this);
         _this.setInitialState();
         return _this;
     }
-    //-- render
-    SudokuSolver.prototype.render = function () {
-        var renderer = new SudokuRenderer();
-        return renderer.render(this);
-    };
     return SudokuSolver;
 }(React.Component));

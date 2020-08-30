@@ -2,13 +2,6 @@
 /// <reference path="../AlphaSudokuService/SudokuValidatorResult.ts" />
 /// <reference path="../AlphaSudokuService/SudokuServiceResponse.ts" />
 /// <reference path="./SudokuServiceBridgeHint.ts" />
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 console.log("SudokuBridgeService");
 var SudokuBridgeService = /** @class */ (function () {
     function SudokuBridgeService() {
@@ -19,13 +12,11 @@ var SudokuBridgeService = /** @class */ (function () {
         };
         this.onHintReceived = function (sudokuServiceResponse) {
             if (!sudokuServiceResponse.isValid) {
-                _this.clientCallback(new SBSResponse(false));
+                _this.clientCallback(null);
             }
             else {
-                var sbsResponse = new SBSResponse(true);
                 var ssbHint = SudokuServiceBridgeHint.fromSudokuServiceHint(sudokuServiceResponse.getHint());
-                sbsResponse.setHint(ssbHint);
-                _this.clientCallback(sbsResponse);
+                _this.clientCallback(ssbHint);
             }
         };
         this.validate = function (puzzleString, callback) {
@@ -33,57 +24,37 @@ var SudokuBridgeService = /** @class */ (function () {
             _this.service.validate(puzzleString, _this.onValidate);
         };
         this.onValidate = function (validationResponse) {
-            var v = validationResponse;
-            var b = v.isValid;
-            var sbs = new SBSResponse(b);
-            sbs.setErrors(v.errors);
-            sbs.setIsComplete(validationResponse.isComplete);
-            _this.clientCallback(sbs);
+            var isValid = validationResponse.isValid;
+            var invalidCells = validationResponse.errors;
+            var isComplete = validationResponse.isComplete;
+            var validationResult = new SBSValidationResult(isValid, invalidCells, isComplete);
+            _this.clientCallback(validationResult);
         };
         this.getNewPuzzle = function (callback) {
             _this.clientCallback = callback;
             _this.service.getNewPuzzle(_this.onNewPuzzle);
         };
         this.onNewPuzzle = function (serviceResponse) {
-            _this.clientCallback(_this.getSBSNewPuzzleResponse(serviceResponse));
-        };
-        this.getSBSNewPuzzleResponse = function (serviceResponse) {
-            if (serviceResponse.isValid) {
-                var sbsr = new SBSResponse(true);
-                sbsr.setPuzzle(serviceResponse.puzzle.puzzle);
-                return (sbsr);
-            }
-            else {
-                var sbsr = new SBSResponse(false);
-                sbsr.setErrors(serviceResponse.errors);
-                return (sbsr);
-            }
+            var puzzle = new SBSPuzzle("id", serviceResponse.puzzle.start);
+            _this.clientCallback(puzzle);
         };
         this.service = new SudokuService();
         this.clientCallback = null;
     }
     return SudokuBridgeService;
 }());
-var SBSResponse = /** @class */ (function () {
-    function SBSResponse(isValid) {
-        var _this = this;
-        this.setPuzzle = function (p) {
-            _this.puzzle = p;
-        };
-        this.setErrors = function (e) {
-            _this.errors = __spreadArrays(e);
-        };
-        this.setHint = function (h) {
-            _this.hint = h;
-        };
-        this.setIsComplete = function (b) {
-            _this.isComplete = b;
-        };
-        this.isValid = isValid;
-        this.puzzle = null;
-        this.errors = [];
-        this.hint = null;
-        this.isComplete = false;
+var SBSPuzzle = /** @class */ (function () {
+    function SBSPuzzle(id, puzzleString) {
+        this.id = id;
+        this.puzzleString = puzzleString;
     }
-    return SBSResponse;
+    return SBSPuzzle;
+}());
+var SBSValidationResult = /** @class */ (function () {
+    function SBSValidationResult(isValid, invalidCells, isComplete) {
+        this.isValid = isValid;
+        this.invalidCells = invalidCells;
+        this.isComplete = isComplete;
+    }
+    return SBSValidationResult;
 }());

@@ -12,17 +12,23 @@ console.log("SudokuRenderer1.jsx")
 			this.renderClient = renderClient
 			this.state = renderClient.state
 			return	<div id="_sudoku">
-						<div>{this.state.greeting} Valid: {(this.state.isValid) ? "true" : "false"} Complete: {(this.state.isComplete)?"true":"false"}</div>
-						<div id="grid">
-							{this.getTableGrid()}
-						</div>
-						<div id="new_game_shell">
-							<button id="new_game_btn" onClick={this.renderClient.newPuzzle}>New Puzzle</button>
-						</div>
-						<div id="reset"><button id="reset_btn" onClick={this.renderClient.reset}>Reset</button></div>
-						<div id="validate"><button id="validate_btn" onClick={this.renderClient.validate}>Validate</button></div>
-						<div id="get_hint"><button id="get_hint_btn" onClick={this.renderClient.getHint}>Get Hint</button></div>
-					</div>
+								<div>{this.state.greeting} Valid: {(this.state.isValid) ? "true" : "false"} Complete: {(this.state.isComplete)?"true":"false"}</div>
+								<div id="grid">
+									{this.getTableGrid()}
+								</div>
+								<div id="new_game_shell">
+									<button id="new_game_btn" onClick={this.renderClient.newPuzzle}>New Puzzle</button>
+								</div>
+								<div id="reset">
+									<button id="reset_btn" onClick={this.renderClient.reset}>Reset</button>
+								</div>
+								<div id="validate">
+									<button id="validate_btn" onClick={this.renderClient.validate}>Validate</button>
+								</div>
+								<div id="get_hint">
+									<button id="get_hint_btn" onClick={this.renderClient.getHint}>Get Hint</button>
+								</div>
+							</div>
 		}
 
 		getTableGrid = () => {

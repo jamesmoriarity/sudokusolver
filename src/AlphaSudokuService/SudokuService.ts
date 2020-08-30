@@ -31,14 +31,8 @@ class SudokuService{
 		let validator = new SudokuValidator()
 		validator.validate(puzzleString, this.onValidate)
 	}
-	onValidate = (result:SudokuValidatorResult) => {
-		if(result.isValid){
-			let ssr = new SudokuServiceResponse(true)
-			ssr.setIsComplete(result.isComplete)
-			this.callback(ssr)
-		}else{
-			this.callback(this.getFailedValidationServiceResponse(result.errors))
-		}
+	onValidate = (result:SBSValidationResult) => {
+			this.callback(result)
 	}
 	getFailedValidationServiceResponse = (errors:Array<Number>) => {
 		let ssr = new SudokuServiceResponse(false)
@@ -61,7 +55,7 @@ class SudokuService{
 	}
 	getSuccessfulNewPuzzleServiceResponse = (puzzleResult:any) => {
 		let ssr = new SudokuServiceResponse(true)
-		ssr.setPuzzle(puzzleResult)
+		ssr.setPuzzle(puzzleResult.puzzle)
 		return ssr
 	}
 	getFailedNewPuzzleServiceResponse = (error:any) => {

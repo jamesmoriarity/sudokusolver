@@ -6,12 +6,10 @@ class SudokuServiceResponse {
   puzzle: SudokuPuzzle = null
   errors: Array<Number>
   hint: SudokuServiceHint
-  className: String
 
 	constructor(isValid:Boolean){
 		this.isValid = isValid
 		this.errors = []
-    this.className = "c"
 	}
 	setIsComplete = (isComplete:Boolean) => {
 		this.isComplete = isComplete
@@ -35,6 +33,7 @@ class SudokuServiceResponse {
 }
 
 
-class SudokuPuzzle{
-  puzzle:any
+interface SudokuPuzzle{
+  start:String
+  solution:String
 }

@@ -20,7 +20,7 @@ class SudokuSolverUtilities{
 			return false
 		}
 
-		getPatternMap(){
+		getPatternMap(hint:SudokuServiceBridgeHint){
 			let hintBackgroundCells:Array<Number> = [0,1,3,4,5,6,7,8,6,15,16,24,33,42,51,60,78,8,17,26,35,53,62,71,80]
 			let hintValueRelatedCells:Array<Number> = [2,69,44]
 			return {"hintBackgroundCells": hintBackgroundCells, "hintValueRelatedCells": hintValueRelatedCells}

@@ -62,7 +62,7 @@ var SudokuSolverUtilities = /** @class */ (function () {
         };
         this.clientSolver = clientSolver;
     }
-    SudokuSolverUtilities.prototype.getPatternMap = function () {
+    SudokuSolverUtilities.prototype.getPatternMap = function (hint) {
         var hintBackgroundCells = [0, 1, 3, 4, 5, 6, 7, 8, 6, 15, 16, 24, 33, 42, 51, 60, 78, 8, 17, 26, 35, 53, 62, 71, 80];
         var hintValueRelatedCells = [2, 69, 44];
         return { "hintBackgroundCells": hintBackgroundCells, "hintValueRelatedCells": hintValueRelatedCells };

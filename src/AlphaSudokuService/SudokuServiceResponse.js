@@ -26,12 +26,6 @@ var SudokuServiceResponse = /** @class */ (function () {
         };
         this.isValid = isValid;
         this.errors = [];
-        this.className = "c";
     }
     return SudokuServiceResponse;
-}());
-var SudokuPuzzle = /** @class */ (function () {
-    function SudokuPuzzle() {
-    }
-    return SudokuPuzzle;
 }());

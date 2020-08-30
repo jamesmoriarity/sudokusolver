@@ -18,12 +18,10 @@ class SudokuBridgeService {
 	}
 
 	onHintReceived = (sudokuServiceResponse:SudokuServiceResponse) => {
-		if(!sudokuServiceResponse.isValid){this.clientCallback(new SBSResponse(false))}
+		if(!sudokuServiceResponse.isValid){this.clientCallback(null)}
 		else{
-			let sbsResponse:SBSResponse = new SBSResponse(true)
 			let ssbHint:SudokuServiceBridgeHint = SudokuServiceBridgeHint.fromSudokuServiceHint(sudokuServiceResponse.getHint())
-			sbsResponse.setHint(ssbHint)
-			this.clientCallback(sbsResponse)
+			this.clientCallback(ssbHint)
 		}
 	}
 
@@ -33,12 +31,11 @@ class SudokuBridgeService {
 	}
 
 	onValidate = (validationResponse:SudokuValidatorResult) =>{
-		let v:SudokuValidatorResult = validationResponse
-		let b = v.isValid
-		let sbs = new SBSResponse(b)
-		sbs.setErrors(v.errors)
-		sbs.setIsComplete(validationResponse.isComplete)
-		this.clientCallback(sbs)
+		let isValid = validationResponse.isValid
+		let invalidCells = validationResponse.errors
+		let isComplete = validationResponse.isComplete
+		let validationResult:SBSValidationResult = new SBSValidationResult(isValid, invalidCells, isComplete)
+		this.clientCallback(validationResult)
 	}
 
 	getNewPuzzle = (callback:Function) => {
@@ -47,46 +44,32 @@ class SudokuBridgeService {
 	}
 
 	onNewPuzzle = (serviceResponse:SudokuServiceResponse) => {
-		this.clientCallback(this.getSBSNewPuzzleResponse(serviceResponse))
-	}
-
-	getSBSNewPuzzleResponse = (serviceResponse:SudokuServiceResponse) =>{
-		if (serviceResponse.isValid){
-			let sbsr = new SBSResponse(true)
-			sbsr.setPuzzle(serviceResponse.puzzle.puzzle)
-			return(sbsr)
-		}
-		else{
-			let sbsr = new SBSResponse(false)
-			sbsr.setErrors(serviceResponse.errors)
-			return(sbsr)
-		}
+		let puzzle:SBSPuzzle = new SBSPuzzle("id", serviceResponse.puzzle.start)
+		this.clientCallback(puzzle)
 	}
 }
 
-class SBSResponse{
-	isValid:Boolean
-	puzzle:any
-	errors:Array<Number>
-	hint:SudokuServiceBridgeHint
-	isComplete:Boolean
-	constructor(isValid:Boolean){
-		this.isValid = isValid
-		this.puzzle = null
-		this.errors = []
-		this.hint = null
-		this.isComplete = false
+class SBSPuzzle{
+	id:String
+	puzzleString:String
+	constructor(id:String, puzzleString:String){
+		this.id = id
+		this.puzzleString = puzzleString
 	}
-	setPuzzle = (p:any) => {
-		this.puzzle = p
-	}
-	setErrors = (e:Array<Number>) => {
-		this.errors = [...e]
-	}
-	setHint = (h:SudokuServiceBridgeHint) => {
-		this.hint = h
-	}
-	setIsComplete = (b:Boolean) => {
-		this.isComplete = b
-	}
+}
+
+class SBSValidationResult{
+		isValid:Boolean
+		isComplete:Boolean
+		invalidCells:Number[]
+		constructor(isValid:Boolean, invalidCells:Number[], isComplete:Boolean){
+			this.isValid = isValid
+			this.invalidCells= invalidCells
+			this.isComplete = isComplete
+		}
+}
+
+interface SudokuBridgePuzzle{
+  start:String
+  solution:String
 }

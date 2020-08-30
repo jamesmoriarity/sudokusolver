@@ -24,14 +24,7 @@ var SudokuService = /** @class */ (function () {
             validator.validate(puzzleString, _this.onValidate);
         };
         this.onValidate = function (result) {
-            if (result.isValid) {
-                var ssr = new SudokuServiceResponse(true);
-                ssr.setIsComplete(result.isComplete);
-                _this.callback(ssr);
-            }
-            else {
-                _this.callback(_this.getFailedValidationServiceResponse(result.errors));
-            }
+            _this.callback(result);
         };
         this.getFailedValidationServiceResponse = function (errors) {
             var ssr = new SudokuServiceResponse(false);
@@ -50,7 +43,7 @@ var SudokuService = /** @class */ (function () {
         };
         this.getSuccessfulNewPuzzleServiceResponse = function (puzzleResult) {
             var ssr = new SudokuServiceResponse(true);
-            ssr.setPuzzle(puzzleResult);
+            ssr.setPuzzle(puzzleResult.puzzle);
             return ssr;
         };
         this.getFailedNewPuzzleServiceResponse = function (error) {
